@@ -6,67 +6,34 @@
     <title>MwasiTrade | Studio Bénin</title>
     <style>
         :root { --gold: #D4AF37; --dark: #1A1A1A; --red: #e74c3c; --green: #25D366; }
-        body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: var(--dark); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        .header { text-align: center; margin-bottom: 20px; }
-        .logo { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        .logo span { color: var(--gold); }
-        .subtitle { font-size: 11px; color: #666; text-transform: uppercase; }
-
+        body { font-family: 'Inter', sans-serif; background: #f4f4f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .studio-card { background: white; padding: 20px; border-radius: 30px; max-width: 400px; width: 100%; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        
         #preview { width: 100%; border-radius: 20px; margin-bottom: 15px; border: 2px solid #eee; }
         canvas { display: none; }
-
-        .voice-btn-container { text-align: center; margin: 15px 0; }
-        .mic-btn { 
-            background: var(--dark); color: white; border: none; width: 65px; height: 65px; 
-            border-radius: 50%; font-size: 28px; cursor: pointer; transition: 0.3s;
-        }
+        .mic-btn { background: var(--dark); color: white; border: none; width: 65px; height: 65px; border-radius: 50%; font-size: 28px; cursor: pointer; margin: 10px auto; display: block; }
         .mic-btn.active { background: var(--red); animation: pulse 1s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        .status-text { font-size: 12px; color: #999; margin-top: 8px; min-height: 15px; }
-
         .input-group { margin-bottom: 10px; text-align: left; }
-        label { font-size: 10px; font-weight: bold; color: #bbb; margin-left: 5px; text-transform: uppercase; }
+        label { font-size: 10px; font-weight: bold; color: #bbb; text-transform: uppercase; }
         input { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-
-        .btn { border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 8px; transition: 0.2s; }
+        .btn { border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; }
         .btn-download { background: var(--dark); color: white; }
         .btn-share { background: var(--green); color: white; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo">Mwasi<span>Trade</span></div>
-        <div class="subtitle">Propulsé par SheStartIA - Bénin</div>
-    </div>
-
     <div class="studio-card">
         <canvas id="canvas" width="1000" height="1000"></canvas>
-        <img id="preview" src="" alt="Votre flyer">
+        <img id="preview" src="">
 
-        <div class="voice-btn-container">
-            <button class="mic-btn" id="micBtn" onclick="startVoice()">🎤</button>
-            <div class="status-text" id="status">Dites : "Jus 500 Cotonou"</div>
-        </div>
+        <button class="mic-btn" id="micBtn" onclick="startVoice()">🎤</button>
+        <p id="status" style="font-size:12px; color:#999; text-align:center;">Dites : "Pagne 5000 Calavi"</p>
 
-        <div class="input-group">
-            <label>Article</label>
-            <input type="text" id="name" placeholder="Ex: Pagne Wax" oninput="draw()">
-        </div>
-
+        <div class="input-group"><label>Article</label><input type="text" id="name" oninput="draw()"></div>
         <div class="input-group" style="display: flex; gap: 10px;">
-            <div style="flex: 1;">
-                <label>Prix</label>
-                <input type="text" id="price" placeholder="Ex: 5000" oninput="draw()">
-            </div>
-            <div style="flex: 1;">
-                <label>Ville</label>
-                <input type="text" id="city" placeholder="Ex: Cotonou" oninput="draw()">
-            </div>
+            <div style="flex: 1;"><label>Prix</label><input type="text" id="price" oninput="draw()"></div>
+            <div style="flex: 1;"><label>Ville</label><input type="text" id="city" oninput="draw()"></div>
         </div>
 
         <button class="btn btn-download" onclick="downloadFlyer()">💾 ENREGISTRER L'IMAGE</button>
@@ -77,72 +44,51 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const preview = document.getElementById('preview');
-        const micBtn = document.getElementById('micBtn');
-        const status = document.getElementById('status');
 
         function draw() {
-            // Fond Noir
-            ctx.fillStyle = "#121212";
-            ctx.fillRect(0, 0, 1000, 1000);
-            
-            // Cadres Or
-            ctx.strokeStyle = "#D4AF37";
-            ctx.lineWidth = 25; ctx.strokeRect(40, 40, 920, 920);
+            ctx.fillStyle = "#121212"; ctx.fillRect(0, 0, 1000, 1000);
+            ctx.strokeStyle = "#D4AF37"; ctx.lineWidth = 25; ctx.strokeRect(40, 40, 920, 920);
             ctx.lineWidth = 5; ctx.strokeRect(75, 75, 850, 850);
 
-            // Produit
-            ctx.fillStyle = "white"; ctx.textAlign = "center";
-            ctx.font = "bold 85px sans-serif";
-            let n = document.getElementById('name').value || "VOTRE PRODUIT";
-            ctx.fillText(n.toUpperCase(), 500, 400);
+            ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold 80px sans-serif";
+            ctx.fillText((document.getElementById('name').value || "PRODUIT").toUpperCase(), 500, 400);
             
-            // Prix
             ctx.fillStyle = "#D4AF37"; ctx.font = "900 130px sans-serif";
-            let p = document.getElementById('price').value || "PRIX";
-            ctx.fillText(p.includes("FCFA") ? p : p + " FCFA", 500, 560);
+            let p = document.getElementById('price').value || "0";
+            ctx.fillText(p + " FCFA", 500, 560);
 
-            // Ville
             ctx.fillStyle = "white"; ctx.font = "italic 50px sans-serif";
-            let c = document.getElementById('city').value || "VILLE";
-            ctx.fillText("📍 " + c.toUpperCase(), 500, 680);
+            ctx.fillText("📍 " + (document.getElementById('city').value || "VILLE").toUpperCase(), 500, 700);
 
-            // Signature
-            ctx.fillStyle = "rgba(255,255,255,0.3)"; ctx.font = "30px sans-serif";
+            ctx.fillStyle = "rgba(255,255,255,0.3)"; ctx.font = "25px sans-serif";
             ctx.fillText("MWASITRADE BÉNIN", 500, 900);
             preview.src = canvas.toDataURL();
         }
 
         function startVoice() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) return;
             const recognition = new SpeechRecognition();
             recognition.lang = 'fr-FR';
-            micBtn.classList.add('active');
-            status.innerText = "Je vous écoute...";
+            document.getElementById('micBtn').classList.add('active');
             recognition.start();
 
             recognition.onresult = (event) => {
                 const text = event.results[0][0].transcript.toLowerCase();
-                micBtn.classList.remove('active');
-                status.innerText = "Entendu : " + text;
-                if (navigator.vibrate) navigator.vibrate(100);
+                document.getElementById('micBtn').classList.remove('active');
 
-                // Extraction intelligente
+                // Extraction Prix
                 const nums = text.match(/\d+/g);
-                if (nums) document.getElementById('price').value = nums[nums.length-1];
+                if (nums) document.getElementById('price').value = nums[0];
 
-                // Liste simplifiée des villes du Bénin pour l'extraction
-                const villes = ["cotonou", "porto-novo", "parakou", "abomey", "bohikon", "natitingou", "ouidah", "djougou", "kandi"];
-                let foundCity = villes.find(v => text.includes(v));
-                if (foundCity) {
-                    document.getElementById('city').value = foundCity.charAt(0).toUpperCase() + foundCity.slice(1);
-                }
+                // Extraction Ville (Calavi rajouté ici)
+                const villes = ["cotonou", "calavi", "porto", "parakou", "ouidah", "abomey"];
+                let vFound = villes.find(v => text.includes(v));
+                if (vFound) document.getElementById('city').value = vFound.charAt(0).toUpperCase() + vFound.slice(1);
 
-                // Le reste est le produit
-                let prod = text.replace(/\d+/g, '').replace(/prix|francs|cfa|va|à/g, '');
-                villes.forEach(v => prod = prod.replace(v, ''));
-                prod = prod.trim();
-                if (prod) document.getElementById('name').value = prod.charAt(0).toUpperCase() + prod.slice(1);
+                // Extraction Nom (On retire le prix et la ville du texte entendu)
+                let name = text.replace(/\d+/g, '');
+                villes.forEach(v => name = name.replace(v, ''));
+                document.getElementById('name').value = name.trim();
                 
                 draw();
             };
@@ -150,22 +96,17 @@
 
         function downloadFlyer() {
             const link = document.createElement('a');
-            link.download = `mwasitrade-benin.png`;
-            link.href = canvas.toDataURL();
-            link.click();
+            link.download = 'flyer.png'; link.href = canvas.toDataURL(); link.click();
         }
 
         function shareToClients() {
-            const n = document.getElementById('name').value || "Produit";
-            const p = document.getElementById('price').value || "Prix";
-            const c = document.getElementById('city').value || "Bénin";
-            
-            const clientLink = `https://safrikyia.github.io/commande.html?name=${encodeURIComponent(n)}&price=${encodeURIComponent(p)}&city=${encodeURIComponent(c)}`;
-            
-            const message = encodeURIComponent(`📦 *${n}*\n💰 *Prix : ${p} FCFA*\n📍 *Ville : ${c}*\n\nPour commander ou voir le détail, cliquez ici :\n👉 ${clientLink}`);
-            window.open(`https://wa.me/?text=${message}`, '_blank');
+            const n = document.getElementById('name').value;
+            const p = document.getElementById('price').value;
+            const c = document.getElementById('city').value;
+            // Lien vers ta page de commande
+            const url = `https://safrikyia.github.io/commande.html?name=${n}&price=${p}&city=${c}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent("Commander mes " + n + " à " + c + " ici : " + url)}`);
         }
-
         window.onload = draw;
     </script>
 </body>
