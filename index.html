@@ -3,115 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MwasiTrade | Voice Business Studio</title>
+    <title>MwasiTrade | Studio Vocal</title>
     <style>
-        :root { --mwasi-gold: #D4AF37; --mwasi-dark: #1A1A1A; --mwasi-red: #e74c3c; }
-        body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: var(--mwasi-dark); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        :root { --gold: #D4AF37; --dark: #1A1A1A; --red: #e74c3c; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #f0f0f0; color: var(--dark); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         
         .header { text-align: center; margin-bottom: 20px; }
-        .logo { font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .logo span { color: var(--mwasi-gold); }
+        .logo { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        .logo span { color: var(--gold); }
+        .subtitle { font-size: 11px; color: #666; margin-top: 5px; text-transform: uppercase; }
 
-        .studio-card { background: white; padding: 20px; border-radius: 25px; max-width: 400px; width: 100%; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
+        .studio-card { background: white; padding: 25px; border-radius: 30px; max-width: 420px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.1); border: 1px solid #ddd; }
         
-        #preview { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 1px solid #eee; }
+        #preview { width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 3px solid white; }
         canvas { display: none; }
 
-        /* Style du bouton Micro */
-        .voice-section { text-align: center; margin: 15px 0; }
+        /* Section Vocale */
+        .voice-section { text-align: center; margin-bottom: 25px; position: relative; }
         .mic-btn { 
-            background: var(--mwasi-dark); color: white; border: none; width: 60px; height: 60px; 
-            border-radius: 50%; font-size: 24px; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: var(--dark); color: white; border: none; width: 75px; height: 75px; 
+            border-radius: 50%; font-size: 32px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-        .mic-btn.active { background: var(--mwasi-red); transform: scale(1.1); animation: pulse 1.5s infinite; }
+        .mic-btn.active { background: var(--red); animation: pulse 1.2s infinite; }
         
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.6); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
 
-        .voice-status { font-size: 12px; color: #888; margin-top: 8px; font-weight: bold; }
+        .status-text { font-size: 13px; color: #888; margin-top: 12px; font-weight: 500; min-height: 18px; }
 
-        input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .btn-main { background: var(--mwasi-gold); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        /* Formulaire */
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 10px; font-weight: bold; color: #bbb; margin-left: 5px; margin-bottom: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 15px; border: 1.5px solid #eee; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--gold); }
+
+        .btn-action { background: var(--gold); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo">Mwasi<span>Trade</span></div>
-        <p style="font-size: 11px; margin: 5px 0;">"Parlez, MwasiTrade crée."</p>
+        <div class="subtitle">De l'entropie à l'ordre par la voix</div>
     </div>
 
     <div class="studio-card">
-        <canvas id="canvas" width="800" height="800"></canvas>
-        <img id="preview" src="https://via.placeholder.com/800x800/eeeeee/999999?text=Votre+Visuel+Ici" alt="Prévisualisation">
+        <canvas id="canvas" width="1000" height="1000"></canvas>
+        <img id="preview" src="" alt="Chargement du studio...">
 
         <div class="voice-section">
-            <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
-            <div class="voice-status" id="status">Appuyez pour dicter votre annonce</div>
+            <button class="mic-btn" id="micBtn" onclick="startVoice()">🎤</button>
+            <div class="status-text" id="status">Appuyez et dites votre produit et son prix</div>
         </div>
 
-        <input type="text" id="bizName" placeholder="Nom de l'entreprise" oninput="draw()">
-        <input type="text" id="bizPrice" placeholder="Prix (ex: 500 FCFA)" oninput="draw()">
+        <div class="input-group">
+            <label>Nom de l'article</label>
+            <input type="text" id="name" placeholder="Ex: Panier de Tomates" oninput="draw()">
+        </div>
 
-        <button class="btn-main" onclick="downloadImage()">PARTAGER SUR WHATSAPP</button>
+        <div class="input-group">
+            <label>Prix de vente</label>
+            <input type="text" id="price" placeholder="Ex: 1500 FCFA" oninput="draw()">
+        </div>
+
+        <button class="btn-action" onclick="download()">PARTAGER SUR WHATSAPP</button>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        const preview = document.getElementById('preview');
         const micBtn = document.getElementById('micBtn');
         const status = document.getElementById('status');
 
-        let isListening = false;
-
-        function toggleMic() {
-            isListening = !isListening;
-            if(isListening) {
-                micBtn.classList.add('active');
-                status.innerText = "Je vous écoute... (Dites votre nom et votre prix)";
-                status.style.color = "var(--mwasi-red)";
-                // Ici on connectera plus tard l'API Speech-to-Text
-            } else {
-                micBtn.classList.remove('active');
-                status.innerText = "Appuyez pour dicter votre annonce";
-                status.style.color = "#888";
-            }
-        }
-
+        // 1. Fonction Dessin du Visuel
         function draw() {
-            // Fond simple pour l'exemple
-            ctx.fillStyle = "#1a1a1a";
-            ctx.fillRect(0, 0, 800, 800);
+            // Fond Noir Profond
+            ctx.fillStyle = "#121212";
+            ctx.fillRect(0, 0, 1000, 1000);
             
-            // Bordure Or
+            // Double Cadre Or
             ctx.strokeStyle = "#D4AF37";
-            ctx.lineWidth = 30;
-            ctx.strokeRect(50, 50, 700, 700);
+            ctx.lineWidth = 20;
+            ctx.strokeRect(40, 40, 920, 920);
+            ctx.lineWidth = 5;
+            ctx.strokeRect(70, 70, 860, 860);
 
-            // Texte
+            // Texte Produit (Blanc)
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
-            ctx.font = "bold 50px sans-serif";
-            ctx.fillText(document.getElementById('bizName').value.toUpperCase() || "VOTRE NOM", 400, 380);
+            ctx.font = "bold 80px sans-serif";
+            let nameVal = document.getElementById('name').value || "VOTRE PRODUIT";
+            ctx.fillText(nameVal.toUpperCase(), 500, 460);
             
+            // Texte Prix (Or)
             ctx.fillStyle = "#D4AF37";
-            ctx.font = "bold 70px sans-serif";
-            ctx.fillText(document.getElementById('bizPrice').value || "PRIX", 400, 480);
+            ctx.font = "900 110px sans-serif";
+            let priceVal = document.getElementById('price').value || "PRIX";
+            ctx.fillText(priceVal, 500, 590);
 
-            document.getElementById('preview').src = canvas.toDataURL();
+            // Signature Bas de page
+            ctx.fillStyle = "rgba(255,255,255,0.4)";
+            ctx.font = "30px sans-serif";
+            ctx.fillText("PRODUIT VIA MWASITRADE", 500, 880);
+
+            preview.src = canvas.toDataURL();
         }
 
-        function downloadImage() {
-            const a = document.createElement('a');
-            a.download = 'mwasitrade-visuel.png';
-            a.href = canvas.toDataURL();
-            a.click();
+        // 2. Fonction Reconnaissance Vocale (Deep Tech Locale)
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                status.innerText = "Navigateur non compatible (Utilisez Chrome)";
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'fr-FR';
+            
+            micBtn.classList.add('active');
+            status.innerText = "Je vous écoute...";
+
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const text = event.results[0][0].transcript.toLowerCase();
+                status.innerText = "Entendu : " + text;
+                micBtn.classList.remove('active');
+
+                // IA d'extraction simple : cherche un nombre pour le prix
+                const digits = text.match(/\d+/);
+                if (digits) {
+                    document.getElementById('price').value = digits[0] + " FCFA";
+                }
+                
+                // Le reste devient le nom du produit
+                const namePart = text.replace(/\d+/g, '').replace('francs', '').replace('fcf', '').trim();
+                if (namePart) {
+                    document.getElementById('name').value = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+                }
+
+                draw(); // Met à jour l'image
+            };
+
+            recognition.onerror = () => {
+                micBtn.classList.remove('active');
+                status.innerText = "Erreur micro. Réessayez.";
+            };
         }
 
+        function download() {
+            const link = document.createElement('a');
+            link.download = 'mwasitrade-promo.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Initialisation
         window.onload = draw;
     </script>
 </body>
