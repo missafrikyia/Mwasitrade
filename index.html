@@ -18,7 +18,6 @@
         #preview { width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 3px solid white; }
         canvas { display: none; }
 
-        /* Section Vocale */
         .voice-section { text-align: center; margin-bottom: 25px; position: relative; }
         .mic-btn { 
             background: var(--dark); color: white; border: none; width: 75px; height: 75px; 
@@ -36,20 +35,19 @@
 
         .status-text { font-size: 13px; color: #888; margin-top: 12px; font-weight: 500; min-height: 18px; }
 
-        /* Formulaire */
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 10px; font-weight: bold; color: #bbb; margin-left: 5px; margin-bottom: 5px; text-transform: uppercase; }
         input { width: 100%; padding: 15px; border: 1.5px solid #eee; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.3s; }
         input:focus { border-color: var(--gold); }
 
-        .btn-action { background: var(--gold); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
+        .btn-action { background: #25D366; color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo">Mwasi<span>Trade</span></div>
-        <div class="subtitle">De l'entropie à l'ordre par la voix</div>
+        <div class="subtitle">Propulsez votre business par la voix</div>
     </div>
 
     <div class="studio-card">
@@ -58,20 +56,20 @@
 
         <div class="voice-section">
             <button class="mic-btn" id="micBtn" onclick="startVoice()">🎤</button>
-            <div class="status-text" id="status">Appuyez et dites votre produit et son prix</div>
+            <div class="status-text" id="status">Appuyez et dites : "Pagne 5000"</div>
         </div>
 
         <div class="input-group">
             <label>Nom de l'article</label>
-            <input type="text" id="name" placeholder="Ex: Panier de Tomates" oninput="draw()">
+            <input type="text" id="name" placeholder="Ex: Jus de Gingembre" oninput="draw()">
         </div>
 
         <div class="input-group">
             <label>Prix de vente</label>
-            <input type="text" id="price" placeholder="Ex: 1500 FCFA" oninput="draw()">
+            <input type="text" id="price" placeholder="Ex: 500 FCFA" oninput="draw()">
         </div>
 
-        <button class="btn-action" onclick="download()">PARTAGER SUR WHATSAPP</button>
+        <button class="btn-action" onclick="share()">COMMANDER SUR WHATSAPP</button>
     </div>
 
     <script>
@@ -111,58 +109,50 @@
 
         function startVoice() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            
-            if (!SpeechRecognition) {
-                status.innerText = "Navigateur non compatible (Utilisez Chrome)";
-                return;
-            }
+            if (!SpeechRecognition) { status.innerText = "Utilisez Chrome sur Android"; return; }
 
             const recognition = new SpeechRecognition();
             recognition.lang = 'fr-FR';
-            
             micBtn.classList.add('active');
             status.innerText = "Je vous écoute...";
-
             recognition.start();
 
             recognition.onresult = (event) => {
                 const text = event.results[0][0].transcript.toLowerCase();
                 status.innerText = "Entendu : " + text;
                 micBtn.classList.remove('active');
+                if (navigator.vibrate) navigator.vibrate(100);
 
-                // Vibration de succès (si supporté par le téléphone)
-                if (navigator.vibrate) { navigator.vibrate(100); }
-
-                // 1. Extraction améliorée du prix (prend le dernier nombre cité)
                 const numbers = text.match(/\d+/g); 
                 if (numbers) {
                     const finalPrice = numbers[numbers.length - 1];
                     document.getElementById('price').value = finalPrice + " FCFA";
                 }
                 
-                // 2. Extraction du nom (nettoyage des mots parasites)
-                let namePart = text.replace(/\d+/g, '')
-                                   .replace(/prix|coûte|fcf|francs|cfa|est à|va/g, '')
-                                   .trim();
-                
+                let namePart = text.replace(/\d+/g, '').replace(/prix|coûte|fcf|francs|cfa|est à|va/g, '').trim();
                 if (namePart) {
                     document.getElementById('name').value = namePart.charAt(0).toUpperCase() + namePart.slice(1);
                 }
-
                 draw();
             };
 
-            recognition.onerror = () => {
-                micBtn.classList.remove('active');
-                status.innerText = "Erreur micro. Réessayez.";
-            };
+            recognition.onerror = () => { micBtn.classList.remove('active'); status.innerText = "Réessayez."; };
         }
 
-        function download() {
+        function share() {
+            const name = document.getElementById('name').value || "Produit";
+            const price = document.getElementById('price').value || "Prix";
+            
+            // 1. Télécharge l'image d'abord
             const link = document.createElement('a');
-            link.download = 'mwasitrade-promo.png';
+            link.download = `mwasitrade-${name}.png`;
             link.href = canvas.toDataURL();
             link.click();
+
+            // 2. Ouvre WhatsApp avec le message textuel
+            // Tu peux remplacer le numéro ici par ton numéro Business final
+            const message = encodeURIComponent(`Bonjour MwasiTrade ! Je souhaite commander ce produit :\n\n📦 *${name}*\n💰 *Prix : ${price}*\n\nMerci de confirmer ma commande !`);
+            window.open(`https://wa.me/?text=${message}`, '_blank');
         }
 
         window.onload = draw;
