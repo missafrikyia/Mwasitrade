@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MwasiTrade | Voice Business Studio</title>
+    <style>
+        :root { --mwasi-gold: #D4AF37; --mwasi-dark: #1A1A1A; --mwasi-red: #e74c3c; }
+        body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: var(--mwasi-dark); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        .header { text-align: center; margin-bottom: 20px; }
+        .logo { font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .logo span { color: var(--mwasi-gold); }
+
+        .studio-card { background: white; padding: 20px; border-radius: 25px; max-width: 400px; width: 100%; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
+        
+        #preview { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 1px solid #eee; }
+        canvas { display: none; }
+
+        /* Style du bouton Micro */
+        .voice-section { text-align: center; margin: 15px 0; }
+        .mic-btn { 
+            background: var(--mwasi-dark); color: white; border: none; width: 60px; height: 60px; 
+            border-radius: 50%; font-size: 24px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .mic-btn.active { background: var(--mwasi-red); transform: scale(1.1); animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .voice-status { font-size: 12px; color: #888; margin-top: 8px; font-weight: bold; }
+
+        input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        .btn-main { background: var(--mwasi-gold); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">Mwasi<span>Trade</span></div>
+        <p style="font-size: 11px; margin: 5px 0;">"Parlez, MwasiTrade crée."</p>
+    </div>
+
+    <div class="studio-card">
+        <canvas id="canvas" width="800" height="800"></canvas>
+        <img id="preview" src="https://via.placeholder.com/800x800/eeeeee/999999?text=Votre+Visuel+Ici" alt="Prévisualisation">
+
+        <div class="voice-section">
+            <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
+            <div class="voice-status" id="status">Appuyez pour dicter votre annonce</div>
+        </div>
+
+        <input type="text" id="bizName" placeholder="Nom de l'entreprise" oninput="draw()">
+        <input type="text" id="bizPrice" placeholder="Prix (ex: 500 FCFA)" oninput="draw()">
+
+        <button class="btn-main" onclick="downloadImage()">PARTAGER SUR WHATSAPP</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const micBtn = document.getElementById('micBtn');
+        const status = document.getElementById('status');
+
+        let isListening = false;
+
+        function toggleMic() {
+            isListening = !isListening;
+            if(isListening) {
+                micBtn.classList.add('active');
+                status.innerText = "Je vous écoute... (Dites votre nom et votre prix)";
+                status.style.color = "var(--mwasi-red)";
+                // Ici on connectera plus tard l'API Speech-to-Text
+            } else {
+                micBtn.classList.remove('active');
+                status.innerText = "Appuyez pour dicter votre annonce";
+                status.style.color = "#888";
+            }
+        }
+
+        function draw() {
+            // Fond simple pour l'exemple
+            ctx.fillStyle = "#1a1a1a";
+            ctx.fillRect(0, 0, 800, 800);
+            
+            // Bordure Or
+            ctx.strokeStyle = "#D4AF37";
+            ctx.lineWidth = 30;
+            ctx.strokeRect(50, 50, 700, 700);
+
+            // Texte
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.font = "bold 50px sans-serif";
+            ctx.fillText(document.getElementById('bizName').value.toUpperCase() || "VOTRE NOM", 400, 380);
+            
+            ctx.fillStyle = "#D4AF37";
+            ctx.font = "bold 70px sans-serif";
+            ctx.fillText(document.getElementById('bizPrice').value || "PRIX", 400, 480);
+
+            document.getElementById('preview').src = canvas.toDataURL();
+        }
+
+        function downloadImage() {
+            const a = document.createElement('a');
+            a.download = 'mwasitrade-visuel.png';
+            a.href = canvas.toDataURL();
+            a.click();
+        }
+
+        window.onload = draw;
+    </script>
+</body>
+</html>
