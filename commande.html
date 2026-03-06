@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commander sur MwasiTrade</title>
+    <style>
+        :root { --gold: #D4AF37; --dark: #1A1A1A; }
+        body { font-family: 'Inter', sans-serif; background: #fff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        
+        .product-view { width: 100%; max-width: 500px; background: var(--dark); padding-bottom: 30px; border-radius: 0 0 40px 40px; text-align: center; color: white; }
+        .flyer-img { width: 90%; margin-top: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--gold); }
+        
+        .order-info { padding: 30px; text-align: center; max-width: 400px; }
+        h2 { margin: 0; color: var(--dark); font-size: 24px; }
+        .price-tag { font-size: 32px; color: var(--gold); font-weight: 900; margin: 10px 0; }
+        
+        .payment-options { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-top: 20px; }
+        .btn-momo { background: #ffcc00; color: #000; border: none; padding: 20px; border-radius: 15px; font-weight: bold; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-wa { background: #ececec; color: #666; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="product-view">
+        <div style="padding: 15px; font-size: 12px; letter-spacing: 2px;">MWASITRADE SECURE</div>
+        <img id="displayFlyer" class="flyer-img" src="" alt="Produit">
+    </div>
+
+    <div class="order-info">
+        <h2 id="displayName">Chargement du produit...</h2>
+        <div class="price-tag" id="displayPrice">-- FCFA</div>
+        
+        <p style="font-size: 14px; color: #888;">Transaction sécurisée par MwasiTrade. L'argent est bloqué jusqu'à la livraison.</p>
+
+        <div class="payment-options">
+            <button class="btn-momo" onclick="pay()">
+                🟡 PAYER PAR MOBILE MONEY
+            </button>
+            <a href="#" id="waContact" class="btn-wa">Discuter avec la vendeuse</a>
+        </div>
+    </div>
+
+    <script>
+        // Récupération des données depuis l'URL
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name') || "Produit";
+            const price = params.get('price') || "Prix sur demande";
+            
+            document.getElementById('displayName').innerText = name.toUpperCase();
+            document.getElementById('displayPrice').innerText = price;
+            
+            // Ici, plus tard, on chargera l'image réelle sauvegardée
+            // Pour le test, on peut simuler le visuel
+        };
+
+        function pay() {
+            alert("Redirection vers le portail Mobile Money (Orange/MTN)... \n\nC'est ici que l'API de paiement intervient !");
+        }
+    </script>
+</body>
+</html>
