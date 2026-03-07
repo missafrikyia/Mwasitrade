@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SheStartIA - Votre Visuel J-3</title>
+    <title>SheStartIA - Pilotage & Reporting</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -19,7 +19,7 @@
         <h1 class="text-2xl font-bold text-purple-700">SheStartIA</h1>
         <div class="flex gap-4">
             <i class="fas fa-shield-alt text-green-600" title="Compliance by Design"></i>
-            <i class="fas fa-database text-blue-600" title="Données à Francfort"></i>
+            <i class="fas fa-database text-blue-600" title="Stockage Francfort"></i>
         </div>
     </nav>
 
@@ -29,73 +29,64 @@
         <span class="px-2">J4</span><span class="px-2">J5</span><span class="px-2">J6</span><span class="px-2">J7</span>
     </div>
 
-    <main class="p-4 max-w-lg mx-auto space-y-8">
+    <main class="p-4 max-w-lg mx-auto space-y-6">
 
         <section class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 text-center">
-            <h2 class="text-lg font-bold mb-2">Décrivez votre produit</h2>
-            <p class="text-[11px] text-gray-500 mb-6 italic">"Vends gâteau, 500 FCFA, Douala, 699..."</p>
-            
-            <button id="micBtn" class="bg-purple-600 text-white w-20 h-20 rounded-full shadow-xl hover:bg-purple-700 transition-all flex items-center justify-center mx-auto border-4 border-white ring-4 ring-purple-50">
+            <h2 class="text-lg font-bold mb-2">Annonce Vocale</h2>
+            <button id="micBtn" class="bg-purple-600 text-white w-20 h-20 rounded-full shadow-xl flex items-center justify-center mx-auto border-4 border-white ring-4 ring-purple-50">
                 <i class="fas fa-microphone text-3xl"></i>
             </button>
             <div id="status" class="mt-4 text-sm text-purple-700 font-bold uppercase tracking-wide">Cliquez pour parler</div>
-            <div id="transcription" class="mt-2 text-[10px] text-gray-400 invisible italic"></div>
         </section>
 
-        <section id="section_generation" class="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 opacity-40 pointer-events-none transition-all duration-500">
-            <h3 class="font-bold text-gray-800 mb-6 flex items-center gap-2 text-lg">
-                <i class="fas fa-magic text-yellow-500"></i> Votre Visuel J-3
-            </h3>
-
-            <div class="relative bg-gray-50 p-2 rounded-2xl border mb-6 min-h-[300px] flex items-center justify-center">
+        <section id="section_generation" class="bg-white p-6 rounded-3xl shadow-lg border opacity-40 pointer-events-none transition-all">
+            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-magic text-yellow-500"></i> Votre Visuel J-3</h3>
+            <div class="relative bg-gray-50 rounded-2xl border mb-4 min-h-[300px] flex items-center justify-center">
                 <canvas id="carre_visuel" width="500" height="500"></canvas>
-                <img id="img_finale" src="" alt="Visuel IA généré">
+                <img id="img_finale" src="" alt="Visuel IA">
                 <div id="loading_gen" class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 hidden">
-                    <i class="fas fa-spinner fa-spin text-3xl text-purple-600 mb-2"></i>
-                    <p class="text-[11px] font-bold">Création souveraine...</p>
+                    <i class="fas fa-sync-alt fa-spin text-purple-600 mb-2"></i>
                 </div>
             </div>
-
-            <button id="downloadBtn" class="w-full bg-gray-900 text-white py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm disabled:opacity-50" disabled>
-                <i class="fas fa-download"></i> Télécharger le Visuel
+            <button id="downloadBtn" class="w-full bg-gray-900 text-white py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2" disabled>
+                <i class="fas fa-download"></i> Enregistrer l'image
             </button>
         </section>
 
-        <section id="section_textes" class="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 opacity-40 pointer-events-none transition-all duration-500">
-            <h3 class="font-bold text-gray-800 mb-5 flex items-center gap-2 text-lg">
-                <i class="fas fa-comment-dots text-purple-500"></i> Vos Textes Publicitaires
-            </h3>
-
+        <section id="section_textes" class="bg-white p-6 rounded-3xl shadow-lg border opacity-40 pointer-events-none transition-all">
+            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-comment-dots text-purple-500"></i> Partager le message</h3>
             <div class="space-y-4">
                 <div class="bg-purple-50 p-3 rounded-xl border border-purple-100">
                     <p id="txt1" class="text-[11px] text-purple-900 mb-2 italic"></p>
-                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" disabled>
-                        <i class="fab fa-whatsapp"></i> Partager Texte 1
+                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" data-idx="0">
+                        <i class="fab fa-whatsapp"></i> Envoyer Option 1
                     </button>
                 </div>
-                
                 <div class="bg-green-50 p-3 rounded-xl border border-green-100">
                     <p id="txt2" class="text-[11px] text-green-900 mb-2 italic"></p>
-                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" disabled>
-                        <i class="fab fa-whatsapp"></i> Partager Texte 2
-                    </button>
-                </div>
-
-                <div class="bg-gray-100 p-3 rounded-xl border border-gray-200">
-                    <p id="txt3" class="text-[11px] text-gray-800 mb-2 italic"></p>
-                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" disabled>
-                        <i class="fab fa-whatsapp"></i> Partager Texte 3
+                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" data-idx="1">
+                        <i class="fab fa-whatsapp"></i> Envoyer Option 2
                     </button>
                 </div>
             </div>
-            <p class="text-[9px] text-center text-gray-400 mt-4 italic">Données archivées à Francfort pour Cognitio Ltd.</p>
+        </section>
+
+        <section class="bg-white p-5 rounded-3xl shadow-md border border-gray-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-700 flex items-center gap-2"><i class="fas fa-history text-blue-500"></i> Journal d'Actions</h3>
+                <button id="reportBtn" class="text-[10px] bg-blue-600 text-white px-3 py-1 rounded-full font-bold hover:bg-blue-700 transition">
+                    <i class="fas fa-file-export"></i> Bilan du Jour
+                </button>
+            </div>
+            <div id="log_container" class="space-y-2 text-[10px] text-gray-500 max-h-40 overflow-y-auto">
+                <p class="italic">Aucune action enregistrée.</p>
+            </div>
         </section>
 
     </main>
 
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex justify-around items-center glass shadow-lg">
         <button class="text-purple-600 flex flex-col items-center"><i class="fas fa-home"></i><span class="text-[10px]">Accueil</span></button>
-        <button class="text-gray-400 flex flex-col items-center"><i class="fas fa-comments"></i><span class="text-[10px]">Messages</span></button>
         <button class="text-gray-400 flex flex-col items-center"><i class="fas fa-chart-line"></i><span class="text-[10px]">Ventes</span></button>
         <button class="text-gray-400 flex flex-col items-center"><i class="fas fa-cog"></i><span class="text-[10px]">Réglages</span></button>
     </div>
@@ -103,117 +94,80 @@
     <script>
         const micBtn = document.getElementById('micBtn');
         const status = document.getElementById('status');
-        const sectionGen = document.getElementById('section_generation');
-        const sectionTextes = document.getElementById('section_textes');
         const canvas = document.getElementById('carre_visuel');
         const imgFinale = document.getElementById('img_finale');
-        const loadingGen = document.getElementById('loading_gen');
         const downloadBtn = document.getElementById('downloadBtn');
+        const logContainer = document.getElementById('log_container');
+        const reportBtn = document.getElementById('reportBtn');
         const shareBtns = document.querySelectorAll('.shareBtn');
         const ctx = canvas.getContext('2d');
+        
+        let journalActions = [];
+        const WHATSAPP_NUM = "242057538060"; // Votre numéro mis à jour
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.lang = 'fr-FR';
-
-            micBtn.onclick = () => {
-                recognition.start();
-                status.innerText = "Écoute...";
-                micBtn.classList.add('animate-pulse', 'bg-red-500');
-            };
-
-            recognition.onresult = (event) => {
-                const textOutput = event.results[0][0].transcript;
-                micBtn.classList.remove('animate-pulse', 'bg-red-500');
-                status.innerText = "Analyse...";
-                
-                const data = parseAnalyse(textOutput);
-                sectionGen.classList.remove('opacity-40', 'pointer-events-none');
-                sectionTextes.classList.remove('opacity-40', 'pointer-events-none');
-                generateProVisuel(data);
-                generatePublicites(data);
-            };
-        }
-
-        function parseAnalyse(text) {
-            return {
-                nom: (text.toLowerCase().split("vends")[1] || text).split(",")[0].trim().toUpperCase(),
-                prix: (text.match(/\d+/)) ? text.match(/\d+/)[0] + " FCFA" : "Prix à discuter",
-                ville: ["douala", "abidjan", "dakar", "yaoundé"].find(v => text.toLowerCase().includes(v)) || "S/O",
-                tel: (text.match(/\d{8,}/)) ? text.match(/\d{8,}/)[0] : "Contact"
-            };
-        }
-
-        function generateProVisuel(d) {
-            loadingGen.classList.remove('hidden');
-            imgFinale.style.display = 'none';
-            
-            setTimeout(() => {
-                // Fond Blanc/Rose
-                ctx.fillStyle = '#fdf2f8'; ctx.fillRect(0,0,250,500);
-                ctx.fillStyle = '#ffffff'; ctx.fillRect(250,0,250,500);
-                
-                // Branding
-                ctx.fillStyle = '#8b5cf6'; ctx.font = 'bold 36px sans-serif'; ctx.textAlign='center';
-                ctx.fillText('SheStartIA', 250, 70);
-
-                // CORRECTION : Écriture unique et propre du titre
-                ctx.fillStyle = '#1e293b'; ctx.font = 'bold 30px sans-serif';
-                ctx.fillText(`VENTE : ${d.nom}`, 250, 140);
-                
-                // Cadre Photo
-                ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 2;
-                ctx.strokeRect(100, 180, 300, 180);
-                ctx.fillStyle = '#94a3b8'; ctx.font = 'italic 16px sans-serif';
-                ctx.fillText('[ Photo de votre gâteau ]', 250, 275);
-                
-                // Infos
-                ctx.textAlign = 'left'; ctx.fillStyle = '#111827'; ctx.font = '24px sans-serif';
-                ctx.fillText("Prix: " + d.prix, 100, 410);
-                ctx.fillText("Ville: " + d.ville, 100, 445);
-                ctx.fillStyle = '#059669'; ctx.fillText("Tel: " + d.tel, 100, 480);
-
-                imgFinale.src = canvas.toDataURL();
-                imgFinale.style.display = 'block';
-                loadingGen.classList.add('hidden');
-                status.innerText = "Visuel J-3 Prêt !";
-                downloadBtn.disabled = false;
-                downloadBtn.onclick = () => {
-                    const link = document.createElement('a');
-                    link.download = `pub-${d.nom}.png`;
-                    link.href = canvas.toDataURL();
-                    link.click();
+            micBtn.onclick = () => { recognition.start(); status.innerText = "Écoute..."; };
+            recognition.onresult = (e) => {
+                const text = e.results[0][0].transcript;
+                const data = {
+                    nom: (text.toLowerCase().split("vends")[1] || text).split(",")[0].trim().toUpperCase(),
+                    prix: (text.match(/\d+/)) ? text.match(/\d+/)[0] + " FCFA" : "À discuter",
+                    ville: ["douala", "abidjan", "brazzaville", "dakar"].find(v => text.toLowerCase().includes(v)) || "Locale"
                 };
-            }, 1200);
+                activateUI(data);
+            };
         }
 
-        // --- GÉNÉRATION AUTOMATIQUE DE 3 PUBLICITÉS ---
-        function generatePublicites(d) {
-            const textes = [
-                `📣 Nouveau stock de ${d.nom} à ${d.ville} ! Prix incroyable : ${d.prix}. Contactez-moi vite pour commander : ${d.tel}`,
-                `🤤 Le meilleur de la ville est là ! Offrez-vous un délicieux ${d.nom} pour seulement ${d.prix} à ${d.ville}. Contact : ${d.tel}`,
-                `✅ Certifié par SheStartIA : Vente de ${d.nom} authentique à ${d.ville}. Stock limité, prix : ${d.prix}. Appelez le ${d.tel}`
-            ];
+        function activateUI(d) {
+            document.getElementById('section_generation').classList.remove('opacity-40', 'pointer-events-none');
+            document.getElementById('section_textes').classList.remove('opacity-40', 'pointer-events-none');
+            
+            // Dessin Visuel
+            ctx.fillStyle = '#fdf2f8'; ctx.fillRect(0,0,250,500);
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(250,0,250,500);
+            ctx.fillStyle = '#8b5cf6'; ctx.font = 'bold 36px sans-serif'; ctx.textAlign='center';
+            ctx.fillText('SheStartIA', 250, 70);
+            ctx.fillStyle = '#1e293b'; ctx.font = 'bold 28px sans-serif';
+            ctx.fillText(d.nom, 250, 150);
+            ctx.textAlign='left'; ctx.font='22px sans-serif';
+            ctx.fillText("Prix: " + d.prix, 100, 400);
+            ctx.fillText("Ville: " + d.ville, 100, 440);
+            
+            imgFinale.src = canvas.toDataURL();
+            imgFinale.style.display = 'block';
+            downloadBtn.disabled = false;
 
-            document.getElementById('txt1').innerText = textes[0];
-            document.getElementById('txt2').innerText = textes[1];
-            document.getElementById('txt3').innerText = textes[2];
+            const t = [`📣 Offre : ${d.nom} à ${d.prix} (${d.ville}) !`, `✨ Qualité garantie : ${d.nom} à ${d.ville}. Prix : ${d.prix}`];
+            document.getElementById('txt1').innerText = t[0];
+            document.getElementById('txt2').innerText = t[1];
 
-            // Activation des boutons de partage et correctif WhatsApp
-            shareBtns.forEach((btn, index) => {
-                btn.disabled = false;
+            shareBtns.forEach((btn, idx) => {
                 btn.onclick = () => {
-                    let finalNum = d.tel;
-                    // CORRECTION : Force l'indicatif pays par défaut si absent (ex: 237 pour le Cameroun)
-                    if (!finalNum.startsWith('+')) finalNum = "237" + finalNum;
-                    
-                    const url = `https://api.whatsapp.com/send?phone=${finalNum}&text=${encodeURIComponent(textes[index])}`;
-                    window.open(url, '_blank');
+                    const action = { produit: d.nom, prix: d.prix, heure: new Date().toLocaleTimeString() };
+                    journalActions.push(action);
+                    ajouterAuLog(action);
+                    window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(t[idx])}`, '_blank');
                 };
             });
         }
+
+        function ajouterAuLog(a) {
+            const logEntry = document.createElement('div');
+            logEntry.className = "flex justify-between p-2 bg-blue-50 rounded border border-blue-100 mb-1";
+            logEntry.innerHTML = `<span>✅ Partage de <strong>${a.produit}</strong></span> <span>${a.heure}</span>`;
+            if(logContainer.querySelector('p')) logContainer.innerHTML = '';
+            logContainer.prepend(logEntry);
+        }
+
+        reportBtn.onclick = () => {
+            if(journalActions.length === 0) return alert("Aucune action à rapporter aujourd'hui.");
+            const bilan = journalActions.map(a => `- ${a.heure} : Vente de ${a.produit} (${a.prix})`).join('\n');
+            const mailMsg = `Bilan SheStartIA - Actions du Jour :\n\n${bilan}\n\nTotal actions : ${journalActions.length}\nDonnées sécurisées par Cognitio Ltd.`;
+            window.open(`mailto:laetitia@cognitio.ltd?subject=Bilan SheStartIA du Jour&body=${encodeURIComponent(mailMsg)}`);
+        };
     </script>
 </body>
 </html>
