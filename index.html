@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SheStartIA - Pilotage & Reporting</title>
+    <title>SheStartIA - Spécial Bénin Agro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .active-step { border-bottom: 4px solid #8b5cf6; color: #8b5cf6; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
         #carre_visuel { display: none; }
         #img_finale { max-width: 100%; height: auto; border-radius: 12px; display: none; margin: 0 auto;}
+        .category-chip { transition: all 0.3s; cursor: pointer; }
+        .category-chip:hover { transform: scale(1.05); }
     </style>
 </head>
 <body class="bg-gray-50 font-sans pb-24 text-gray-900">
@@ -18,78 +19,57 @@
     <nav class="p-4 bg-white shadow-sm sticky top-0 z-50 flex justify-between items-center border-b">
         <h1 class="text-2xl font-bold text-purple-700">SheStartIA</h1>
         <div class="flex gap-4">
-            <i class="fas fa-shield-alt text-green-600" title="Compliance by Design"></i>
-            <i class="fas fa-database text-blue-600" title="Stockage Francfort"></i>
+            <i class="fas fa-check-circle text-green-600"></i>
+            <i class="fas fa-server text-blue-600"></i>
         </div>
     </nav>
 
-    <div class="bg-white p-3 border-b flex justify-between text-xs font-semibold text-gray-400 overflow-x-auto shadow-inner">
-        <span class="px-2">J1</span><span class="px-2">J2</span>
-        <span class="active-step px-2 pb-1 text-purple-600 font-bold">J3 : VISUEL</span>
-        <span class="px-2">J4</span><span class="px-2">J5</span><span class="px-2">J6</span><span class="px-2">J7</span>
-    </div>
-
     <main class="p-4 max-w-lg mx-auto space-y-6">
 
+        <section class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
+            <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-widest text-center">Top Ventes Bénin</h3>
+            <div class="flex gap-2 overflow-x-auto pb-2">
+                <div class="category-chip flex-shrink-0 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-[10px] font-bold border border-orange-200">🟡 Gari / Soja</div>
+                <div class="category-chip flex-shrink-0 bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-[10px] font-bold border border-yellow-200">🍍 Jus d'Ananas</div>
+                <div class="category-chip flex-shrink-0 bg-red-100 text-red-700 px-4 py-2 rounded-full text-[10px] font-bold border border-red-200">🌶️ Épices / Piment</div>
+                <div class="category-chip flex-shrink-0 bg-green-100 text-green-700 px-4 py-2 rounded-full text-[10px] font-bold border border-green-200">🥬 Légumes</div>
+            </div>
+        </section>
+
         <section class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 text-center">
-            <h2 class="text-lg font-bold mb-2">Annonce Vocale</h2>
+            <h2 class="text-lg font-bold mb-2 italic text-purple-800">"Vends Gari Soji, 2500 FCFA, Cotonou"</h2>
             <button id="micBtn" class="bg-purple-600 text-white w-20 h-20 rounded-full shadow-xl flex items-center justify-center mx-auto border-4 border-white ring-4 ring-purple-50">
                 <i class="fas fa-microphone text-3xl"></i>
             </button>
-            <div id="status" class="mt-4 text-sm text-purple-700 font-bold uppercase tracking-wide">Cliquez pour parler</div>
+            <div id="status" class="mt-4 text-sm font-bold text-gray-400">CLIQUEZ POUR LANCER</div>
         </section>
 
         <section id="section_generation" class="bg-white p-6 rounded-3xl shadow-lg border opacity-40 pointer-events-none transition-all">
-            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-magic text-yellow-500"></i> Votre Visuel J-3</h3>
-            <div class="relative bg-gray-50 rounded-2xl border mb-4 min-h-[300px] flex items-center justify-center">
+            <div class="relative bg-gray-50 rounded-2xl border mb-4 min-h-[320px] flex items-center justify-center overflow-hidden">
                 <canvas id="carre_visuel" width="500" height="500"></canvas>
-                <img id="img_finale" src="" alt="Visuel IA">
-                <div id="loading_gen" class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 hidden">
-                    <i class="fas fa-sync-alt fa-spin text-purple-600 mb-2"></i>
-                </div>
+                <img id="img_finale" src="" alt="Publicité SheStartIA">
             </div>
-            <button id="downloadBtn" class="w-full bg-gray-900 text-white py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2" disabled>
-                <i class="fas fa-download"></i> Enregistrer l'image
-            </button>
-        </section>
-
-        <section id="section_textes" class="bg-white p-6 rounded-3xl shadow-lg border opacity-40 pointer-events-none transition-all">
-            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-comment-dots text-purple-500"></i> Partager le message</h3>
-            <div class="space-y-4">
-                <div class="bg-purple-50 p-3 rounded-xl border border-purple-100">
-                    <p id="txt1" class="text-[11px] text-purple-900 mb-2 italic"></p>
-                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" data-idx="0">
-                        <i class="fab fa-whatsapp"></i> Envoyer Option 1
-                    </button>
-                </div>
-                <div class="bg-green-50 p-3 rounded-xl border border-green-100">
-                    <p id="txt2" class="text-[11px] text-green-900 mb-2 italic"></p>
-                    <button class="shareBtn bg-green-500 text-white w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2" data-idx="1">
-                        <i class="fab fa-whatsapp"></i> Envoyer Option 2
-                    </button>
-                </div>
+            <div class="flex gap-2">
+                <button id="downloadBtn" class="flex-1 bg-gray-900 text-white py-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                    <i class="fas fa-save"></i> GALERIE
+                </button>
+                <button id="shareBtn" class="flex-1 bg-green-500 text-white py-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp"></i> WHATSAPP
+                </button>
             </div>
         </section>
 
         <section class="bg-white p-5 rounded-3xl shadow-md border border-gray-100">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-gray-700 flex items-center gap-2"><i class="fas fa-history text-blue-500"></i> Journal d'Actions</h3>
-                <button id="reportBtn" class="text-[10px] bg-blue-600 text-white px-3 py-1 rounded-full font-bold hover:bg-blue-700 transition">
-                    <i class="fas fa-file-export"></i> Bilan du Jour
-                </button>
+                <h3 class="font-bold text-gray-700 text-sm">Mes Actions du Jour</h3>
+                <button id="reportBtn" class="text-[9px] bg-blue-600 text-white px-3 py-1 rounded-full">📩 Rapport Cognitio</button>
             </div>
-            <div id="log_container" class="space-y-2 text-[10px] text-gray-500 max-h-40 overflow-y-auto">
-                <p class="italic">Aucune action enregistrée.</p>
+            <div id="log_container" class="space-y-2 text-[10px] text-gray-500">
+                <p class="italic text-center">En attente de votre première vente...</p>
             </div>
         </section>
 
     </main>
-
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex justify-around items-center glass shadow-lg">
-        <button class="text-purple-600 flex flex-col items-center"><i class="fas fa-home"></i><span class="text-[10px]">Accueil</span></button>
-        <button class="text-gray-400 flex flex-col items-center"><i class="fas fa-chart-line"></i><span class="text-[10px]">Ventes</span></button>
-        <button class="text-gray-400 flex flex-col items-center"><i class="fas fa-cog"></i><span class="text-[10px]">Réglages</span></button>
-    </div>
 
     <script>
         const micBtn = document.getElementById('micBtn');
@@ -97,76 +77,94 @@
         const canvas = document.getElementById('carre_visuel');
         const imgFinale = document.getElementById('img_finale');
         const downloadBtn = document.getElementById('downloadBtn');
+        const shareBtn = document.getElementById('shareBtn');
         const logContainer = document.getElementById('log_container');
-        const reportBtn = document.getElementById('reportBtn');
-        const shareBtns = document.querySelectorAll('.shareBtn');
         const ctx = canvas.getContext('2d');
         
         let journalActions = [];
-        const WHATSAPP_NUM = "242057538060"; // Votre numéro mis à jour
+        const WHATSAPP_NUM = "242057538060"; 
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.lang = 'fr-FR';
-            micBtn.onclick = () => { recognition.start(); status.innerText = "Écoute..."; };
+            micBtn.onclick = () => { recognition.start(); status.innerText = "JE VOUS ÉCOUTE..."; };
             recognition.onresult = (e) => {
                 const text = e.results[0][0].transcript;
-                const data = {
-                    nom: (text.toLowerCase().split("vends")[1] || text).split(",")[0].trim().toUpperCase(),
-                    prix: (text.match(/\d+/)) ? text.match(/\d+/)[0] + " FCFA" : "À discuter",
-                    ville: ["douala", "abidjan", "brazzaville", "dakar"].find(v => text.toLowerCase().includes(v)) || "Locale"
-                };
+                const data = parseAnalyseBenin(text);
                 activateUI(data);
+            };
+        }
+
+        function parseAnalyseBenin(text) {
+            const t = text.toLowerCase();
+            let cat = "PRODUIT";
+            if(t.includes("gari") || t.includes("soja") || t.includes("soji")) cat = "AGRO-BASE";
+            else if(t.includes("jus") || t.includes("ananas")) cat = "BOISSONS";
+            else if(t.includes("piment") || t.includes("épice")) cat = "CONDIMENTS";
+
+            return {
+                nom: (t.split("vends")[1] || t).split(",")[0].trim().toUpperCase(),
+                cat: cat,
+                prix: (text.match(/\d+/)) ? text.match(/\d+/)[0] + " FCFA" : "À discuter",
+                ville: ["cotonou", "porto-novo", "parakou", "abomey", "douala", "brazzaville"].find(v => t.includes(v)) || "BÉNIN",
+                tel: (text.match(/\d{8,}/)) ? text.match(/\d{8,}/)[0] : "Contact direct"
             };
         }
 
         function activateUI(d) {
             document.getElementById('section_generation').classList.remove('opacity-40', 'pointer-events-none');
-            document.getElementById('section_textes').classList.remove('opacity-40', 'pointer-events-none');
+            status.innerText = "VISUEL GÉNÉRÉ !";
             
-            // Dessin Visuel
-            ctx.fillStyle = '#fdf2f8'; ctx.fillRect(0,0,250,500);
-            ctx.fillStyle = '#ffffff'; ctx.fillRect(250,0,250,500);
-            ctx.fillStyle = '#8b5cf6'; ctx.font = 'bold 36px sans-serif'; ctx.textAlign='center';
-            ctx.fillText('SheStartIA', 250, 70);
-            ctx.fillStyle = '#1e293b'; ctx.font = 'bold 28px sans-serif';
-            ctx.fillText(d.nom, 250, 150);
-            ctx.textAlign='left'; ctx.font='22px sans-serif';
-            ctx.fillText("Prix: " + d.prix, 100, 400);
-            ctx.fillText("Ville: " + d.ville, 100, 440);
+            // Design Visuel "Pro"
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,500,500);
+            ctx.fillStyle = '#8b5cf6'; ctx.fillRect(0,0,500,80);
+            
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 30px sans-serif'; ctx.textAlign='center';
+            ctx.fillText('SheStartIA - Bénin Agro', 250, 50);
+
+            ctx.fillStyle = '#f3f4f6'; ctx.roundRect ? ctx.roundRect(50, 100, 400, 200, 20) : ctx.fillRect(50, 100, 400, 200);
+            ctx.fill();
+            
+            ctx.fillStyle = '#1e293b'; ctx.font = 'bold 32px sans-serif';
+            ctx.fillText(d.nom, 250, 350);
+            
+            ctx.fillStyle = '#6d28d9'; ctx.font = '26px sans-serif';
+            ctx.fillText(`${d.prix} | ${d.ville}`, 250, 400);
+
+            ctx.fillStyle = '#059669'; ctx.font = 'bold 24px sans-serif';
+            ctx.fillText(`📞 WhatsApp: ${d.tel}`, 250, 450);
             
             imgFinale.src = canvas.toDataURL();
             imgFinale.style.display = 'block';
-            downloadBtn.disabled = false;
 
-            const t = [`📣 Offre : ${d.nom} à ${d.prix} (${d.ville}) !`, `✨ Qualité garantie : ${d.nom} à ${d.ville}. Prix : ${d.prix}`];
-            document.getElementById('txt1').innerText = t[0];
-            document.getElementById('txt2').innerText = t[1];
+            shareBtn.onclick = () => {
+                const msg = `Bonjour ! Je vends : ${d.nom}. Prix : ${d.prix}. Ville : ${d.ville}. Contactez-moi : ${d.tel}`;
+                ajouterAuLog(d.nom);
+                window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(msg)}`, '_blank');
+            };
 
-            shareBtns.forEach((btn, idx) => {
-                btn.onclick = () => {
-                    const action = { produit: d.nom, prix: d.prix, heure: new Date().toLocaleTimeString() };
-                    journalActions.push(action);
-                    ajouterAuLog(action);
-                    window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(t[idx])}`, '_blank');
-                };
-            });
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `SheStartIA-${d.nom}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            };
         }
 
-        function ajouterAuLog(a) {
-            const logEntry = document.createElement('div');
-            logEntry.className = "flex justify-between p-2 bg-blue-50 rounded border border-blue-100 mb-1";
-            logEntry.innerHTML = `<span>✅ Partage de <strong>${a.produit}</strong></span> <span>${a.heure}</span>`;
+        function ajouterAuLog(nom) {
+            const entry = { produit: nom, heure: new Date().toLocaleTimeString() };
+            journalActions.push(entry);
+            const div = document.createElement('div');
+            div.className = "flex justify-between p-2 bg-purple-50 rounded-lg border border-purple-100 mb-1";
+            div.innerHTML = `<span>🚀 Vente de ${nom}</span> <span>${entry.heure}</span>`;
             if(logContainer.querySelector('p')) logContainer.innerHTML = '';
-            logContainer.prepend(logEntry);
+            logContainer.prepend(div);
         }
 
-        reportBtn.onclick = () => {
-            if(journalActions.length === 0) return alert("Aucune action à rapporter aujourd'hui.");
-            const bilan = journalActions.map(a => `- ${a.heure} : Vente de ${a.produit} (${a.prix})`).join('\n');
-            const mailMsg = `Bilan SheStartIA - Actions du Jour :\n\n${bilan}\n\nTotal actions : ${journalActions.length}\nDonnées sécurisées par Cognitio Ltd.`;
-            window.open(`mailto:laetitia@cognitio.ltd?subject=Bilan SheStartIA du Jour&body=${encodeURIComponent(mailMsg)}`);
+        document.getElementById('reportBtn').onclick = () => {
+            const bilan = journalActions.map(a => `${a.heure} : ${a.produit}`).join('%0A');
+            window.open(`mailto:missafrikyia@gmail.com?subject=Rapport Journalier SheStartIA&body=Bilan des ventes :%0A${bilan}`);
         };
     </script>
 </body>
