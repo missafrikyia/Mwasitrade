@@ -13,121 +13,124 @@
         .recording { animation: pulse 1.5s infinite; background: #ef4444 !important; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         .page { display: none; } .page-active { display: block; }
+        #chat-container { display: none; position: fixed; bottom: 90px; right: 20px; left: 20px; z-index: 100; height: 60vh; }
+        .chat-open { display: flex !important; }
+        .logo-s { background: linear-gradient(135deg, #22c55e 0%, #065f46 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: sans-serif; }
     </style>
 </head>
 <body class="bg-gray-50 pb-24 text-gray-800">
 
     <header class="bg-white sticky top-0 z-50 border-b p-4 flex justify-between items-center">
-        <h1 class="text-2xl font-black text-[#1a4d2e] tracking-tighter italic">Mwa$ia</h1>
-        <div class="flex gap-3 text-[10px] font-bold uppercase text-gray-500">
-            <span>Partages: <b id="head_shares" class="text-[#1a4d2e]">0</b></span>
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 mwasia-gradient rounded-lg flex items-center justify-center text-white font-black shadow-sm text-xl">S</div>
+            <h1 class="text-xl font-black tracking-tighter italic">Mwa<span class="text-[#22c55e]">$</span>ia</h1>
         </div>
+        <div class="text-[10px] font-bold uppercase text-gray-400">Partages: <b id="head_shares" class="text-[#1a4d2e]">0</b></div>
     </header>
 
     <main id="p1" class="page page-active p-4 space-y-4">
         <section class="bg-white p-5 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e] text-center">
-            <p id="st1" class="text-[10px] font-bold text-blue-600 mb-2 uppercase italic">"Dites : Produit, Prix, Ville"</p>
-            <button id="mic1" class="mwasia-gradient w-14 h-14 rounded-full mb-4 text-white shadow-lg active:scale-90 transition-all"><i class="fas fa-microphone"></i></button>
-            <div class="border-2 rounded-2xl overflow-hidden mb-4 bg-gray-100">
+            <p class="text-[10px] font-bold text-blue-600 mb-2 uppercase italic">"Dites : Produit, Prix, Ville"</p>
+            <button id="mic1" class="mwasia-gradient w-14 h-14 rounded-full mb-4 text-white shadow-lg active:scale-90 transition-all"><i class="fas fa-microphone text-xl"></i></button>
+            <div class="border-2 rounded-2xl overflow-hidden mb-4 bg-gray-100 shadow-inner">
                 <canvas id="cvs" width="600" height="600" class="hidden"></canvas>
-                <img id="out_img" src="https://via.placeholder.com/600?text=Votre+Publicité+Mwa$ia" class="w-full">
+                <img id="out_img" src="https://via.placeholder.com/600?text=Ma+Publicité+Mwa$ia" class="w-full">
             </div>
             <div id="wa_box" class="hidden space-y-2 text-left mb-4">
-                <div class="p-2 bg-green-50 rounded-lg text-[10px] border border-green-200" id="t1"></div>
+                <div class="p-2 bg-green-50 rounded-lg text-[10px] border border-green-200 font-bold" id="t1"></div>
                 <div class="p-2 bg-blue-50 rounded-lg text-[10px] border border-blue-200" id="t2"></div>
             </div>
             <div class="flex gap-2">
-                <button id="dl" class="flex-1 bg-gray-800 text-white p-3 rounded-xl text-[10px] font-bold uppercase">Télécharger</button>
-                <button id="sh" class="flex-1 bg-[#25D366] text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fab fa-whatsapp"></i> Partager</button>
+                <button id="dl" class="flex-1 bg-gray-800 text-white p-3 rounded-xl text-[10px] font-bold uppercase">Sauver</button>
+                <button id="sh" class="flex-1 bg-[#25D366] text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fab fa-whatsapp mr-1"></i> Partager</button>
             </div>
         </section>
     </main>
 
     <main id="p2" class="page p-4 space-y-4">
         <section class="bg-white p-5 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]">
-            <h2 id="st2" class="text-center font-bold text-[10px] uppercase mb-4">Ventes du jour</h2>
-            <div class="flex justify-center mb-4">
-                <button id="mic2" class="mwasia-gradient w-12 h-12 rounded-full text-white shadow-md"><i class="fas fa-microphone"></i></button>
+            <h2 id="st2" class="text-center font-bold text-[10px] uppercase mb-4">Enregistrer une vente</h2>
+            <div class="flex justify-center mb-6">
+                <button id="mic2" class="mwasia-gradient w-16 h-16 rounded-full text-white shadow-xl active:scale-90 transition-all"><i class="fas fa-microphone text-2xl"></i></button>
             </div>
-            <div class="grid grid-cols-2 gap-2 mb-4">
-                <input type="number" id="q" placeholder="Qté" class="p-3 border rounded-xl text-center font-bold">
-                <input type="number" id="pr" placeholder="Prix" class="p-3 border rounded-xl text-center font-bold">
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="text-center"><label class="text-[8px] uppercase font-bold text-gray-400">Quantité</label><input type="number" id="q" class="w-full p-3 border rounded-xl text-center font-black text-lg bg-gray-50"></div>
+                <div class="text-center"><label class="text-[8px] uppercase font-bold text-gray-400">Prix (FCFA)</label><input type="number" id="pr" class="w-full p-3 border rounded-xl text-center font-black text-lg bg-gray-50"></div>
             </div>
-            <button id="add" class="w-full bg-[#1a4d2e] text-white p-3 rounded-xl font-bold uppercase text-xs">Valider la vente</button>
-            <div class="mt-6 border-t pt-4 text-center">
-                <div class="flex justify-between text-[10px] font-bold text-gray-400 mb-2 uppercase">
+            <button id="add" class="w-full bg-[#1a4d2e] text-white p-4 rounded-xl font-black uppercase text-xs shadow-md">Valider la vente</button>
+            
+            <div class="mt-8 border-t pt-4">
+                <div class="flex justify-between text-[10px] font-bold text-gray-400 mb-3 uppercase">
                     <span id="v_date">...</span>
-                    <span id="month_total">Ventes : 0</span>
+                    <span id="month_total" class="text-[#1a4d2e]">Total : 0</span>
                 </div>
-                <div class="max-h-40 overflow-y-auto space-y-2 mb-4 text-left" id="v_list"></div>
-                <p class="font-black text-xl text-[#1a4d2e]" id="ca_display">0 FCFA</p>
-                <button id="reset" class="mt-4 text-[8px] text-gray-400 uppercase font-bold underline decoration-dotted">Réinitialiser la démo</button>
+                <div class="max-h-48 overflow-y-auto space-y-2 mb-4" id="v_list"></div>
+                <div class="bg-gray-50 p-4 rounded-2xl text-center">
+                    <p class="text-[9px] font-bold uppercase text-gray-400 mb-1">Chiffre d'affaires</p>
+                    <p class="font-black text-2xl text-[#1a4d2e]" id="ca_display">0 FCFA</p>
+                </div>
+                <button id="reset" class="w-full mt-4 text-[9px] text-gray-300 uppercase font-bold">Réinitialiser la démo</button>
             </div>
         </section>
     </main>
 
-    <main id="p3" class="page p-4 space-y-4 text-center">
-        <section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]">
-            <h2 class="font-bold text-[10px] uppercase mb-4">Identité Économique</h2>
-            <div class="p-4 border-2 border-dashed border-[#1a4d2e] rounded-2xl mb-6 bg-green-50">
-                <i class="fas fa-id-card text-[#1a4d2e] text-3xl mb-2"></i>
-                <p class="text-[9px] text-[#1a4d2e] uppercase font-bold text-center">Scanner CNI / Passeport</p>
-            </div>
-            <div id="score_circle" class="w-24 h-24 mwasia-gradient rounded-full mx-auto flex items-center justify-center text-white text-3xl font-black mb-2 shadow-xl">A</div>
-            <p class="text-xs font-bold uppercase">Score Mwa$ia</p>
-            <div class="grid grid-cols-3 gap-2 mt-6 text-[8px] uppercase font-bold text-gray-400">
-                <div class="p-2 bg-gray-50 rounded-lg border">Temps<br><span class="text-[#1a4d2e] text-[10px]">6 Mois</span></div>
-                <div class="p-2 bg-gray-50 rounded-lg border">Ventes<br><span id="sc_v" class="text-[#1a4d2e] text-[10px]">0</span></div>
-                <div class="p-2 bg-gray-50 rounded-lg border">Réseau<br><span id="sc_r" class="text-[#1a4d2e] text-[10px]">0</span></div>
+    <main id="p3" class="page p-4 text-center">
+        <section class="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]">
+            <h2 class="font-bold text-[10px] uppercase mb-6">Score de Confiance</h2>
+            <div id="score_circle" class="w-28 h-28 mwasia-gradient rounded-full mx-auto flex items-center justify-center text-white text-4xl font-black mb-4 shadow-2xl border-4 border-white">A</div>
+            <p class="text-sm font-black uppercase text-[#1a4d2e]">Profil Excellent</p>
+            <div class="grid grid-cols-3 gap-2 mt-8 text-[8px] uppercase font-bold text-gray-400">
+                <div class="p-3 bg-gray-50 rounded-xl border">Activité<br><span class="text-[#1a4d2e] text-[12px]">6 Mois</span></div>
+                <div class="p-3 bg-gray-50 rounded-xl border">Volume<br><span id="sc_v" class="text-[#1a4d2e] text-[12px]">0</span></div>
+                <div class="p-3 bg-gray-50 rounded-xl border">Réseau<br><span id="sc_r" class="text-[#1a4d2e] text-[12px]">0</span></div>
             </div>
         </section>
     </main>
 
-    <main id="p4" class="page p-4 space-y-4">
+    <main id="p4" class="page p-4 text-center">
         <section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]">
-            <h2 class="text-center font-bold text-[10px] uppercase mb-4">Crédit Éligible</h2>
-            <div class="bg-blue-50 p-6 rounded-2xl text-center border border-blue-100 mb-6">
-                <p class="text-[9px] font-bold text-[#1e3a8a] uppercase mb-1">Montant Maximum</p>
-                <h3 id="elig" class="text-2xl font-black text-[#1e3a8a]">0 FCFA</h3>
+            <h2 class="font-bold text-[10px] uppercase mb-6">Éligibilité Crédit</h2>
+            <div class="mwasia-gradient p-8 rounded-3xl text-white mb-6 shadow-lg">
+                <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Plafond disponible</p>
+                <h3 id="elig" class="text-3xl font-black">0 FCFA</h3>
             </div>
-            <div class="space-y-3">
-                <div class="p-4 bg-gray-50 rounded-2xl flex justify-between items-center border">
-                    <div><p class="text-xs font-black">BGFI Bank</p><p class="text-[8px] text-gray-400 uppercase">3-6 Mois</p></div>
-                    <button class="bg-[#1e3a8a] text-white px-3 py-2 rounded-lg text-[9px] font-bold">POSTULER</button>
-                </div>
-            </div>
+            <p class="text-xs text-gray-500 leading-relaxed">Basé sur vos ventes réelles enregistrées dans Mwa$ia.</p>
         </section>
     </main>
 
     <main id="p5" class="page p-4 text-center">
         <section class="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]">
-            <i class="fas fa-magic text-3xl text-[#1a4d2e] mb-4"></i>
-            <h2 class="font-bold text-xs uppercase mb-2">Mon Plan d'Affaires IA</h2>
-            <button id="genIA" class="w-full mwasia-gradient text-white p-4 rounded-2xl font-black text-xs uppercase shadow-lg">Générer ma stratégie</button>
-            <div id="ia_res" class="hidden mt-6 text-left p-4 bg-green-50 border border-green-200 rounded-xl text-[11px] italic"></div>
+            <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 text-[#1a4d2e] text-2xl"><i class="fas fa-robot"></i></div>
+            <h2 class="font-bold text-xs uppercase mb-4">Stratégie IA Personnalisée</h2>
+            <button id="genIA" class="w-full mwasia-gradient text-white p-4 rounded-2xl font-black text-xs uppercase shadow-lg">Analyser mon business</button>
+            <div id="ia_res" class="hidden mt-6 text-left p-4 bg-green-50 border border-green-200 rounded-2xl text-[11px] leading-relaxed italic text-[#1a4d2e]"></div>
         </section>
     </main>
 
-    <main id="p6" class="page p-4 flex flex-col h-[70vh]">
-        <section class="bg-white p-4 rounded-3xl shadow-sm flex-1 flex flex-col border-t-4 border-[#1a4d2e]">
-            <h2 class="text-center font-bold text-[10px] uppercase mb-4">Le Cercle Mwa$ia</h2>
-            <div id="chat" class="flex-1 overflow-y-auto space-y-3 p-2 bg-gray-50 rounded-xl mb-4 text-[10px]">
-                <div class="bg-white p-3 rounded-2xl border shadow-sm max-w-[85%]"><b>Mwa$ia :</b> Bienvenue ! Prête à booster ton activité ? 🚀</div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="msg" placeholder="Discuter..." class="flex-1 p-3 border rounded-xl text-xs outline-none bg-gray-50">
-                <button id="send" class="mwasia-gradient text-white px-4 rounded-xl"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </section>
-    </main>
+    <div id="chat-container" class="flex-col bg-white rounded-3xl shadow-2xl border-2 border-[#1a4d2e] overflow-hidden">
+        <div class="mwasia-gradient p-4 text-white flex justify-between items-center">
+            <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-400 rounded-full animate-ping"></div><span class="text-[10px] font-bold uppercase tracking-widest">Le Cercle Mwa$ia</span></div>
+            <button onclick="toggleChat()" class="opacity-70"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chat" class="flex-1 overflow-y-auto space-y-4 p-4 bg-gray-50 text-[11px]">
+            <div class="bg-white p-3 rounded-2xl border shadow-sm max-w-[85%] leading-snug"><b>Mwa$ia :</b> Bienvenue dans ton cercle. Je suis ton assistante IA. Comment puis-je t'aider à vendre aujourd'hui ? 🚀</div>
+        </div>
+        <div class="p-3 border-t bg-white flex gap-2">
+            <input type="text" id="msg" placeholder="Posez une question..." class="flex-1 p-3 border rounded-xl text-xs outline-none bg-gray-50 focus:ring-2 ring-[#1a4d2e]">
+            <button id="send" class="mwasia-gradient text-white px-5 rounded-xl"><i class="fas fa-paper-plane text-xs"></i></button>
+        </div>
+    </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t p-2 flex justify-around items-center z-50">
+    <button onclick="toggleChat()" class="fixed bottom-24 right-6 w-14 h-14 mwasia-gradient text-white rounded-full shadow-2xl flex items-center justify-center z-[90] active:scale-90 transition-all border-4 border-white">
+        <i class="fas fa-comment-dots text-xl"></i>
+    </button>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t p-2 flex justify-around items-center z-50">
         <button onclick="nav(1,this)" class="nav-active flex flex-col items-center"><i class="fas fa-bullhorn text-xs"></i><span class="text-[7px] uppercase font-bold">Pub</span></button>
         <button onclick="nav(2,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-receipt text-xs"></i><span class="text-[7px] uppercase font-bold">Ventes</span></button>
-        <button onclick="nav(3,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-id-badge text-xs"></i><span class="text-[7px] uppercase font-bold">Identité</span></button>
+        <button onclick="nav(3,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-id-badge text-xs"></i><span class="text-[7px] uppercase font-bold">Score</span></button>
         <button onclick="nav(4,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-university text-xs"></i><span class="text-[7px] uppercase font-bold">Crédit</span></button>
-        <button onclick="nav(5,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-lightbulb text-xs"></i><span class="text-[7px] uppercase font-bold">IA</span></button>
-        <button onclick="nav(6,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-users text-xs"></i><span class="text-[7px] uppercase font-bold">Cercle</span></button>
+        <button onclick="nav(5,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-brain text-xs"></i><span class="text-[7px] uppercase font-bold">Conseils IA</span></button>
     </nav>
 
     <script>
@@ -140,77 +143,101 @@
         
         function updateUI() {
             document.getElementById('ca_display').innerText = data.ca.toLocaleString() + " FCFA";
-            document.getElementById('month_total').innerText = "Ventes : " + data.ventes;
+            document.getElementById('month_total').innerText = "Total : " + data.ventes;
             document.getElementById('head_shares').innerText = data.partages;
             document.getElementById('sc_v').innerText = data.ventes;
             document.getElementById('sc_r').innerText = data.partages;
-            document.getElementById('elig').innerText = (data.ca * 1.8).toLocaleString() + " FCFA";
-            document.getElementById('score_circle').innerText = data.ventes > 5 ? "A+" : "A";
-            document.getElementById('v_list').innerHTML = data.list.map(v => `<div class="flex justify-between p-2 bg-white rounded-lg border text-[9px]"><span>${v.d}</span><span>${v.q} unité(s)</span><span class="font-bold text-[#1a4d2e]">${v.t} F</span></div>`).join('');
+            document.getElementById('elig').innerText = (data.ca * 1.5).toLocaleString() + " FCFA";
+            document.getElementById('score_circle').innerText = data.ventes > 4 ? "A+" : "A";
+            document.getElementById('v_list').innerHTML = data.list.map(v => `<div class="flex justify-between p-3 bg-white rounded-xl border text-[10px] shadow-sm"><span class="text-gray-400">${v.d}</span><span class="font-bold">${v.q} unité(s)</span><span class="font-black text-[#1a4d2e]">${v.t.toLocaleString()} F</span></div>`).join('');
         }
 
-        document.getElementById('reset').onclick = () => { if(confirm("Vider toutes les données ?")) { data = {...initialData, list:[]}; save(); location.reload(); }};
-
-        const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
+        document.getElementById('reset').onclick = () => { if(confirm("Voulez-vous réinitialiser toutes les données ?")) { data = {...initialData, list:[]}; save(); location.reload(); }};
+        function toggleChat() { document.getElementById('chat-container').classList.toggle('chat-open'); }
         function nav(n, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
             document.getElementById('p'+n).classList.add('page-active');
             document.querySelectorAll('nav button').forEach(b => { b.classList.remove('nav-active'); b.classList.add('text-gray-400'); });
-            el.classList.add('nav-active');
+            el.classList.add('nav-active'); el.classList.remove('text-gray-400');
         }
+
+        const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         function startListen(btnId, callback) {
             if(!Recognition) return alert("Micro non supporté");
             const rec = new Recognition(); rec.lang = 'fr-FR'; rec.start();
-            document.getElementById(btnId).classList.add('recording');
-            rec.onresult = (e) => { callback(e.results[0][0].transcript); document.getElementById(btnId).classList.remove('recording'); };
-            rec.onend = () => document.getElementById(btnId).classList.remove('recording');
-            rec.onerror = () => document.getElementById(btnId).classList.remove('recording');
+            const btn = document.getElementById(btnId); btn.classList.add('recording');
+            rec.onresult = (e) => { callback(e.results[0][0].transcript); btn.classList.remove('recording'); };
+            rec.onend = () => btn.classList.remove('recording');
+            rec.onerror = () => btn.classList.remove('recording');
         }
 
+        // --- MICRO PAGE 1 : PUB ---
         document.getElementById('mic1').onclick = () => {
             startListen('mic1', (text) => {
-                const prix = text.match(/\d+/) || ["10000"];
-                const mots = text.split(" ");
+                const mots = text.split(" ").filter(m => m.length > 2);
+                const prix = (text.match(/\d+/) || ["10000"])[0];
                 const nom = mots[0] || "Article";
-                const ville = mots[mots.length-1] || "Douala";
+                const ville = mots.length > 1 ? mots[mots.length - 1] : "Douala";
+
                 document.getElementById('wa_box').classList.remove('hidden');
                 document.getElementById('t1').innerText = `🔥 *${nom.toUpperCase()}* à *${prix} FCFA* !`;
                 document.getElementById('t2').innerText = `📍 Disponible à *${ville}*.`;
+                
                 const c = document.getElementById('cvs'); const x = c.getContext('2d');
                 x.fillStyle = "#1a4d2e"; x.fillRect(0,0,600,600);
                 x.fillStyle = "white"; x.textAlign="center";
-                x.font = "bold 50px Arial"; x.fillText(nom.toUpperCase(), 300, 260);
-                x.font = "bold 90px Arial"; x.fillText(prix + " F", 300, 370);
+                x.font = "bold 55px Arial"; x.fillText(nom.toUpperCase(), 300, 260);
+                x.font = "bold 110px Arial"; x.fillText(prix + " F", 300, 380);
+                x.font = "bold 30px Arial"; x.fillText("Disponible à " + ville, 300, 480);
                 document.getElementById('out_img').src = c.toDataURL();
             });
         };
 
+        // --- MICRO PAGE 2 : VENTES ---
         document.getElementById('mic2').onclick = () => {
             document.getElementById('st2').innerText = "Mwa$ia écoute...";
             startListen('mic2', (text) => {
-                const nums = text.match(/\d+/g);
-                if(nums && nums.length >= 2) { document.getElementById('q').value = nums[0]; document.getElementById('pr').value = nums[1]; }
+                const nums = text.replace(/,/g, ' ').match(/\d+/g);
+                if(nums && nums.length >= 2) {
+                    const v1 = parseInt(nums[0]), v2 = parseInt(nums[1]);
+                    document.getElementById('q').value = Math.min(v1, v2);
+                    document.getElementById('pr').value = Math.max(v1, v2);
+                } else if (nums) {
+                    document.getElementById('pr').value = nums[0];
+                    document.getElementById('q').value = 1;
+                }
                 document.getElementById('st2').innerText = "Ventes du jour";
             });
         };
 
         document.getElementById('add').onclick = () => {
             const q = parseInt(document.getElementById('q').value), p = parseInt(document.getElementById('pr').value);
-            if(q && p) { data.ca += (q*p); data.ventes++; data.list.unshift({d:dateStr, q, t:(q*p)}); save(); document.getElementById('q').value = ""; document.getElementById('pr').value = ""; }
+            if(q && p) { 
+                data.ca += (q*p); data.ventes++; 
+                data.list.unshift({d: new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}), q, t:(q*p)}); 
+                save(); document.getElementById('q').value = ""; document.getElementById('pr').value = ""; 
+            }
         };
 
         document.getElementById('sh').onclick = () => { data.partages++; save(); window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(document.getElementById('t1').innerText), '_blank'); };
-        document.getElementById('dl').onclick = () => { const l = document.createElement('a'); l.download = 'pub.png'; l.href = document.getElementById('out_img').src; l.click(); };
+        document.getElementById('dl').onclick = () => { const l = document.createElement('a'); l.download = 'mwasia_pub.png'; l.href = document.getElementById('out_img').src; l.click(); };
 
         document.getElementById('genIA').onclick = function() {
-            this.innerText = "ANALYSE...";
-            setTimeout(() => { document.getElementById('ia_res').classList.remove('hidden'); document.getElementById('ia_res').innerHTML = `<b>CONSEIL Mwa$ia :</b> Vos ventes sont stables. Boostez vos partages pour augmenter votre score !`; this.innerText = "PLAN GÉNÉRÉ"; }, 1000);
+            this.innerText = "IA ANALYSE...";
+            setTimeout(() => { 
+                document.getElementById('ia_res').classList.remove('hidden'); 
+                document.getElementById('ia_res').innerHTML = `<b>ANALYSE :</b> Bravo Laetitia ! Tes ventes sont régulières. Ton score est monté à ${document.getElementById('score_circle').innerText}. Tu peux maintenant solliciter un micro-crédit de restockage.`; 
+                this.innerText = "PLAN GÉNÉRÉ"; 
+            }, 1200);
         };
 
         document.getElementById('send').onclick = () => {
-            const i = document.getElementById('msg'); if(i.value) { document.getElementById('chat').insertAdjacentHTML('beforeend', `<div class="flex justify-end"><div class="bg-[#1a4d2e] text-white p-2 rounded-2xl max-w-[85%]">${i.value}</div></div>`); i.value = ""; document.getElementById('chat').scrollTop = 1000; }
+            const i = document.getElementById('msg'); 
+            if(i.value) { 
+                document.getElementById('chat').insertAdjacentHTML('beforeend', `<div class="flex justify-end"><div class="mwasia-gradient text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">${i.value}</div></div>`); 
+                i.value = ""; document.getElementById('chat').scrollTop = 1000; 
+            }
         };
 
         updateUI();
