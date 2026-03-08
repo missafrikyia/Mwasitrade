@@ -24,7 +24,7 @@
     </nav>
 
     <main id="space-activite" class="p-4 max-w-lg mx-auto space-y-6">
-        <section class="bg-white p-6 rounded-[2rem] shadow-md border text-center">
+        <section class="bg-white p-6 rounded-[2rem] shadow-md border text-center border-t-4 border-[#1a4d2e]">
             <h2 class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Enregistrer une vente</h2>
             <button id="micBtn" class="mwasia-gradient text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center mx-auto border-4 border-white">
                 <i class="fas fa-microphone text-2xl"></i>
@@ -37,12 +37,12 @@
             <div class="flex gap-3">
                 <div class="w-1/2 aspect-square bg-gray-50 rounded-2xl overflow-hidden border relative">
                     <canvas id="carre_visuel" width="500" height="500" class="hidden"></canvas>
-                    <img id="img_finale" src="" class="w-full h-full object-cover">
+                    <img id="img_finale" src="https://via.placeholder.com/500x500/f3f4f6/9ca3af?text=Aperçu+Visuel" class="w-full h-full object-cover">
                     <button id="downloadBtn" class="absolute bottom-2 right-2 bg-white/90 p-2 rounded-full text-[#1a4d2e] shadow-md"><i class="fas fa-download"></i></button>
                 </div>
                 <div class="w-1/2 space-y-2">
-                    <div class="p-2 bg-green-50 rounded-lg text-[8px] text-[#1a4d2e] border border-green-100 italic" id="msg1">Message 1...</div>
-                    <div class="p-2 bg-blue-50 rounded-lg text-[8px] text-[#1e3a8a] border border-blue-100 italic" id="msg2">Message 2...</div>
+                    <div class="p-2 bg-green-50 rounded-lg text-[8px] text-[#1a4d2e] border border-green-100 italic" id="msg1">Prêt à générer...</div>
+                    <div class="p-2 bg-blue-50 rounded-lg text-[8px] text-[#1e3a8a] border border-blue-100 italic" id="msg2">Prêt à générer...</div>
                     <button id="shareBtn" class="w-full bg-[#1a4d2e] text-white py-3 rounded-xl font-bold text-[10px] flex items-center justify-center gap-2 shadow-md"><i class="fab fa-whatsapp"></i> Partager</button>
                 </div>
             </div>
@@ -61,20 +61,17 @@
     </main>
 
     <main id="space-cercle" class="p-4 max-w-lg mx-auto space-y-4 hidden">
-        <div class="flex justify-between items-center">
-            <h2 class="text-xl font-bold">Le Cercle</h2>
-            <span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full border">1 024 SŒURS</span>
-        </div>
-        <div class="h-[50vh] overflow-y-auto p-4 bg-gray-100 rounded-[2rem] border space-y-4">
+        <h2 class="text-xl font-bold px-2">Le Cercle</h2>
+        <div class="h-[60vh] overflow-y-auto p-4 bg-gray-100 rounded-[2rem] border space-y-4">
             <div class="flex gap-2">
                 <div class="w-8 h-8 rounded-full mwasia-gradient flex items-center justify-center text-white text-[10px] font-bold">LG</div>
-                <div class="bg-white p-3 rounded-2xl text-xs shadow-sm border">Bienvenue dans le cercle sécurisé.</div>
+                <div class="bg-white p-3 rounded-2xl text-xs shadow-sm border max-w-[80%]">Bienvenue dans le cercle Mwasia, Laetitia ! 🤝</div>
             </div>
         </div>
     </main>
 
     <main id="space-identite" class="p-4 max-w-lg mx-auto space-y-6 hidden">
-        <h2 class="text-xl font-bold">Identité</h2>
+        <h2 class="text-xl font-bold px-2">Identité</h2>
         <section class="bg-white p-6 rounded-[2rem] shadow-md border-t-4 border-[#1a4d2e]">
             <div class="grid grid-cols-2 gap-4 text-center mb-6">
                 <div class="bg-green-50 p-4 rounded-2xl border border-green-100">
@@ -86,42 +83,42 @@
                     <p class="text-2xl font-black text-[#1e3a8a]">OUI</p>
                 </div>
             </div>
-            <button class="w-full bg-[#1e3a8a] text-white py-4 rounded-xl font-bold text-xs uppercase shadow-md">Dossier Juridique Cognitio</button>
+            <button class="w-full bg-[#1e3a8a] text-white py-4 rounded-xl font-bold text-[10px] uppercase shadow-md tracking-wider">Télécharger Dossier Juridique</button>
         </section>
     </main>
 
     <main id="space-finance" class="p-4 max-w-lg mx-auto space-y-6 hidden">
-        <h2 class="text-xl font-bold">Financement</h2>
+        <h2 class="text-xl font-bold px-2">Financement</h2>
         <section class="bg-white p-6 rounded-[2rem] shadow-lg border-t-4 border-[#1e3a8a]">
             <div class="text-center mb-6">
-                <p class="text-[10px] text-gray-400 uppercase font-bold">Capacité Estimée</p>
+                <p class="text-[10px] text-gray-400 uppercase font-bold">Capacité de crédit</p>
                 <p class="text-3xl font-black text-[#1e3a8a]">100.000 FCFA</p>
             </div>
             <div class="flex justify-between gap-2 mb-4">
-                <button onclick="calc(3)" class="flex-1 py-2 border rounded-xl text-[10px] font-bold">3 MOIS</button>
-                <button onclick="calc(6)" class="flex-1 py-2 border rounded-xl text-[10px] font-bold">6 MOIS</button>
-                <button onclick="calc(12)" class="flex-1 py-2 border rounded-xl text-[10px] font-bold">12 MOIS</button>
+                <button onclick="calc(3)" class="flex-1 py-3 border rounded-xl text-[10px] font-bold hover:bg-blue-50">3 MOIS</button>
+                <button onclick="calc(6)" class="flex-1 py-3 border rounded-xl text-[10px] font-bold hover:bg-blue-50">6 MOIS</button>
+                <button onclick="calc(12)" class="flex-1 py-3 border rounded-xl text-[10px] font-bold hover:bg-blue-50">12 MOIS</button>
             </div>
-            <div id="result_simul" class="p-3 bg-blue-50 rounded-xl text-center hidden">
-                <p class="text-[10px] text-[#1e3a8a]">Mensualité : <span id="mensualite" class="font-bold"></span></p>
+            <div id="result_simul" class="p-4 bg-blue-50 rounded-xl text-center hidden mb-4">
+                <p class="text-[11px] text-[#1e3a8a]">Mensualité estimée : <span id="mensualite" class="font-bold text-lg"></span></p>
             </div>
-            <button class="w-full mt-6 mwasia-gradient text-white py-4 rounded-xl font-bold text-xs shadow-xl">SOLLICITER MA BANQUE</button>
+            <button class="w-full mwasia-gradient text-white py-4 rounded-xl font-bold text-[11px] shadow-xl uppercase">Solliciter Ecobank / BGFI</button>
         </section>
     </main>
 
     <main id="space-bp" class="p-4 max-w-lg mx-auto space-y-6 hidden">
-        <h2 class="text-xl font-bold">Business Plan</h2>
+        <h2 class="text-xl font-bold px-2">Business Plan</h2>
         <section class="bg-white p-6 rounded-[2rem] shadow-md border-t-4 border-[#1a4d2e]">
             <div class="text-center space-y-4">
                 <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center text-[#1a4d2e] mx-auto">
                     <i class="fas fa-lightbulb text-2xl"></i>
                 </div>
-                <p class="text-xs text-gray-500 font-medium px-4">L'IA Mwasia utilise vos preuves de vente pour structurer votre croissance.</p>
-                <button id="genBP" class="w-full mwasia-gradient text-white py-4 rounded-xl font-bold text-xs shadow-lg">GÉNÉRER MON PLAN</button>
+                <p class="text-xs text-gray-500 font-medium px-4">L'IA Mwasia structure votre projet basé sur vos ventes réelles.</p>
+                <button id="genBP" class="w-full mwasia-gradient text-white py-4 rounded-xl font-bold text-xs shadow-lg uppercase">Générer mon plan stratégique</button>
             </div>
-            <div id="bp_result" class="mt-6 p-4 bg-gray-50 rounded-2xl border hidden">
-                <p class="text-[11px] leading-relaxed text-gray-700 italic">"Plan de croissance prêt basé sur vos 45.000 F de CA..."</p>
-                <button class="mt-4 text-[#1a4d2e] text-[10px] font-bold border-b border-[#1a4d2e] uppercase">Télécharger Stratégie PDF</button>
+            <div id="bp_result" class="mt-6 p-4 bg-gray-50 rounded-2xl border border-green-100 hidden">
+                <p class="text-[11px] leading-relaxed text-gray-700 italic">"Analyse terminée : Potentiel de croissance élevé. Recommandation : Augmentation du stock de 30%."</p>
+                <button class="mt-4 text-[#1a4d2e] text-[10px] font-bold border-b border-[#1a4d2e] uppercase">Télécharger PDF Stratégie</button>
             </div>
         </section>
     </main>
@@ -145,27 +142,71 @@
     </div>
 
     <script>
-        let shares = 0;
-        function switchTab(t, el) {
-            document.querySelectorAll('main').forEach(m => m.classList.add('hidden'));
-            document.getElementById('space-' + t).classList.remove('hidden');
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('nav-active', 'text-[#1a4d2e]');
-                b.classList.add('text-gray-400');
+        // NAVIGATION
+        function switchTab(tabId, element) {
+            // Masquer toutes les sections
+            document.querySelectorAll('main').forEach(main => main.classList.add('hidden'));
+            // Afficher la section demandée
+            document.getElementById('space-' + tabId).classList.remove('hidden');
+            
+            // Gérer l'état visuel des boutons de la nav
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('nav-active', 'text-[#1a4d2e]');
+                btn.classList.add('text-gray-400');
             });
-            el.classList.add('nav-active', 'text-[#1a4d2e]');
+            element.classList.add('nav-active', 'text-[#1a4d2e]');
+            element.classList.remove('text-gray-400');
         }
 
+        // GÉNÉRATION VISUEL (PAGE 1)
         const micBtn = document.getElementById('micBtn');
         const canvas = document.getElementById('carre_visuel');
         const img = document.getElementById('img_finale');
         const ctx = canvas.getContext('2d');
+        let shareCount = 0;
 
         micBtn.onclick = () => {
-            document.getElementById('status').innerText = "MWASIA ANALYSE VOTRE VOIX...";
+            document.getElementById('status').innerText = "ANALYSE VOCALE EN COURS...";
             setTimeout(() => {
                 document.getElementById('section_gen').classList.remove('opacity-40', 'pointer-events-none');
+                
+                // Dessin du visuel
                 ctx.fillStyle = "#1a4d2e"; ctx.fillRect(0,0,500,500);
                 ctx.fillStyle = "white"; ctx.font = "bold 40px sans-serif"; ctx.textAlign="center";
-                ctx.fillText("PAGNE WAX - MWASIA", 250, 250);
-                img.src = canvas.toData
+                ctx.fillText("PAGNE WAX", 250, 230);
+                ctx.font = "30px sans-serif"; ctx.fillText("OFFRE MWASIA", 250, 280);
+                
+                img.src = canvas.toDataURL();
+                document.getElementById('msg1').innerText = "Nouveau Pagne Wax disponible ! 15.000 FCFA.";
+                document.getElementById('msg2').innerText = "Qualité certifiée par le réseau Mwasia.";
+                document.getElementById('status').innerText = "VOTRE VISUEL EST PRÊT !";
+            }, 1000);
+        };
+
+        // PARTAGE
+        document.getElementById('shareBtn').onclick = () => {
+            shareCount++;
+            document.getElementById('share_count').innerText = shareCount;
+            const text = encodeURIComponent(document.getElementById('msg1').innerText);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        };
+
+        // CALCUL CRÉDIT (PAGE 4)
+        function calc(mois) {
+            const total = 100000;
+            const mensualite = Math.round(total / mois);
+            document.getElementById('result_simul').classList.remove('hidden');
+            document.getElementById('mensualite').innerText = mensualite.toLocaleString() + " FCFA";
+        }
+
+        // BUSINESS PLAN (PAGE 5)
+        document.getElementById('genBP').onclick = function() {
+            this.innerHTML = '<i class="fas fa-sync fa-spin"></i> CALCUL DES DONNÉES...';
+            setTimeout(() => {
+                this.innerText = "PLAN GÉNÉRÉ AVEC SUCCÈS";
+                document.getElementById('bp_result').classList.remove('hidden');
+            }, 1500);
+        };
+    </script>
+</body>
+</html>
