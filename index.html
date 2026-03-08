@@ -1,162 +1,119 @@
-<!DOCTYPE html><html lang="fr">
+  <!DOCTYPE html><html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mwa$ia - Mobile Business</title>
+    <title>Mwasia - Plateforme Entrepreneure</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --mwasia-green: #1a4d2e; --mwasia-blue: #1e3a8a; }
         .nav-active { color: var(--mwasia-green) !important; font-weight: bold; border-top: 3px solid var(--mwasia-green); }
-        .mwasia-gradient { background: linear-gradient(135deg, var(--mwasia-green) 0%, var(--mwasia-blue) 100%); }
+        .mwasia-gradient { background: linear-gradient(135deg, #1a4d2e 0%, #1e3a8a 100%); }
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="bg-gray-50 font-sans pb-24 text-gray-900"><!-- NAVIGATION + LOGO -->
-<nav class="p-4 bg-white shadow-sm sticky top-0 z-50 flex justify-between items-center border-b">
-    <h1 id="logo" class="text-2xl font-black tracking-tighter cursor-pointer">Mwa$ia</h1>
+<body class="bg-gray-50 font-sans pb-24 text-gray-900"><nav class="p-4 bg-white shadow-sm sticky top-0 z-50 flex justify-between items-center border-b">
+    <h1 class="text-2xl font-black text-[#1a4d2e] tracking-tighter">MWASIA</h1>
     <div class="flex items-center gap-2">
         <span class="text-[9px] font-bold text-gray-400 uppercase">Souveraineté Cognitio</span>
         <i class="fas fa-shield-alt text-green-600"></i>
     </div>
 </nav>
 
-<!-- PAGE 1: Génération visuel et partage -->
 <main id="space-activite" class="p-4 max-w-lg mx-auto space-y-6">
+    <!-- Page 1 : Génération Visuel et Partage -->
     <section class="bg-white p-6 rounded-[2rem] shadow-md border text-center border-t-4 border-[#1a4d2e]">
-        <h2 class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Créer visuel & partager</h2>
+        <h2 class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Génération Visuel</h2>
         <button id="micBtn" class="mwasia-gradient text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center mx-auto border-4 border-white">
             <i class="fas fa-microphone text-2xl"></i>
         </button>
-        <div id="status" class="mt-4 text-[10px] text-[#1e3a8a] font-bold italic uppercase">Cliquez pour générer votre visuel</div>
+        <div id="status" class="mt-4 text-[10px] text-[#1e3a8a] font-bold italic uppercase">"Appuyez sur le micro pour générer votre visuel"</div>
     </section>
-    
+
     <section id="section_gen" class="bg-white p-5 rounded-[2rem] shadow-lg border-l-4 border-[#1a4d2e] opacity-40 pointer-events-none">
         <h3 class="text-xs font-bold text-gray-700 mb-4">Mon Kit de Lancement</h3>
         <div class="flex gap-3">
             <div class="w-1/2 aspect-square bg-gray-50 rounded-2xl overflow-hidden border relative">
                 <canvas id="carre_visuel" width="500" height="500" class="hidden"></canvas>
-                <img id="img_finale" src="https://via.placeholder.com/500x500/f3f4f6/9ca3af?text=Apercu+Visuel" class="w-full h-full object-cover">
+                <img id="img_finale" src="https://via.placeholder.com/500x500/f3f4f6/9ca3af?text=Aper%C3%A7u+Visuel" class="w-full h-full object-cover">
                 <button id="downloadBtn" class="absolute bottom-2 right-2 bg-white/90 p-2 rounded-full text-[#1a4d2e] shadow-md"><i class="fas fa-download"></i></button>
             </div>
             <div class="w-1/2 space-y-2">
-                <div class="p-2 bg-green-50 rounded-lg text-[8px] text-[#1a4d2e] border border-green-100 italic" id="msg1">Prêt à générer...</div>
-                <div class="p-2 bg-blue-50 rounded-lg text-[8px] text-[#1e3a8a] border border-blue-100 italic" id="msg2">Prêt à générer...</div>
-                <div class="p-2 bg-yellow-50 rounded-lg text-[8px] text-yellow-800 border border-yellow-100 italic" id="msg3">Prêt à générer...</div>
+                <div class="p-2 bg-green-50 rounded-lg text-[8px] text-[#1a4d2e] border border-green-100 italic" id="msg1">Message pub IA 1</div>
+                <div class="p-2 bg-blue-50 rounded-lg text-[8px] text-[#1e3a8a] border border-blue-100 italic" id="msg2">Message pub IA 2</div>
+                <div class="p-2 bg-green-50 rounded-lg text-[8px] text-[#1a4d2e] border border-green-100 italic" id="msg3">Message pub IA 3</div>
                 <button id="shareBtn" class="w-full bg-[#1a4d2e] text-white py-3 rounded-xl font-bold text-[10px] flex items-center justify-center gap-2 shadow-md"><i class="fab fa-whatsapp"></i> Partager</button>
-                <p class="text-[10px] font-bold mt-1">Partages: <span id="share_count">0</span></p>
             </div>
         </div>
+        <div class="mt-2 text-[9px] text-[#1a4d2e] font-bold">Partages WhatsApp : <span id="share_count">0</span></div>
     </section>
 </main>
 
-<!-- PAGE 2: Enregistrement ventes -->
-<main id="space-ventes" class="p-4 max-w-lg mx-auto space-y-6 hidden">
-    <section class="bg-white p-6 rounded-[2rem] shadow-md border border-[#1a4d2e]">
-        <h2 class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Micro-enregistrement ventes</h2>
+<!-- Page 2 : Micro-enregistrement de ventes -->
+<main id="space-vente" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <section class="bg-white p-6 rounded-[2rem] shadow-md border-t-4 border-[#1a4d2e]">
+        <h2 class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Enregistrer Vente</h2>
         <div class="flex flex-col gap-2">
-            <input type="number" id="qty" placeholder="Quantité vendue" class="p-2 border rounded">
-            <input type="number" id="price" placeholder="Prix total FCFA" class="p-2 border rounded">
-            <button id="addSale" class="w-full mwasia-gradient text-white py-2 rounded-xl font-bold">Ajouter</button>
+            <input type="number" id="quantite" placeholder="Quantité" class="p-2 border rounded">
+            <input type="number" id="prix" placeholder="CFA" class="p-2 border rounded">
+            <button id="addVente" class="w-full mwasia-gradient text-white py-3 rounded-xl font-bold">Ajouter</button>
         </div>
-        <p class="mt-4 text-[10px]">Total du jour: <span id="day_total">0</span> FCFA</p>
-        <p class="text-[10px]">Total du mois: <span id="month_total">0</span> FCFA</p>
+        <div class="mt-4 text-[9px] font-bold">Total du jour : <span id="totalJour">0</span> FCFA</div>
+        <div class="text-[9px] font-bold">Total du mois : <span id="totalMois">0</span> FCFA</div>
     </section>
 </main>
 
-<!-- PAGE 3: Identité -->
+<!-- Pages 3 à 6 simplifiées pour navigation -->
 <main id="space-identite" class="p-4 max-w-lg mx-auto space-y-6 hidden">
     <h2 class="text-xl font-bold px-2">Identité</h2>
-    <section class="bg-white p-6 rounded-[2rem] shadow-md border-t-4 border-[#1a4d2e]">
-        <div class="grid grid-cols-2 gap-4 text-center mb-6">
-            <div class="bg-green-50 p-4 rounded-2xl border border-green-100">
-                <p class="text-[9px] text-[#1a4d2e] uppercase font-bold">Confiance</p>
-                <p class="text-2xl font-black text-[#1a4d2e]">A+</p>
-            </div>
-            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                <p class="text-[9px] text-[#1e3a8a] uppercase font-bold">Éligibilité</p>
-                <p class="text-2xl font-black text-[#1e3a8a]">OUI</p>
-            </div>
-        </div>
-        <button class="w-full bg-[#1e3a8a] text-white py-4 rounded-xl font-bold text-[10px] uppercase shadow-md tracking-wider">Télécharger Dossier Juridique</button>
-    </section>
 </main>
 
-<!-- PAGE 4: Business Plan -->
 <main id="space-bp" class="p-4 max-w-lg mx-auto space-y-6 hidden">
     <h2 class="text-xl font-bold px-2">Business Plan</h2>
-    <section class="bg-white p-6 rounded-[2rem] shadow-md border-t-4 border-[#1a4d2e] text-center">
-        <p class="text-[11px] text-gray-700 italic mb-4">L'IA Mwasia structure votre projet basé sur vos ventes réelles.</p>
-        <button id="genBP" class="w-full mwasia-gradient text-white py-4 rounded-xl font-bold text-xs shadow-lg uppercase">Générer Plan Stratégique</button>
-        <div id="bp_result" class="mt-4 p-4 bg-gray-50 rounded-2xl border border-green-100 hidden">
-            <p class="text-[11px] italic">"Analyse terminée : Potentiel de croissance élevé. Recommandation : Augmentation du stock de 30%."</p>
-        </div>
-    </section>
 </main>
 
-<!-- PAGE 5: Banque / Crédit -->
 <main id="space-finance" class="p-4 max-w-lg mx-auto space-y-6 hidden">
-    <h2 class="text-xl font-bold px-2">Banque & Financement</h2>
-    <section class="bg-white p-6 rounded-[2rem] shadow-lg border-t-4 border-[#1e3a8a]">
-        <div class="text-center mb-6">
-            <p class="text-[10px] text-gray-400 uppercase font-bold">Capacité de crédit</p>
-            <p class="text-3xl font-black text-[#1e3a8a]">100.000 FCFA</p>
-        </div>
-        <div class="flex justify-between gap-2 mb-4">
-            <button onclick="calc(3)" class="flex-1 py-3 border rounded-xl text-[10px] font-bold hover:bg-blue-50">3 MOIS</button>
-            <button onclick="calc(6)" class="flex-1 py-3 border rounded-xl text-[10px] font-bold hover:bg-blue-50">6 MOIS</button>
-            <button onclick="calc(12)" class="flex-1 py-3 border rounded-xl text-[10px] font-bold hover:bg-blue-50">12 MOIS</button>
-        </div>
-        <div id="result_simul" class="p-4 bg-blue-50 rounded-xl text-center hidden mb-4">
-            <p class="text-[11px] text-[#1e3a8a]">Mensualité estimée : <span id="mensualite" class="font-bold text-lg"></span></p>
-        </div>
-        <button class="w-full mwasia-gradient text-white py-4 rounded-xl font-bold text-[11px] shadow-xl uppercase">Solliciter Ecobank / BGFI</button>
-    </section>
+    <h2 class="text-xl font-bold px-2">Banque</h2>
 </main>
 
-<!-- PAGE 6: Cercle / Messagerie -->
-<main id="space-cercle" class="p-4 max-w-lg mx-auto space-y-4 hidden">
-    <h2 class="text-xl font-bold px-2">Le Cercle</h2>
-    <div class="h-[60vh] overflow-y-auto p-4 bg-gray-100 rounded-[2rem] border space-y-4" id="chat-box">
-        <div class="flex gap-2">
-            <div class="w-8 h-8 rounded-full mwasia-gradient flex items-center justify-center text-white text-[10px] font-bold">LG</div>
-            <div class="bg-white p-3 rounded-2xl text-xs shadow-sm border max-w-[80%]">Bienvenue dans le cercle Mwasia, Laetitia ! 🤝</div>
-        </div>
-    </div>
-    <div class="flex gap-2">
-        <input type="text" id="chatInput" placeholder="Écrire un message..." class="flex-1 p-2 rounded-xl border">
-        <button onclick="sendMessage()" class="bg-[#1a4d2e] text-white p-2 rounded-xl"><i class="fas fa-paper-plane"></i></button>
-    </div>
+<main id="space-cercle" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <h2 class="text-xl font-bold px-2">Cercle / Messagerie</h2>
 </main>
 
-<!-- NAVIGATION FIXE -->
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 flex justify-around items-center glass shadow-lg z-50">
-    <button onclick="switchTab('activite', this)" class="nav-btn nav-active flex flex-col items-center p-2 text-[#1a4d2e]"><i class="fas fa-home text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Activité</span></button>
-    <button onclick="switchTab('ventes', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2"><i class="fas fa-cart-plus text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Ventes</span></button>
-    <button onclick="switchTab('identite', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2"><i class="fas fa-id-badge text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Identité</span></button>
-    <button onclick="switchTab('bp', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2"><i class="fas fa-file-invoice text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Plan</span></button>
-    <button onclick="switchTab('finance', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2"><i class="fas fa-coins text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Banque</span></button>
-    <button onclick="switchTab('cercle', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2"><i class="fas fa-users text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Cercle</span></button>
+    <button onclick="switchTab('activite', this)" class="nav-btn nav-active flex flex-col items-center p-2 text-[#1a4d2e]">
+        <i class="fas fa-home text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Activité</span>
+    </button>
+    <button onclick="switchTab('vente', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+        <i class="fas fa-shopping-cart text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Vente</span>
+    </button>
+    <button onclick="switchTab('identite', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+        <i class="fas fa-id-badge text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Identité</span>
+    </button>
+    <button onclick="switchTab('bp', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+        <i class="fas fa-file-invoice text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Plan</span>
+    </button>
+    <button onclick="switchTab('finance', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+        <i class="fas fa-coins text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Banque</span>
+    </button>
+    <button onclick="switchTab('cercle', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+        <i class="fas fa-users text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Cercle</span>
+    </button>
 </div>
 
 <script>
-    // NAVIGATION
     function switchTab(tabId, element) {
         document.querySelectorAll('main').forEach(main => main.classList.add('hidden'));
         document.getElementById('space-' + tabId).classList.remove('hidden');
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('nav-active','text-[#1a4d2e]')); 
-        element.classList.add('nav-active','text-[#1a4d2e]');
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('nav-active', 'text-[#1a4d2e]');
+            btn.classList.add('text-gray-400');
+        });
+        element.classList.add('nav-active', 'text-[#1a4d2e]');
+        element.classList.remove('text-gray-400');
     }
 
-    // LOGO COULEUR INTERACTIVE
-    const logo = document.getElementById('logo');
-    let toggleColor = false;
-    logo.onclick = () => {
-        toggleColor = !toggleColor;
-        logo.style.color = toggleColor ? '#1e3a8a' : '#1a4d2e';
-    };
-
-    // PAGE 1: Génération visuel + 3 messages + téléchargement + partage
+    // Page 1 : Génération Visuel
     const micBtn = document.getElementById('micBtn');
     const canvas = document.getElementById('carre_visuel');
     const img = document.getElementById('img_finale');
@@ -164,31 +121,43 @@
     let shareCount = 0;
 
     micBtn.onclick = () => {
-        document.getElementById('status').innerText = "ANALYSE EN COURS...";
+        document.getElementById('status').innerText = 'ANALYSE VOCALE EN COURS...';
         setTimeout(() => {
-            document.getElementById('section_gen').classList.remove('opacity-40','pointer-events-none');
-            ctx.fillStyle = "#1a4d2e"; ctx.fillRect(0,0,500,500);
-            ctx.fillStyle = "white"; ctx.font="bold 40px sans-serif"; ctx.textAlign="center";
-            ctx.fillText("PAGNE WAX",250,230);
-            ctx.font="30px sans-serif"; ctx.fillText("OFFRE MWASIA",250,280);
+            document.getElementById('section_gen').classList.remove('opacity-40', 'pointer-events-none');
+            ctx.fillStyle = '#1a4d2e'; ctx.fillRect(0,0,500,500);
+            ctx.fillStyle = 'white'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign='center';
+            ctx.fillText('PAGNE WAX', 250, 230);
+            ctx.font = '30px sans-serif'; ctx.fillText('OFFRE MWASIA', 250, 280);
             img.src = canvas.toDataURL();
-            document.getElementById('msg1').innerText="Nouveau Pagne Wax ! 15000 FCFA";
-            document.getElementById('msg2').innerText="Produit disponible à Douala, contact: 650000000";
-            document.getElementById('msg3').innerText="Profitez de cette offre exceptionnelle avec Mwa$ia !";
-            document.getElementById('status').innerText="VOTRE VISUEL EST PRÊT !";
-        },1000);
+            document.getElementById('msg1').innerText = 'Message pub IA 1';
+            document.getElementById('msg2').innerText = 'Message pub IA 2';
+            document.getElementById('msg3').innerText = 'Message pub IA 3';
+            document.getElementById('status').innerText = 'VOTRE VISUEL EST PRÊT !';
+        }, 1000);
     };
-
-    document.getElementById('downloadBtn').onclick = () => { let a = document.createElement('a'); a.href=img.src; a.download='visuel.png'; a.click(); };
 
     document.getElementById('shareBtn').onclick = () => {
-        shareCount++; document.getElementById('share_count').innerText = shareCount;
-        let text = encodeURIComponent(document.getElementById('msg1').innerText + ' ' + document.getElementById('msg2').innerText + ' ' + document.getElementById('msg3').innerText);
-        window.open(`https://api.whatsapp.com/send?text=${text}`,'_blank');
+        shareCount++;
+        document.getElementById('share_count').innerText = shareCount;
+        const text = encodeURIComponent(document.getElementById('msg1').innerText);
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     };
 
-    // PAGE 2: Micro-enregistrement ventes
-    let dayTotal = 0, monthTotal = 0;
-    document.getElementById('addSale').onclick = () => {
-        const qty = parseInt(document.getElementById('qty').value)||0;
-        const price = parseInt(document.getElementById('price
+    // Page 2 : Enregistrement ventes
+    let totalJour = 0;
+    let totalMois = 0;
+    document.getElementById('addVente').onclick = () => {
+        const qte = parseInt(document.getElementById('quantite').value) || 0;
+        const prix = parseInt(document.getElementById('prix').value) || 0;
+        const montant = qte * prix;
+        totalJour += montant;
+        totalMois += montant;
+        document.getElementById('totalJour').innerText = totalJour;
+        document.getElementById('totalMois').innerText = totalMois;
+        document.getElementById('quantite').value = '';
+        document.getElementById('prix').value = '';
+    };
+</script>
+
+</body>
+</html>          
