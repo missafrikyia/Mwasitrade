@@ -3,161 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mwasia - La Force des Entrepreneures</title>
+    <title>Mwasia - Plateforme Unique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .nav-active { color: #7c3aed !important; font-weight: bold; border-top: 3px solid #7c3aed; }
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .active-step { border-bottom: 4px solid #8b5cf6; color: #8b5cf6; }
         #carre_visuel { display: none; }
         .chat-bubble { border-radius: 18px 18px 18px 2px; }
-        .mwasia-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); }
     </style>
 </head>
 <body class="bg-gray-50 font-sans pb-24 text-gray-900">
 
     <nav class="p-4 bg-white shadow-sm sticky top-0 z-50 flex justify-between items-center border-b">
-        <h1 class="text-2xl font-black text-purple-700 tracking-tighter">MWASIA</h1>
-        <div class="flex items-center gap-2">
-            <span class="text-[9px] font-bold text-gray-400">BY COGNITIO LTD</span>
+        <h1 class="text-2xl font-black text-purple-700">MWASIA</h1>
+        <div class="flex gap-4">
             <i class="fas fa-shield-alt text-green-600"></i>
+            <i class="fas fa-database text-blue-600"></i>
         </div>
     </nav>
 
-    <main id="space-vente" class="p-4 max-w-lg mx-auto space-y-6">
-        <section class="bg-white p-6 rounded-[2rem] shadow-md border border-gray-100 text-center">
-            <h2 class="text-xs font-bold text-gray-400 uppercase mb-4 tracking-widest">Vente Vocale</h2>
-            <button id="micBtn" class="mwasia-gradient text-white w-20 h-20 rounded-full shadow-2xl flex items-center justify-center mx-auto border-4 border-white ring-4 ring-purple-50">
-                <i class="fas fa-microphone text-3xl"></i>
+    <main id="space-activite" class="p-4 max-w-lg mx-auto space-y-6">
+        <div class="bg-white p-3 border rounded-xl flex justify-between text-[10px] font-bold text-gray-400 shadow-sm">
+            <span>J1</span><span>J2</span>
+            <span class="active-step px-2 text-purple-600">J3 : VISUEL</span>
+            <span>J4</span><span>J5</span><span>J6</span><span>J7</span>
+        </div>
+
+        <section class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 text-center">
+            <h2 class="text-sm font-bold text-gray-400 uppercase mb-4">Commande Vocale</h2>
+            <button id="micBtn" class="bg-purple-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center mx-auto">
+                <i class="fas fa-microphone text-2xl"></i>
             </button>
-            <div id="status" class="mt-4 text-[10px] text-purple-700 font-bold uppercase">Appuyez pour annoncer votre vente</div>
+            <p id="status" class="mt-4 text-[10px] text-purple-700 font-bold uppercase italic">"Vends Pagne Wax, 15000 FCFA, Douala"</p>
         </section>
 
-        <section id="section_generation" class="bg-white p-6 rounded-[2rem] shadow-lg border opacity-40 pointer-events-none transition-all">
-            <div class="relative bg-gray-50 rounded-2xl border mb-4 min-h-[250px] flex items-center justify-center overflow-hidden">
-                <canvas id="carre_visuel" width="500" height="500"></canvas>
-                <img id="img_finale" src="" alt="Visuel Mwasia" class="rounded-xl shadow-inner">
+        <section id="section_gen" class="bg-white p-5 rounded-3xl shadow-md border opacity-40 pointer-events-none">
+            <h3 class="text-xs font-bold text-gray-700 mb-3">Votre Kit de Lancement</h3>
+            <div class="flex gap-3 items-center">
+                <div class="w-1/2 aspect-square bg-gray-100 rounded-xl overflow-hidden border">
+                    <canvas id="carre_visuel" width="500" height="500"></canvas>
+                    <img id="img_finale" src="" class="w-full h-full object-cover">
+                </div>
+                <div class="w-1/2 space-y-2">
+                    <div id="preview_txt" class="bg-green-50 p-2 rounded-lg text-[9px] text-green-800 border border-green-100">Prêt à partager...</div>
+                    <button id="shareBtn" class="w-full bg-green-500 text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp"></i> Partager
+                    </button>
+                </div>
             </div>
-            <button id="shareBtn" class="w-full bg-green-500 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg hover:bg-green-600 transition">
-                <i class="fab fa-whatsapp text-xl"></i> ENVOYER AU CLIENT
-            </button>
+        </section>
+
+        <section class="bg-white p-5 rounded-3xl shadow-md border">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-700 text-sm">Mes Ventes</h3>
+                <span class="text-purple-600 font-black">45.000 FCFA</span>
+            </div>
+            <div class="space-y-2" id="log-actions">
+                <div class="flex justify-between p-2 bg-gray-50 rounded-lg text-[10px]">
+                    <span>Pagne Kita - Abidjan</span><span class="font-bold text-green-600">+15.000</span>
+                </div>
+            </div>
         </section>
     </main>
 
-    <main id="space-community" class="p-4 max-w-lg mx-auto space-y-4 hidden">
-        <div class="flex justify-between items-center px-2">
-            <h2 class="text-xl font-bold text-gray-800">Le Cercle Mwasia</h2>
-            <span class="bg-green-100 text-green-700 text-[9px] px-2 py-1 rounded-full font-bold animate-pulse">● 1,024 SŒURS</span>
-        </div>
-        
-        <div id="chat-box" class="space-y-4 h-[55vh] overflow-y-auto p-4 bg-gray-50 rounded-[2rem] shadow-inner border border-gray-100">
+    <main id="space-cercle" class="p-4 max-w-lg mx-auto space-y-4 hidden">
+        <h2 class="text-xl font-bold">Le Cercle Mwasia</h2>
+        <div class="h-[60vh] overflow-y-auto p-4 bg-gray-100 rounded-3xl border space-y-4">
             <div class="flex gap-2">
-                <div class="w-8 h-8 rounded-full bg-orange-400 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">LG</div>
-                <div class="chat-bubble bg-white p-3 shadow-sm border text-xs max-w-[85%]">
-                    <p class="font-bold text-orange-600 text-[9px] mb-1">Laetitia (Fondatrice)</p>
-                    <p>Bienvenue dans l'espace Mwasia. Ici, nous construisons ensemble notre avenir. 🤝</p>
-                </div>
-            </div>
-            <div class="flex gap-2 justify-end">
-                <div class="chat-bubble mwasia-gradient text-white p-3 shadow-sm text-xs max-w-[80%]">
-                    <p>Merci Mwasia ! J'ai déjà fait 3 ventes ce matin ! 🚀</p>
-                </div>
+                <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-[10px]">LG</div>
+                <div class="chat-bubble bg-white p-3 text-xs shadow-sm">Bienvenue les sœurs !</div>
             </div>
         </div>
-
-        <div class="bg-white p-2 rounded-full shadow-lg border flex items-center gap-2">
-            <input type="text" placeholder="Parler aux autres femmes..." class="flex-1 bg-transparent border-none text-xs px-4 focus:outline-none">
-            <button class="mwasia-gradient text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md">
-                <i class="fas fa-paper-plane text-xs"></i>
-            </button>
+        <div class="flex gap-2">
+            <input type="text" placeholder="Message au cercle..." class="flex-1 p-3 rounded-full border text-xs">
+            <button class="bg-purple-600 text-white w-10 h-10 rounded-full"><i class="fas fa-paper-plane"></i></button>
         </div>
     </main>
 
-    <main id="space-legal" class="p-4 max-w-lg mx-auto space-y-6 hidden">
-        <section class="bg-white p-6 rounded-[2rem] shadow-md border-t-4 border-t-purple-600">
-            <h2 class="text-xl font-bold mb-4">Mon Identité Mwasia</h2>
-            <div class="grid grid-cols-2 gap-4 mb-6 text-center">
-                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100">
-                    <p class="text-[9px] text-purple-400 uppercase font-bold">Confiance</p>
-                    <p class="text-xl font-black text-purple-700">A+</p>
-                </div>
-                <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                    <p class="text-[9px] text-blue-400 uppercase font-bold">Éligibilité</p>
-                    <p class="text-xl font-black text-blue-700">OUI</p>
-                </div>
-            </div>
-            <button id="reportBtn" class="w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-sm shadow-xl">
-                TÉLÉCHARGER MON DOSSIER DE FINANCEMENT
-            </button>
-        </section>
+    <main id="space-credit" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+        <h2 class="text-xl font-bold">Mon Crédit</h2>
+        <div class="bg-white p-6 rounded-3xl shadow-md border-t-4 border-t-blue-600 text-center">
+            <p class="text-[10px] text-gray-400 uppercase">Capacité d'emprunt</p>
+            <p class="text-3xl font-black text-blue-600">7.000 USD</p>
+            <button class="mt-6 w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-xs">DOSSIER BANQUE MONDIALE</button>
+        </div>
     </main>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 flex justify-around items-center glass shadow-lg z-50">
-        <button onclick="switchTab('vente', this)" class="nav-btn nav-active flex flex-col items-center p-2 text-purple-600">
-            <i class="fas fa-store mb-1"></i><span class="text-[9px]">Ma Boutique</span>
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 flex justify-around items-center glass shadow-lg">
+        <button onclick="switchTab('activite', this)" class="nav-btn nav-active flex flex-col items-center p-2">
+            <i class="fas fa-home mb-1"></i><span class="text-[9px]">Activité</span>
         </button>
-        <button onclick="switchTab('community', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
-            <i class="fas fa-users mb-1"></i><span class="text-[9px]">Le Cercle</span>
+        <button onclick="switchTab('cercle', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+            <i class="fas fa-users mb-1"></i><span class="text-[9px]">Cercle</span>
         </button>
-        <button onclick="switchTab('legal', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
-            <i class="fas fa-fingerprint mb-1"></i><span class="text-[9px]">Mon Profil</span>
+        <button onclick="switchTab('credit', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
+            <i class="fas fa-chart-line mb-1"></i><span class="text-[9px]">Crédit</span>
         </button>
     </div>
 
     <script>
-        // NAVIGATION
-        function switchTab(target, el) {
+        function switchTab(t, el) {
             document.querySelectorAll('main').forEach(m => m.classList.add('hidden'));
-            document.getElementById('space-' + target).classList.remove('hidden');
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('nav-active', 'text-purple-600');
-                b.classList.add('text-gray-400');
-            });
+            document.getElementById('space-' + t).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active', 'text-purple-600'));
             el.classList.add('nav-active', 'text-purple-600');
-            el.classList.remove('text-gray-400');
         }
 
-        // LOGIQUE VENTE MWASIA
+        // Logique simplifiée pour la démo
         const micBtn = document.getElementById('micBtn');
         const canvas = document.getElementById('carre_visuel');
-        const imgFinale = document.getElementById('img_finale');
-        const sectionGen = document.getElementById('section_generation');
+        const img = document.getElementById('img_finale');
         const ctx = canvas.getContext('2d');
-        const WHATSAPP_NUM = "242057538060"; 
 
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'fr-FR';
-            micBtn.onclick = () => { recognition.start(); document.getElementById('status').innerText = "MWASIA VOUS ÉCOUTE..."; };
-            
-            recognition.onresult = (e) => {
-                const text = e.results[0][0].transcript;
-                const data = {
-                    produit: (text.toLowerCase().split("vends")[1] || text).split(",")[0].trim().toUpperCase(),
-                    prix: (text.match(/\d+/)) ? text.match(/\d+/)[0] + " FCFA" : "Prix sur demande"
-                };
-                draw(data);
-            };
-        }
-
-        function draw(d) {
-            sectionGen.classList.remove('opacity-40', 'pointer-events-none');
-            ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,500,500);
-            ctx.fillStyle = '#7c3aed'; ctx.fillRect(0,0,500,120);
-            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 32px sans-serif'; ctx.textAlign='center';
-            ctx.fillText('MWASIA - FIERTÉ LOCALE', 250, 70);
-            ctx.fillStyle = '#1e293b'; ctx.font = 'bold 42px sans-serif';
-            ctx.fillText(d.produit, 250, 260);
-            ctx.fillStyle = '#4f46e5'; ctx.font = 'bold 36px sans-serif';
-            ctx.fillText(d.prix, 250, 330);
-            imgFinale.src = canvas.toDataURL();
-
-            document.getElementById('shareBtn').onclick = () => {
-                const msg = `Mwasia vous présente : ${d.produit} à ${d.prix}. Qualité garantie !`;
-                window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(msg)}`, '_blank');
-            };
-        }
+        micBtn.onclick = () => {
+            document.getElementById('status').innerText = "Analyse en cours...";
+            setTimeout(() => {
+                document.getElementById('section_gen').classList.remove('opacity-40', 'pointer-events-none');
+                ctx.fillStyle = "#7c3aed"; ctx.fillRect(0,0,500,500);
+                ctx.fillStyle = "white"; ctx.font = "bold 40px sans-serif";
+                ctx.fillText("PAGNE WAX", 150, 250);
+                img.src = canvas.toDataURL();
+                document.getElementById('status').innerText = "Visuel prêt !";
+            }, 1000);
+        };
     </script>
 </body>
 </html>
