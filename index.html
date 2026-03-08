@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mwa$ia - WhatsApp Business Ready</title>
+    <title>Mwa$ia - Pitch Ready</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -33,36 +34,40 @@
         <section class="bg-white p-5 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e] text-center">
             <button id="mic1" class="mwasia-gradient w-16 h-16 rounded-full mb-4 text-white shadow-lg active:scale-95 transition-all"><i class="fas fa-microphone text-2xl"></i></button>
             
-            <div id="capture_area" class="border-2 rounded-2xl overflow-hidden mb-4 bg-white shadow-inner min-h-[200px] flex items-center justify-center p-4">
-                <div class="mwasia-gradient w-full p-6 rounded-2xl text-white shadow-xl">
-                    <h4 class="text-[9px] uppercase opacity-75 mb-1 tracking-widest">Offre Spéciale</h4>
-                    <p id="res_prod" class="text-xl font-black">Produit</p>
-                    <p id="res_prix" class="text-lg font-bold text-yellow-400">0 FCFA</p>
-                    <hr class="my-2 opacity-30">
-                    <p id="res_ville" class="text-[9px] uppercase font-bold"><i class="fas fa-map-marker-alt mr-1"></i> VILLE</p>
+            <div id="capture_area" class="border-2 rounded-2xl overflow-hidden mb-4 bg-white shadow-inner min-h-[250px] flex items-center justify-center relative p-4">
+                <div id="pub_content" class="text-center w-full">
+                    <div class="mwasia-gradient p-8 rounded-2xl text-white shadow-xl">
+                        <h4 class="text-[10px] uppercase opacity-75 mb-1">Annonce Mwa$ia</h4>
+                        <p id="res_prod" class="text-2xl font-black">Ta Robe</p>
+                        <p id="res_prix" class="text-xl font-bold text-yellow-400">2000 FCFA</p>
+                        <hr class="my-3 opacity-30">
+                        <p id="res_ville" class="text-[10px] uppercase font-bold"><i class="fas fa-map-marker-alt mr-1"></i> DOUALA</p>
+                    </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 mb-4">
-                <button onclick="downloadPub()" class="bg-gray-800 text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fas fa-download mr-1"></i> Image</button>
-                <button onclick="shareWA()" class="bg-[#25D366] text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fab fa-whatsapp mr-1"></i> WhatsApp</button>
+                <button onclick="downloadPub()" class="bg-gray-800 text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fas fa-download mr-1"></i> Enregistrer</button>
+                <button onclick="shareWA()" class="bg-[#25D366] text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fab fa-whatsapp mr-1"></i> Partager</button>
             </div>
 
-            <div id="wa_messages" class="text-left space-y-3 hidden">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Textes pour tes groupes WhatsApp :</p>
+            <div id="wa_promo" class="text-left space-y-3 hidden border-t pt-4">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Promos WhatsApp générées :</p>
                 <div class="p-3 bg-green-50 rounded-xl border border-green-100 relative">
-                    <p id="msg_1" class="text-[11px] leading-snug">Coucou ! Ma <span class="prod_name">...</span> est disponible à <span class="prod_prix">...</span>. Livraison rapide sur <span class="prod_ville">...</span> ! 🛍️</p>
+                    <p id="msg_1" class="text-[11px] leading-snug italic">"Coucou ! Ma <span class="wa_prod">...</span> est disponible à <span class="wa_prix">...</span> sur <span class="wa_ville">...</span>. On est ensemble ! 🛍️"</p>
                     <button onclick="copyMsg('msg_1')" class="absolute top-2 right-2 copy-btn">Copier</button>
                 </div>
                 <div class="p-3 bg-white rounded-xl border border-gray-100 relative">
-                    <p id="msg_2" class="text-[11px] leading-snug">PROMO : Profitez de ma <span class="prod_name">...</span> à seulement <span class="prod_prix">...</span> aujourd'hui à <span class="prod_ville">...</span>. Qualité garantie ! ✨</p>
+                    <p id="msg_2" class="text-[11px] leading-snug italic">"PROMO : <span class="wa_prod">...</span> à seulement <span class="wa_prix">...</span> aujourd'hui à <span class="wa_ville">...</span>. Premier arrivé, premier servi ! ✨"</p>
                     <button onclick="copyMsg('msg_2')" class="absolute top-2 right-2 copy-btn">Copier</button>
                 </div>
                 <div class="p-3 bg-yellow-50 rounded-xl border border-yellow-100 relative">
-                    <p id="msg_3" class="text-[11px] leading-snug">Dernière chance ! Il me reste une <span class="prod_name">...</span> à <span class="prod_prix">...</span>. Qui prend ? Je suis à <span class="prod_ville">...</span>. 🔥</p>
+                    <p id="msg_3" class="text-[11px] leading-snug italic">"Dernière chance pour ma <span class="wa_prod">...</span> à <span class="wa_prix">...</span>. Je suis à <span class="wa_ville">...</span>, contactez-moi ! 🔥"</p>
                     <button onclick="copyMsg('msg_3')" class="absolute top-2 right-2 copy-btn">Copier</button>
                 </div>
             </div>
+
+            <button onclick="simuPay()" class="w-full bg-[#1e3a8a] text-white p-4 rounded-xl text-[11px] font-black uppercase shadow-lg mt-4">Générer Lien Mobile Money</button>
         </section>
     </main>
 
@@ -71,17 +76,21 @@
             <div class="flex justify-center mb-6"><button id="mic2" class="mwasia-gradient w-16 h-16 rounded-full text-white shadow-xl"><i class="fas fa-microphone text-2xl"></i></button></div>
             <div class="grid grid-cols-2 gap-3 mb-4 text-center">
                 <input type="number" id="q" placeholder="Qté" class="p-3 border rounded-xl text-center font-black bg-gray-50">
-                <input type="number" id="pr" placeholder="Prix Total" class="p-3 border rounded-xl text-center font-black bg-gray-50">
+                <input type="number" id="pr" placeholder="Prix" class="p-3 border rounded-xl text-center font-black bg-gray-50">
             </div>
-            <button onclick="validerVente()" class="w-full bg-[#1a4d2e] text-white p-4 rounded-xl font-black uppercase text-xs">Enregistrer la vente</button>
-            <div id="ventes_list" class="mt-6 space-y-2 max-h-[250px] overflow-y-auto"></div>
+            <button onclick="validerVente()" class="w-full bg-[#1a4d2e] text-white p-4 rounded-xl font-black uppercase text-xs">Valider la vente</button>
+            
+            <div class="mt-6 space-y-2">
+                <p class="text-[10px] font-bold text-gray-400 uppercase">Historique (Dates d'entrée)</p>
+                <div id="ventes_list" class="max-h-[200px] overflow-y-auto space-y-2"></div>
+            </div>
         </section>
     </main>
 
-    <main id="p6" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-green-500"><h2 class="font-bold text-[10px] uppercase mb-6 text-green-600">Mon Cash</h2><div class="bg-green-50 p-8 rounded-3xl"><h3 id="wallet_val" class="text-4xl font-black text-[#1a4d2e]">0 FCFA</h3></div></section></main>
-    <main id="p3" class="page p-4 text-center"><section class="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]"><h2 class="font-bold text-[10px] uppercase mb-6">Confiance</h2><div class="w-24 h-24 mwasia-gradient rounded-full mx-auto flex items-center justify-center text-white text-2xl font-black italic">TOP</div></section></main>
-    <main id="p4" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]"><h2 class="font-bold text-[10px] uppercase mb-6">Crédit</h2><div class="mwasia-gradient p-8 rounded-3xl text-white shadow-lg"><h3 id="elig" class="text-3xl font-black">0 FCFA</h3></div></section></main>
-    <main id="p5" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-orange-400"><h2 class="font-bold text-[10px] uppercase mb-4 text-orange-600">Le Coach</h2><div id="ia_res" class="text-left p-4 bg-orange-50 rounded-2xl text-[12px] italic">"Partage tes textes WhatsApp pour booster tes ventes aujourd'hui !"</div></section></main>
+    <main id="p6" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-green-500"><h2 class="font-bold text-[10px] uppercase mb-6 text-green-600">Portefeuille</h2><div class="bg-green-50 p-8 rounded-3xl"><h3 id="wallet_val" class="text-4xl font-black text-[#1a4d2e]">0 FCFA</h3></div></section></main>
+    <main id="p3" class="page p-4 text-center"><section class="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]"><h2 class="font-bold text-[10px] uppercase mb-6">Confiance</h2><div class="w-24 h-24 mwasia-gradient rounded-full mx-auto flex items-center justify-center text-white text-2xl font-black italic">A+</div></section></main>
+    <main id="p4" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]"><h2 class="font-bold text-[10px] uppercase mb-6">Crédit Disponible</h2><div class="mwasia-gradient p-8 rounded-3xl text-white shadow-lg"><h3 id="elig" class="text-3xl font-black">0 FCFA</h3></div></section></main>
+    <main id="p5" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-orange-400"><h2 class="font-bold text-[10px] uppercase mb-4 text-orange-600">Le Conseil de Mwa$ia</h2><div id="ia_res" class="text-left p-4 bg-orange-50 rounded-2xl text-[12px] italic text-orange-900 border border-orange-100">"Utilise bien tes outils, ma soeur !"</div></section></main>
 
     <div id="chat-container" class="flex-col bg-white rounded-3xl shadow-2xl border-2 border-[#1a4d2e] overflow-hidden">
         <div class="mwasia-gradient p-4 text-white flex justify-between items-center"><span class="text-[11px] font-bold uppercase">Coach Mwa$ia</span><button onclick="toggleChat()"><i class="fas fa-times"></i></button></div>
@@ -109,9 +118,10 @@
             document.getElementById('wallet_val').innerText = data.wallet.toLocaleString() + " FCFA";
             const totalCA = data.ventes.reduce((acc, curr) => acc + curr.p, 0);
             document.getElementById('elig').innerText = Math.round((data.wallet * 3) + (totalCA * 0.1)).toLocaleString() + " FCFA";
+            
             document.getElementById('ventes_list').innerHTML = data.ventes.map(v => `
                 <div class="flex justify-between items-center p-3 bg-white border rounded-xl shadow-sm">
-                    <span class="text-[9px] text-gray-400 font-bold">${v.d}</span>
+                    <span class="text-[9px] text-blue-600 font-bold italic">${v.d}</span>
                     <span class="font-black text-[#1a4d2e]">${v.p} F</span>
                 </div>
             `).join('');
@@ -119,6 +129,7 @@
 
         const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
         function runMic(btnId, callback) {
+            if(!Speech) return alert("Micro non supporté");
             const rec = new Speech(); rec.lang = 'fr-FR';
             document.getElementById(btnId).classList.add('recording');
             rec.start();
@@ -137,12 +148,13 @@
                 document.getElementById('res_prix').innerText = prix + " FCFA";
                 document.getElementById('res_ville').innerHTML = `<i class="fas fa-map-marker-alt mr-1"></i> ${ville}`;
                 
-                document.querySelectorAll('.prod_name').forEach(el => el.innerText = prod);
-                document.querySelectorAll('.prod_prix').forEach(el => el.innerText = prix + " FCFA");
-                document.querySelectorAll('.prod_ville').forEach(el => el.innerText = ville);
-                document.getElementById('wa_messages').classList.remove('hidden');
+                // Update WA Promo texts
+                document.querySelectorAll('.wa_prod').forEach(el => el.innerText = prod);
+                document.querySelectorAll('.wa_prix').forEach(el => el.innerText = prix + " FCFA");
+                document.querySelectorAll('.wa_ville').forEach(el => el.innerText = ville);
+                document.getElementById('wa_promo').classList.remove('hidden');
 
-                addCoachMessage("Génial ! Tes messages WhatsApp sont prêts. Copie celui que tu veux partager.");
+                addCoachMessage("Wouah ma soeur ! Ta pub et tes messages WhatsApp sont prêts.");
             });
         };
 
@@ -157,16 +169,17 @@
             const p = parseInt(document.getElementById('pr').value) || 0;
             if(p > 0) {
                 const now = new Date();
-                data.ventes.unshift({ d: now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), p: p });
+                const dateStr = now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                data.ventes.unshift({ d: dateStr, p: p });
                 save();
-                addCoachMessage(`Super ! Vente de ${p} F notée le ${now.toLocaleDateString()}. Ça prouve ton sérieux !`);
+                addCoachMessage(`Vente de ${p} F enregistrée le ${dateStr} !`);
             }
         }
 
         function copyMsg(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
-            alert("Message copié ! Tu peux le coller sur WhatsApp.");
+            alert("Message WhatsApp copié !");
         }
 
         function downloadPub() {
@@ -178,7 +191,15 @@
             });
         }
 
-        function shareWA() { window.open(`https://wa.me/?text=${encodeURIComponent("Regardez mon offre Mwa$ia !")}`); }
+        function shareWA() {
+            window.open(`https://wa.me/?text=${encodeURIComponent("Regardez ma nouvelle offre sur Mwa$ia !")}`);
+        }
+
+        function simuPay() {
+            data.wallet += 5000; save();
+            addCoachMessage("L'argent du client (+5000 F) est arrivé dans ton portefeuille !");
+            toggleChat();
+        }
 
         function nav(n, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
