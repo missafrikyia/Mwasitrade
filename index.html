@@ -1,160 +1,220 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mwasia Voice-First</title>
+<title>Mwasia Mobile</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-:root { --mwasia-green: #1a4d2e; --mwasia-blue: #1e3a8a; }
-.nav-active { color: var(--mwasia-green) !important; font-weight: bold; border-top: 3px solid var(--mwasia-green); }
-.mwasia-gradient { background: linear-gradient(135deg, #1a4d2e 0%, #1e3a8a 100%); }
-.glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+    :root { --mwasia-green: #1a4d2e; --mwasia-blue: #1e3a8a; }
+    .mwasia-gradient { background: linear-gradient(135deg, var(--mwasia-green) 0%, var(--mwasia-blue) 100%); }
+    .nav-active { color: var(--mwasia-green) !important; font-weight: bold; border-top: 3px solid var(--mwasia-green); }
+    .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
 </style>
 </head>
-<body class="bg-gray-50 font-sans pb-24 text-gray-900">
+<body class="bg-gray-50 font-sans text-gray-900 pb-24">
 
-<!-- NAV -->
-<nav class="p-4 bg-white shadow-sm sticky top-0 z-50 flex justify-between items-center border-b">
-  <h1 class="text-2xl font-black text-[#1a4d2e] tracking-tighter">MWASIA</h1>
-  <div class="flex items-center gap-2">
-    <span class="text-[9px] font-bold text-gray-400 uppercase">Souveraineté Cognitio</span>
-    <i class="fas fa-shield-alt text-green-600"></i>
-  </div>
-</nav>
+<h1 class="text-2xl font-black text-center text-[#1a4d2e] p-4">MWASIA</h1>
 
-<!-- ACTIVITÉ VOICE-FIRST -->
-<main id="space-activite" class="p-4 max-w-lg mx-auto space-y-6">
-  <section class="bg-white p-6 rounded-[2rem] shadow-md border text-center border-t-4 border-[#1a4d2e]">
-    <h2 class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Enregistrer une activité vocale</h2>
-    <button id="voiceBtn" class="mwasia-gradient text-white w-20 h-20 rounded-full shadow-xl flex items-center justify-center mx-auto border-4 border-white">
-      <i class="fas fa-microphone text-3xl"></i>
-    </button>
-    <div id="voiceStatus" class="mt-4 text-[10px] text-[#1e3a8a] font-bold italic uppercase">Clique pour parler...</div>
-  </section>
-
-  <section id="section_gen" class="bg-white p-5 rounded-[2rem] shadow-lg border-l-4 border-[#1a4d2e] opacity-40 pointer-events-none">
-    <h3 class="text-xs font-bold text-gray-700 mb-4">Mon Kit de Lancement</h3>
-    <div class="flex flex-col sm:flex-row gap-3">
-      <div class="flex-1 aspect-square bg-gray-50 rounded-2xl overflow-hidden border relative">
-        <canvas id="carre_visuel" width="500" height="500" class="hidden"></canvas>
-        <img id="img_finale" src="https://via.placeholder.com/500x500/f3f4f6/9ca3af?text=Aper%C3%A7u+Visuel" class="w-full h-full object-cover">
-        <button id="downloadBtn" class="absolute bottom-2 right-2 bg-white/90 p-2 rounded-full text-[#1a4d2e] shadow-md">
-          <i class="fas fa-download"></i>
+<!-- PAGE 1: Génération Visuel -->
+<main id="space-1" class="p-4 max-w-lg mx-auto space-y-6">
+    <section class="bg-white p-6 rounded-2xl shadow-md text-center">
+        <h2 class="font-bold text-gray-700 mb-2">Génération Visuel</h2>
+        <button id="micBtn" class="mwasia-gradient w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="fas fa-microphone text-2xl text-white"></i>
         </button>
-      </div>
-      <div class="flex-1 flex flex-col justify-between gap-2">
-        <div class="p-2 bg-green-50 rounded-lg text-[8px] text-[#1a4d2e] border border-green-100 italic" id="msg1">Prêt à générer le visuel</div>
-        <div class="p-2 bg-blue-50 rounded-lg text-[8px] text-[#1e3a8a] border border-blue-100 italic" id="msg2">KPI : ventes, partages, engagement</div>
-        <button id="shareBtn" class="w-full bg-[#1a4d2e] text-white py-3 rounded-xl font-bold text-[10px] flex items-center justify-center gap-2 shadow-md">
-          <i class="fas fa-share-alt"></i> Partager métriques
-        </button>
-
-        <div class="grid grid-cols-2 gap-2 mt-2">
-          <div class="bg-gray-100 p-2 rounded-xl text-center">
-            <p class="text-[8px] text-gray-500 uppercase font-bold">Ventes cumulées</p>
-            <p class="text-sm font-black text-[#1e3a8a]" id="kpi_ventes">0 FCFA</p>
-          </div>
-          <div class="bg-gray-100 p-2 rounded-xl text-center">
-            <p class="text-[8px] text-gray-500 uppercase font-bold">Partages</p>
-            <p class="text-sm font-black text-[#1a4d2e]" id="kpi_shares">0</p>
-          </div>
+        <div id="speech_status" class="text-sm italic text-[#1e3a8a]">Cliquez pour enregistrer la vente</div>
+        <div class="mt-4">
+            <canvas id="visuelCanvas" width="300" height="300" class="mx-auto border rounded-lg hidden"></canvas>
+            <img id="img_finale" src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text=Visuel" class="mx-auto w-full h-auto rounded-lg">
+            <button id="shareBtn" class="mt-2 w-full mwasia-gradient py-2 text-white rounded-lg flex items-center justify-center gap-2"><i class="fab fa-whatsapp"></i> Partager</button>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </main>
 
-<!-- FOOTER NAV -->
+<!-- PAGE 2: Micro-saisie Vente -->
+<main id="space-2" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <section class="bg-white p-6 rounded-2xl shadow-md">
+        <h2 class="font-bold text-gray-700 mb-2">Enregistrement Vente</h2>
+        <div class="flex gap-2 mb-2">
+            <input type="number" id="quantite" placeholder="Quantité" class="border p-2 rounded flex-1">
+            <input type="number" id="prix" placeholder="Prix FCFA" class="border p-2 rounded flex-1">
+            <button id="addSaleBtn" class="bg-[#1a4d2e] text-white px-4 rounded font-bold">Ajouter</button>
+        </div>
+        <table class="w-full text-sm mt-2">
+            <thead class="bg-gray-100">
+                <tr><th class="p-2">Jour</th><th class="p-2">Qté</th><th class="p-2">Montant</th></tr>
+            </thead>
+            <tbody id="salesTable"></tbody>
+        </table>
+        <div class="grid grid-cols-2 gap-2 mt-4">
+            <div class="bg-green-50 p-3 rounded-xl text-center">
+                <p class="text-xs uppercase font-bold">Ventes totales</p>
+                <p id="totalVentes" class="text-2xl font-black text-[#1a4d2e]">0 FCFA</p>
+            </div>
+            <div class="bg-blue-50 p-3 rounded-xl text-center">
+                <p class="text-xs uppercase font-bold">Partages / Réseau</p>
+                <p id="totalReseau" class="text-2xl font-black text-[#1e3a8a]">0</p>
+            </div>
+        </div>
+        <div class="bg-purple-50 p-3 rounded-xl text-center mt-2">
+            <p class="text-xs uppercase font-bold">Score Valeur (T+R+A)</p>
+            <p id="scoreValeur" class="text-2xl font-black text-[#7b3fe4]">0</p>
+        </div>
+    </section>
+</main>
+
+<!-- PAGE 3: Identité -->
+<main id="space-3" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <section class="bg-white p-6 rounded-2xl shadow-md text-center">
+        <h2 class="font-bold text-gray-700 mb-2">Identité</h2>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-green-50 p-4 rounded-xl">
+                <p class="text-xs uppercase font-bold">Confiance</p>
+                <p class="text-2xl font-black text-[#1a4d2e]">A+</p>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-xl">
+                <p class="text-xs uppercase font-bold">Éligibilité</p>
+                <p class="text-2xl font-black text-[#1e3a8a]">OUI</p>
+            </div>
+        </div>
+        <button class="w-full mwasia-gradient text-white py-3 rounded-xl font-bold">Télécharger Dossier Juridique</button>
+    </section>
+</main>
+
+<!-- PAGE 4: Business Plan -->
+<main id="space-4" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <section class="bg-white p-6 rounded-2xl shadow-md text-center">
+        <h2 class="font-bold text-gray-700 mb-2">Business Plan</h2>
+        <p class="text-xs text-gray-500 mb-2">L'IA Mwasia structure votre projet basé sur vos ventes réelles.</p>
+        <button id="genBP" class="w-full mwasia-gradient py-3 text-white rounded-xl font-bold mb-2">Générer Plan</button>
+        <div id="bp_result" class="hidden mt-2 p-3 bg-gray-50 rounded-xl text-sm text-gray-700 italic border border-green-100">Analyse terminée : potentiel de croissance élevé.</div>
+    </section>
+</main>
+
+<!-- PAGE 5: Banque -->
+<main id="space-5" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <section class="bg-white p-6 rounded-2xl shadow-md text-center">
+        <h2 class="font-bold text-gray-700 mb-2">Banque / Crédit</h2>
+        <div class="text-2xl font-black text-[#1e3a8a] mb-2">100.000 FCFA</div>
+        <div class="flex gap-2 mb-2">
+            <button onclick="calc(3)" class="flex-1 py-2 border rounded text-sm font-bold hover:bg-blue-50">3 MOIS</button>
+            <button onclick="calc(6)" class="flex-1 py-2 border rounded text-sm font-bold hover:bg-blue-50">6 MOIS</button>
+            <button onclick="calc(12)" class="flex-1 py-2 border rounded text-sm font-bold hover:bg-blue-50">12 MOIS</button>
+        </div>
+        <div id="result_simul" class="hidden p-2 bg-blue-50 rounded-xl text-center mb-2">
+            Mensualité : <span id="mensualite"></span>
+        </div>
+        <button class="w-full mwasia-gradient py-2 text-white rounded-xl font-bold">Solliciter Ecobank / BGFI</button>
+    </section>
+</main>
+
+<!-- PAGE 6: Cercle / Messagerie -->
+<main id="space-6" class="p-4 max-w-lg mx-auto space-y-6 hidden">
+    <section class="bg-white p-6 rounded-2xl shadow-md">
+        <h2 class="font-bold text-gray-700 mb-2 text-center">Cercle / Messagerie</h2>
+        <div id="chatBox" class="h-64 overflow-y-auto bg-gray-100 p-3 rounded-xl space-y-2 mb-2">
+            <div class="flex gap-2"><div class="w-8 h-8 rounded-full bg-[#1a4d2e] text-white flex items-center justify-center text-xs">LG</div><div class="bg-white p-2 rounded-xl text-sm">Bienvenue dans le Cercle Mwasia!</div></div>
+        </div>
+        <div class="flex gap-2">
+            <input type="text" id="chatInput" placeholder="Écrire un message..." class="flex-1 border p-2 rounded">
+            <button id="sendMsg" class="bg-[#1a4d2e] text-white px-4 rounded font-bold">Envoyer</button>
+        </div>
+    </section>
+</main>
+
+<!-- Navigation fixe -->
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 flex justify-around items-center glass shadow-lg z-50">
-  <button onclick="switchTab('activite', this)" class="nav-btn nav-active flex flex-col items-center p-2 text-[#1a4d2e]">
-    <i class="fas fa-home text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Activité</span>
-  </button>
-  <button onclick="switchTab('cercle', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
-    <i class="fas fa-users text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Cercle</span>
-  </button>
-  <button onclick="switchTab('identite', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
-    <i class="fas fa-id-badge text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Identité</span>
-  </button>
-  <button onclick="switchTab('finance', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
-    <i class="fas fa-coins text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Banque</span>
-  </button>
-  <button onclick="switchTab('bp', this)" class="nav-btn text-gray-400 flex flex-col items-center p-2">
-    <i class="fas fa-file-invoice text-sm mb-1"></i><span class="text-[8px] uppercase font-bold tracking-tighter">Plan</span>
-  </button>
+    <button onclick="switchTab(1,this)" class="nav-btn nav-active flex flex-col items-center text-[#1a4d2e]"><i class="fas fa-home"></i><span class="text-[8px]">Visuel</span></button>
+    <button onclick="switchTab(2,this)" class="nav-btn flex flex-col items-center text-gray-400"><i class="fas fa-cash-register"></i><span class="text-[8px]">Vente</span></button>
+    <button onclick="switchTab(3,this)" class="nav-btn flex flex-col items-center text-gray-400"><i class="fas fa-id-badge"></i><span class="text-[8px]">Identité</span></button>
+    <button onclick="switchTab(4,this)" class="nav-btn flex flex-col items-center text-gray-400"><i class="fas fa-file-invoice"></i><span class="text-[8px]">Plan</span></button>
+    <button onclick="switchTab(5,this)" class="nav-btn flex flex-col items-center text-gray-400"><i class="fas fa-coins"></i><span class="text-[8px]">Banque</span></button>
+    <button onclick="switchTab(6,this)" class="nav-btn flex flex-col items-center text-gray-400"><i class="fas fa-users"></i><span class="text-[8px]">Cercle</span></button>
 </div>
 
 <script>
-// NAV
-function switchTab(tabId, element) {
-  document.querySelectorAll('main').forEach(main => main.classList.add('hidden'));
-  document.getElementById('space-' + tabId).classList.remove('hidden');
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.classList.remove('nav-active', 'text-[#1a4d2e]');
-    btn.classList.add('text-gray-400');
-  });
-  element.classList.add('nav-active', 'text-[#1a4d2e]');
-  element.classList.remove('text-gray-400');
+let currentTab = 1;
+
+// NAVIGATION
+function switchTab(tab, element){
+    document.querySelectorAll('main').forEach(m => m.classList.add('hidden'));
+    document.getElementById('space-'+tab).classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(b => {b.classList.remove('nav-active'); b.classList.add('text-gray-400');});
+    element.classList.add('nav-active'); element.classList.remove('text-gray-400');
+    currentTab = tab;
 }
 
-// VOICE-FIRST
-let shareCount = 0;
-let totalVentes = 0;
-const voiceBtn = document.getElementById('voiceBtn');
-const status = document.getElementById('voiceStatus');
-const kpiVentes = document.getElementById('kpi_ventes');
-const kpiShares = document.getElementById('kpi_shares');
-
-voiceBtn.onclick = () => {
-  if (!('webkitSpeechRecognition' in window)) {
-    alert("Votre navigateur ne supporte pas la reconnaissance vocale.");
-    return;
-  }
-
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = "fr-FR";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-  status.innerText = "Écoute en cours... Parlez maintenant";
-
-  recognition.start();
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    status.innerText = `Vous avez dit : "${transcript}"`;
-
-    // Extraction simple du montant si format "X FCFA"
-    const regex = /(\d+)\s?FCFA/;
-    const match = transcript.match(regex);
-    if (match) {
-      totalVentes += parseInt(match[1]);
-      kpiVentes.innerText = totalVentes.toLocaleString() + " FCFA";
-    }
-
-    // Déverrouille section visuel
-    document.getElementById('section_gen').classList.remove('opacity-40', 'pointer-events-none');
-
-    // Dessin visuel simplifié
-    const canvas = document.getElementById('carre_visuel');
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = "#1a4d2e"; ctx.fillRect(0,0,500,500);
-    ctx.fillStyle = "white"; ctx.font = "bold 40px sans-serif"; ctx.textAlign="center";
-    ctx.fillText("PAGNE WAX", 250, 230);
-    ctx.font = "30px sans-serif"; ctx.fillText("OFFRE MWASIA", 250, 280);
-    document.getElementById('img_finale').src = canvas.toDataURL();
-    document.getElementById('msg1').innerText = transcript;
-  };
-
-  recognition.onerror = (e) => { status.innerText = "Erreur reconnaissance vocale : " + e.error; }
+// VENTES & SCORE
+let sales = [];
+let reseau = 0;
+const alpha=1,beta=5,gamma=10;
+document.getElementById('addSaleBtn').onclick = () => {
+    const q = parseInt(document.getElementById('quantite').value);
+    const p = parseInt(document.getElementById('prix').value);
+    if(!q || !p) return;
+    const today = new Date().toLocaleDateString();
+    sales.push({jour:today,quantite:q,montant:p});
+    updateTable(); updateScore();
+    document.getElementById('quantite').value=''; document.getElementById('prix').value='';
 };
+function updateTable(){
+    const tbody=document.getElementById('salesTable');tbody.innerHTML='';
+    let total=0;
+    sales.forEach(s=>{total+=s.montant;const tr=document.createElement('tr');tr.innerHTML=`<td class="p-2">${s.jour}</td><td class="p-2">${s.quantite}</td><td class="p-2">${s.montant}</td>`;tbody.appendChild(tr);});
+    document.getElementById('totalVentes').innerText=total.toLocaleString()+' FCFA';
+}
+function updateScore(){
+    const T=sales.length,R=reseau,A=sales.reduce((sum,s)=>sum+s.quantite,0);
+    document.getElementById('scoreValeur').innerText=alpha*T+beta*R+gamma*A;
+}
 
-// Partage métriques
-document.getElementById('shareBtn').onclick = () => {
-  shareCount++;
-  kpiShares.innerText = shareCount;
-  const text = encodeURIComponent(`Ventes cumulées : ${totalVentes.toLocaleString()} FCFA, Partages : ${shareCount}`);
-  window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+// PARTAGES (simulation)
+document.body.addEventListener('click',()=>{reseau+=1;document.getElementById('totalReseau').innerText=reseau;updateScore();});
+
+// BUSINESS PLAN
+document.getElementById('genBP').onclick=function(){this.innerHTML='<i class="fas fa-sync fa-spin"></i>'; setTimeout(()=>{this.innerText='Plan généré';document.getElementById('bp_result').classList.remove('hidden');},1500);}
+
+// CRÉDIT
+function calc(mois){const total=100000;document.getElementById('mensualite').innerText=Math.round(total/mois).toLocaleString()+' FCFA';document.getElementById('result_simul').classList.remove('hidden');}
+
+// MESSAGERIE
+document.getElementById('sendMsg').onclick=function(){
+    const val=document.getElementById('chatInput').value.trim();
+    if(!val) return;
+    const div=document.createElement('div');
+    div.className='flex gap-2 justify-end'; 
+    div.innerHTML=`<div class="bg-[#1a4d2e] text-white p-2 rounded-xl text-sm max-w-[80%]">${val}</div>`;
+    document.getElementById('chatBox').appendChild(div);
+    document.getElementById('chatInput').value='';
+    document.getElementById('chatBox').scrollTop=document.getElementById('chatBox').scrollHeight;
+}
+
+// Saisie vocale visuel
+const micBtn=document.getElementById('micBtn');
+const canvas=document.getElementById('visuelCanvas');
+const ctx=canvas.getContext('2d');
+const img=document.getElementById('img_finale');
+micBtn.onclick=function(){
+    if(!('webkitSpeechRecognition' in window)){alert("Pas supporté");return;}
+    const recognition=new webkitSpeechRecognition(); recognition.lang='fr-FR'; recognition.start();
+    document.getElementById('speech_status').innerText="Écoute en cours...";
+    recognition.onresult=function(e){
+        const text=e.results[0][0].transcript;
+        document.getElementById('speech_status').innerText=`Reconnu: "${text}"`;
+        const match=text.match(/(\d+)\s*\w*\s*pour\s*(\d+)/i);
+        if(match){const today=new Date().toLocaleDateString(); sales.push({jour:today,quantite:parseInt(match[1]),montant:parseInt(match[2])}); updateTable(); updateScore();}
+        // Dessin visuel
+        ctx.fillStyle="#1a4d2e";ctx.fillRect(0,0,300,300);
+        ctx.fillStyle="white";ctx.font="bold 24px sans-serif";ctx.textAlign="center";
+        ctx.fillText("Nouveau Produit",150,140);
+        ctx.fillText("Offre MWASIA",150,180);
+        img.src=canvas.toDataURL();
+    };
 };
+document.getElementById('shareBtn').onclick=function(){reseau+=1;updateScore();window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Découvrez mon produit via MWASIA!')}`,'_blank');}
 </script>
+
 </body>
 </html>
