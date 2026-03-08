@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mwa$ia - Prototype Final</title>
+    <title>Mwa$ia - WhatsApp Business Ready</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --mwasia-green: #1a4d2e; --mwasia-blue: #1e3a8a; }
@@ -13,8 +14,9 @@
         .recording { animation: pulse 1s infinite; background: #ef4444 !important; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .page { display: none; } .page-active { display: block; }
-        #chat-container { display: none; position: fixed; bottom: 90px; right: 20px; left: 20px; z-index: 100; height: 60vh; }
+        #chat-container { display: none; position: fixed; bottom: 90px; right: 20px; left: 20px; z-index: 100; height: 50vh; }
         .chat-open { display: flex !important; }
+        .copy-btn { font-size: 8px; padding: 4px 8px; border-radius: 6px; background: #e2e8f0; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body class="bg-gray-50 pb-24 text-gray-800 font-sans">
@@ -22,94 +24,73 @@
     <header class="bg-white sticky top-0 z-50 border-b p-4 flex justify-between items-center shadow-sm">
         <div class="flex items-center gap-2">
             <div class="w-8 h-8 mwasia-gradient rounded-lg flex items-center justify-center text-white font-black text-xl">S</div>
-            <h1 class="text-xl font-black tracking-tighter italic">Mwa<span class="text-[#22c55e]">$</span>ia</h1>
+            <h1 class="text-xl font-black italic">Mwa<span class="text-[#22c55e]">$</span>ia</h1>
         </div>
-        <button onclick="resetApp()" class="text-[10px] bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold uppercase"><i class="fas fa-trash mr-1"></i> Reset</button>
+        <button onclick="resetApp()" class="text-[10px] bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold uppercase">Reset</button>
     </header>
 
     <main id="p1" class="page page-active p-4 space-y-4">
         <section class="bg-white p-5 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e] text-center">
-            <p class="text-[11px] font-bold text-blue-600 mb-2 italic">"Dis : [Produit] à [Prix] à [Ville]"</p>
             <button id="mic1" class="mwasia-gradient w-16 h-16 rounded-full mb-4 text-white shadow-lg active:scale-95 transition-all"><i class="fas fa-microphone text-2xl"></i></button>
-            <div id="pub_status" class="text-[10px] text-gray-400 mb-2 italic">Prête à t'écouter...</div>
-            <div class="border-2 rounded-2xl overflow-hidden mb-4 bg-gray-100 shadow-inner min-h-[200px] flex items-center justify-center relative">
-                <div id="pub_content" class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <span class="text-gray-300 font-bold uppercase">Ta Pub Vocale</span>
+            
+            <div id="capture_area" class="border-2 rounded-2xl overflow-hidden mb-4 bg-white shadow-inner min-h-[200px] flex items-center justify-center p-4">
+                <div class="mwasia-gradient w-full p-6 rounded-2xl text-white shadow-xl">
+                    <h4 class="text-[9px] uppercase opacity-75 mb-1 tracking-widest">Offre Spéciale</h4>
+                    <p id="res_prod" class="text-xl font-black">Produit</p>
+                    <p id="res_prix" class="text-lg font-bold text-yellow-400">0 FCFA</p>
+                    <hr class="my-2 opacity-30">
+                    <p id="res_ville" class="text-[9px] uppercase font-bold"><i class="fas fa-map-marker-alt mr-1"></i> VILLE</p>
                 </div>
-                <img id="out_img" src="" class="w-full hidden">
             </div>
-            <button id="pay_link" class="w-full bg-[#1e3a8a] text-white p-4 rounded-xl text-[11px] font-black uppercase shadow-lg mb-2">Générer Lien Mobile Money</button>
-            <button class="w-full bg-[#25D366] text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fab fa-whatsapp mr-1"></i> Envoyer sur WhatsApp</button>
+
+            <div class="grid grid-cols-2 gap-2 mb-4">
+                <button onclick="downloadPub()" class="bg-gray-800 text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fas fa-download mr-1"></i> Image</button>
+                <button onclick="shareWA()" class="bg-[#25D366] text-white p-3 rounded-xl text-[10px] font-bold uppercase"><i class="fab fa-whatsapp mr-1"></i> WhatsApp</button>
+            </div>
+
+            <div id="wa_messages" class="text-left space-y-3 hidden">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Textes pour tes groupes WhatsApp :</p>
+                <div class="p-3 bg-green-50 rounded-xl border border-green-100 relative">
+                    <p id="msg_1" class="text-[11px] leading-snug">Coucou ! Ma <span class="prod_name">...</span> est disponible à <span class="prod_prix">...</span>. Livraison rapide sur <span class="prod_ville">...</span> ! 🛍️</p>
+                    <button onclick="copyMsg('msg_1')" class="absolute top-2 right-2 copy-btn">Copier</button>
+                </div>
+                <div class="p-3 bg-white rounded-xl border border-gray-100 relative">
+                    <p id="msg_2" class="text-[11px] leading-snug">PROMO : Profitez de ma <span class="prod_name">...</span> à seulement <span class="prod_prix">...</span> aujourd'hui à <span class="prod_ville">...</span>. Qualité garantie ! ✨</p>
+                    <button onclick="copyMsg('msg_2')" class="absolute top-2 right-2 copy-btn">Copier</button>
+                </div>
+                <div class="p-3 bg-yellow-50 rounded-xl border border-yellow-100 relative">
+                    <p id="msg_3" class="text-[11px] leading-snug">Dernière chance ! Il me reste une <span class="prod_name">...</span> à <span class="prod_prix">...</span>. Qui prend ? Je suis à <span class="prod_ville">...</span>. 🔥</p>
+                    <button onclick="copyMsg('msg_3')" class="absolute top-2 right-2 copy-btn">Copier</button>
+                </div>
+            </div>
         </section>
     </main>
 
     <main id="p2" class="page p-4 space-y-4">
         <section class="bg-white p-5 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]">
-            <h2 class="text-center font-bold text-[10px] uppercase mb-4 text-gray-400">Parle pour noter tes ventes</h2>
             <div class="flex justify-center mb-6"><button id="mic2" class="mwasia-gradient w-16 h-16 rounded-full text-white shadow-xl"><i class="fas fa-microphone text-2xl"></i></button></div>
             <div class="grid grid-cols-2 gap-3 mb-4 text-center">
-                <div><label class="text-[8px] uppercase font-bold text-gray-400">Quantité</label><input type="number" id="q" class="w-full p-3 border rounded-xl text-center font-black bg-gray-50"></div>
-                <div><label class="text-[8px] uppercase font-bold text-gray-400">Prix Total</label><input type="number" id="pr" class="w-full p-3 border rounded-xl text-center font-black bg-gray-50"></div>
+                <input type="number" id="q" placeholder="Qté" class="p-3 border rounded-xl text-center font-black bg-gray-50">
+                <input type="number" id="pr" placeholder="Prix Total" class="p-3 border rounded-xl text-center font-black bg-gray-50">
             </div>
-            <button id="add" class="w-full bg-[#1a4d2e] text-white p-4 rounded-xl font-black uppercase text-xs">Valider la vente</button>
-            <div class="mt-6 bg-gray-50 p-4 rounded-2xl text-center"><p id="ca_display" class="font-black text-2xl text-[#1a4d2e]">0 FCFA</p></div>
+            <button onclick="validerVente()" class="w-full bg-[#1a4d2e] text-white p-4 rounded-xl font-black uppercase text-xs">Enregistrer la vente</button>
+            <div id="ventes_list" class="mt-6 space-y-2 max-h-[250px] overflow-y-auto"></div>
         </section>
     </main>
 
-    <main id="p3" class="page p-4 text-center">
-        <section class="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]">
-            <h2 class="font-bold text-[10px] uppercase mb-6">Ta réputation</h2>
-            <div id="score_circle" class="w-24 h-24 mwasia-gradient rounded-full mx-auto flex items-center justify-center text-white text-2xl font-black mb-4 italic">Top</div>
-            <p class="text-[11px] text-gray-600">"Ebongo ! Ton profil brille déjà."</p>
-        </section>
-    </main>
-
-    <main id="p4" class="page p-4 text-center">
-        <section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]">
-            <h2 class="font-bold text-[10px] uppercase mb-6">Prêt instantané possible</h2>
-            <div class="mwasia-gradient p-8 rounded-3xl text-white mb-4 shadow-lg">
-                <h3 id="elig" class="text-3xl font-black">0 FCFA</h3>
-            </div>
-            <p class="text-[10px] text-gray-400 italic">"Ma soeur, encaisse l'argent ici pour faire monter ton prêt."</p>
-        </section>
-    </main>
-
-    <main id="p5" class="page p-4 text-center">
-        <section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-orange-400">
-            <h2 class="font-bold text-[10px] uppercase mb-4 text-orange-600">Conseil du jour</h2>
-            <div id="ia_res" class="text-left p-4 bg-orange-50 rounded-2xl text-[12px] italic text-orange-900 border border-orange-100">
-                "Fais tes pubs le matin avant le marché, c'est là que les gens cherchent quoi acheter !"
-            </div>
-        </section>
-    </main>
-
-    <main id="p6" class="page p-4 text-center">
-        <section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-green-500">
-            <h2 class="font-bold text-[10px] uppercase mb-6 text-green-600">Portefeuille Mobile</h2>
-            <div class="bg-green-50 border-2 border-green-200 p-8 rounded-3xl mb-4 shadow-inner">
-                <h3 id="wallet_val" class="text-4xl font-black text-[#1a4d2e]">0 FCFA</h3>
-            </div>
-            <div id="payout_list" class="space-y-2 text-left text-[10px]"></div>
-        </section>
-    </main>
+    <main id="p6" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-green-500"><h2 class="font-bold text-[10px] uppercase mb-6 text-green-600">Mon Cash</h2><div class="bg-green-50 p-8 rounded-3xl"><h3 id="wallet_val" class="text-4xl font-black text-[#1a4d2e]">0 FCFA</h3></div></section></main>
+    <main id="p3" class="page p-4 text-center"><section class="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-[#1a4d2e]"><h2 class="font-bold text-[10px] uppercase mb-6">Confiance</h2><div class="w-24 h-24 mwasia-gradient rounded-full mx-auto flex items-center justify-center text-white text-2xl font-black italic">TOP</div></section></main>
+    <main id="p4" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-[#1e3a8a]"><h2 class="font-bold text-[10px] uppercase mb-6">Crédit</h2><div class="mwasia-gradient p-8 rounded-3xl text-white shadow-lg"><h3 id="elig" class="text-3xl font-black">0 FCFA</h3></div></section></main>
+    <main id="p5" class="page p-4 text-center"><section class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-orange-400"><h2 class="font-bold text-[10px] uppercase mb-4 text-orange-600">Le Coach</h2><div id="ia_res" class="text-left p-4 bg-orange-50 rounded-2xl text-[12px] italic">"Partage tes textes WhatsApp pour booster tes ventes aujourd'hui !"</div></section></main>
 
     <div id="chat-container" class="flex-col bg-white rounded-3xl shadow-2xl border-2 border-[#1a4d2e] overflow-hidden">
-        <div class="mwasia-gradient p-4 text-white flex justify-between items-center">
-            <span class="text-[11px] font-bold uppercase">Coach Mwa$ia</span>
-            <button onclick="toggleChat()"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chat" class="flex-1 overflow-y-auto p-4 bg-gray-50 text-[12px] space-y-4"></div>
-        <div class="p-3 border-t bg-white flex gap-2">
-            <input type="text" id="msg" placeholder="Écris ici..." class="flex-1 p-3 border rounded-xl text-xs outline-none">
-            <button id="send" class="mwasia-gradient text-white px-5 rounded-xl"><i class="fas fa-paper-plane"></i></button>
-        </div>
+        <div class="mwasia-gradient p-4 text-white flex justify-between items-center"><span class="text-[11px] font-bold uppercase">Coach Mwa$ia</span><button onclick="toggleChat()"><i class="fas fa-times"></i></button></div>
+        <div id="chat" class="flex-1 overflow-y-auto p-4 bg-gray-50 text-[12px] space-y-3"></div>
     </div>
 
-    <button onclick="toggleChat()" class="fixed bottom-24 right-6 w-14 h-14 mwasia-gradient text-white rounded-full shadow-2xl flex items-center justify-center z-[90] border-4 border-white active:scale-95 transition-all">
-        <i class="fas fa-comment-dots text-xl"></i>
-    </button>
+    <button onclick="toggleChat()" class="fixed bottom-24 right-6 w-14 h-14 mwasia-gradient text-white rounded-full shadow-2xl flex items-center justify-center z-[90] border-4 border-white"><i class="fas fa-comment-dots text-xl"></i></button>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t p-2 flex justify-around items-center z-50">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 border-t p-2 flex justify-around items-center z-50">
         <button onclick="nav(1,this)" class="nav-active flex flex-col items-center"><i class="fas fa-bullhorn text-xs"></i><span class="text-[7px] uppercase font-bold">Pub</span></button>
         <button onclick="nav(2,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-receipt text-xs"></i><span class="text-[7px] uppercase font-bold">Ventes</span></button>
         <button onclick="nav(6,this)" class="text-gray-400 flex flex-col items-center"><i class="fas fa-wallet text-xs"></i><span class="text-[7px] uppercase font-bold">Argent</span></button>
@@ -119,97 +100,101 @@
     </nav>
 
     <script>
-        const initialData = { ca: 0, wallet: 0, ventes: 0, list: [], payouts: [] };
-        let data = JSON.parse(localStorage.getItem('mwasia_db')) || {...initialData};
+        let data = JSON.parse(localStorage.getItem('mwasia_db')) || { ca: 0, wallet: 0, ventes: [] };
 
-        function resetApp() { if(confirm("Effacer toutes les données de la démo ?")) { localStorage.removeItem('mwasia_db'); location.reload(); } }
-
+        function resetApp() { localStorage.removeItem('mwasia_db'); location.reload(); }
         function save() { localStorage.setItem('mwasia_db', JSON.stringify(data)); updateUI(); }
 
         function updateUI() {
-            document.getElementById('ca_display').innerText = data.ca.toLocaleString() + " FCFA";
             document.getElementById('wallet_val').innerText = data.wallet.toLocaleString() + " FCFA";
-            const plafond = (data.wallet * 2.5) + (data.ca * 0.1);
-            document.getElementById('elig').innerText = Math.round(plafond).toLocaleString() + " FCFA";
-            document.getElementById('payout_list').innerHTML = data.payouts.map(p => `<div class="flex justify-between p-2 bg-white rounded border mb-1"><span>${p.d}</span><span class="text-green-600">+ ${p.v} F</span></div>`).join('');
+            const totalCA = data.ventes.reduce((acc, curr) => acc + curr.p, 0);
+            document.getElementById('elig').innerText = Math.round((data.wallet * 3) + (totalCA * 0.1)).toLocaleString() + " FCFA";
+            document.getElementById('ventes_list').innerHTML = data.ventes.map(v => `
+                <div class="flex justify-between items-center p-3 bg-white border rounded-xl shadow-sm">
+                    <span class="text-[9px] text-gray-400 font-bold">${v.d}</span>
+                    <span class="font-black text-[#1a4d2e]">${v.p} F</span>
+                </div>
+            `).join('');
         }
 
         const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-        function runMic(btnId, targetCallback) {
-            if(!Speech) return alert("Micro non supporté sur ce navigateur.");
-            const rec = new Speech(); rec.lang = 'fr-FR'; 
+        function runMic(btnId, callback) {
+            const rec = new Speech(); rec.lang = 'fr-FR';
             document.getElementById(btnId).classList.add('recording');
             rec.start();
-            rec.onresult = (e) => { targetCallback(e.results[0][0].transcript); document.getElementById(btnId).classList.remove('recording'); };
+            rec.onresult = (e) => { callback(e.results[0][0].transcript); document.getElementById(btnId).classList.remove('recording'); };
             rec.onend = () => document.getElementById(btnId).classList.remove('recording');
         }
 
-        // PAGE 1 : PUB VOCALE (Produit, Prix, Ville)
         document.getElementById('mic1').onclick = () => {
-            runMic('mic1', (text) => {
-                const prix = (text.match(/\d+/) || ["..."])[0];
-                const parts = text.split(" ");
-                const ville = parts.length > 3 ? parts[parts.length-1] : "...";
-                document.getElementById('pub_content').innerHTML = `
-                    <div class="mwasia-gradient p-6 rounded-2xl text-white shadow-xl">
-                        <h4 class="text-xs uppercase opacity-75">Nouveauté !</h4>
-                        <p class="text-2xl font-black">${parts[0]}</p>
-                        <p class="text-xl font-bold text-yellow-400">${prix} FCFA</p>
-                        <hr class="my-2 opacity-30">
-                        <p class="text-[10px] uppercase font-bold"><i class="fas fa-map-marker-alt"></i> ${ville}</p>
-                    </div>`;
-                addCoachMessage(`Wouah ma soeur, ta pub pour **${parts[0]}** à **${ville}** est top ! Tes clients vont se bousculer.`);
+            runMic('mic1', (t) => {
+                const words = t.split(" ");
+                const prod = words[0] || "Produit";
+                const prix = (t.match(/\d+/) || ["2000"])[0];
+                const ville = words[words.length-1].toUpperCase();
+
+                document.getElementById('res_prod').innerText = prod;
+                document.getElementById('res_prix').innerText = prix + " FCFA";
+                document.getElementById('res_ville').innerHTML = `<i class="fas fa-map-marker-alt mr-1"></i> ${ville}`;
+                
+                document.querySelectorAll('.prod_name').forEach(el => el.innerText = prod);
+                document.querySelectorAll('.prod_prix').forEach(el => el.innerText = prix + " FCFA");
+                document.querySelectorAll('.prod_ville').forEach(el => el.innerText = ville);
+                document.getElementById('wa_messages').classList.remove('hidden');
+
+                addCoachMessage("Génial ! Tes messages WhatsApp sont prêts. Copie celui que tu veux partager.");
             });
         };
 
-        // PAGE 2 : VENTES
         document.getElementById('mic2').onclick = () => {
-            runMic('mic2', (text) => {
-                const nums = text.match(/\d+/g);
-                if(nums) {
-                    document.getElementById('q').value = nums[0] || 1;
-                    document.getElementById('pr').value = nums[1] || nums[0];
-                }
+            runMic('mic2', (t) => {
+                const nums = t.match(/\d+/g);
+                if(nums) { document.getElementById('q').value = nums[0]; document.getElementById('pr').value = nums[1] || nums[0]; }
             });
         };
 
-        document.getElementById('add').onclick = () => {
-            const q = parseInt(document.getElementById('q').value) || 0, p = parseInt(document.getElementById('pr').value) || 0;
-            if(p > 0) { data.ca += p; data.ventes++; save(); addCoachMessage(`C'est noté ! Une vente de ${p} F, c'est du sérieux.`); }
-        };
-
-        document.getElementById('pay_link').onclick = () => {
-            const m = 5000; data.wallet += m;
-            data.payouts.unshift({d: new Date().toLocaleTimeString(), v: m});
-            save(); addCoachMessage(`L'argent est entré ! +${m} FCFA. Ebongo, ton crédit monte direct !`);
-            toggleChat();
-        };
-
-        // MESSAGERIE IA
-        document.getElementById('send').onclick = () => {
-            const m = document.getElementById('msg').value; if(!m) return;
-            const chat = document.getElementById('chat');
-            chat.insertAdjacentHTML('beforeend', `<div class="bg-gray-200 p-2 rounded-xl self-end text-right ml-8">${m}</div>`);
-            document.getElementById('msg').value = "";
-            setTimeout(() => { addCoachMessage("Je vois ma soeur ! Continue comme ça, ton business est entre de bonnes mains."); }, 800);
-        };
-
-        function addCoachMessage(msg) {
-            const chat = document.getElementById('chat');
-            chat.insertAdjacentHTML('beforeend', `<div class="bg-blue-50 p-3 rounded-2xl border-l-4 border-blue-500 shadow-sm animate-bounce-short"><b>Mwa$ia :</b> ${msg}</div>`);
-            chat.scrollTop = chat.scrollHeight;
+        function validerVente() {
+            const p = parseInt(document.getElementById('pr').value) || 0;
+            if(p > 0) {
+                const now = new Date();
+                data.ventes.unshift({ d: now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), p: p });
+                save();
+                addCoachMessage(`Super ! Vente de ${p} F notée le ${now.toLocaleDateString()}. Ça prouve ton sérieux !`);
+            }
         }
+
+        function copyMsg(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+            alert("Message copié ! Tu peux le coller sur WhatsApp.");
+        }
+
+        function downloadPub() {
+            html2canvas(document.querySelector("#capture_area")).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Mwasia-Pub.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        function shareWA() { window.open(`https://wa.me/?text=${encodeURIComponent("Regardez mon offre Mwa$ia !")}`); }
 
         function nav(n, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active'));
             document.getElementById('p'+n).classList.add('page-active');
             document.querySelectorAll('nav button').forEach(b => { b.classList.remove('nav-active'); b.classList.add('text-gray-400'); });
-            el.classList.add('nav-active'); el.classList.remove('text-gray-400');
+            el.classList.add('nav-active');
+        }
+
+        function addCoachMessage(msg) {
+            const chat = document.getElementById('chat');
+            chat.insertAdjacentHTML('beforeend', `<div class="bg-blue-50 p-3 rounded-2xl border-l-4 border-blue-500 shadow-sm"><b>Mwa$ia :</b> ${msg}</div>`);
+            chat.scrollTop = chat.scrollHeight;
         }
 
         function toggleChat() { document.getElementById('chat-container').classList.toggle('chat-open'); }
         updateUI();
-        addCoachMessage("Prête pour la démo, Laetitia ? Je suis avec toi !");
     </script>
 </body>
 </html>
