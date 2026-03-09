@@ -79,8 +79,7 @@
             <div class="mt-6">
                 <p class="text-[10px] font-bold text-gray-400 uppercase italic mb-2">Historique d'entrée :</p>
                 <div id="ventes_history" class="space-y-2 max-h-[150px] overflow-y-auto">
-                    <p class="text-[10px] text-center text-gray-300 italic">Aucune vente pour le moment...</p>
-                </div>
+                    </div>
             </div>
 
             <div class="mt-6 bg-gray-50 p-4 rounded-2xl text-center border-t-2 border-[#1a4d2e]">
@@ -126,11 +125,19 @@
             const plafond = (data.wallet * 2.5) + (data.ca * 0.1);
             document.getElementById('elig').innerText = Math.round(plafond).toLocaleString() + " FCFA";
             
+            // Portefeuille Argent
             document.getElementById('payout_list').innerHTML = data.payouts.map(p => `<div class="flex justify-between p-2 bg-white rounded border mb-1 italic"><span>${p.d}</span><span class="text-green-600 font-bold">+ ${p.v} F</span></div>`).join('');
             
+            // CORRECTION ICI : Historique Ventes Page 2
             const hList = document.getElementById('ventes_history');
             if(data.list.length > 0) {
-                hList.innerHTML = data.list.map(v => `<div class="flex justify-between p-2 bg-white rounded border-l-4 border-green-600 text-[9px] italic"><span class="font-medium text-gray-500">${v.time}</span><span class="font-black text-[#1a4d2e]">${v.val} F</span></div>`).join('');
+                hList.innerHTML = data.list.map(v => `
+                    <div class="flex justify-between items-center p-3 bg-white rounded-xl border-l-4 border-green-600 shadow-sm mb-2">
+                        <span class="text-[9px] font-bold text-gray-500 uppercase italic">${v.time}</span>
+                        <span class="font-black text-[#1a4d2e] text-xs">${v.val.toLocaleString()} F</span>
+                    </div>`).join('');
+            } else {
+                hList.innerHTML = `<p class="text-[10px] text-center text-gray-300 italic">Aucune vente pour le moment...</p>`;
             }
         }
 
@@ -144,13 +151,13 @@
             rec.onend = () => document.getElementById(btnId).classList.remove('recording');
         }
 
+        // PAGE 1
         document.getElementById('mic1').onclick = () => {
             runMic('mic1', (text) => {
                 const prix = (text.match(/\d+/) || ["..."])[0];
                 const parts = text.split(" ");
                 const prod = parts[0];
                 const ville = parts.length > 3 ? parts[parts.length-1].toUpperCase() : "VILLE";
-                
                 document.getElementById('pub_content').innerHTML = `
                     <div class="mwasia-gradient p-6 rounded-2xl text-white shadow-xl w-full">
                         <h4 class="text-xs uppercase opacity-75">Nouveauté !</h4>
@@ -159,12 +166,10 @@
                         <hr class="my-2 opacity-30">
                         <p class="text-[10px] uppercase font-bold italic"><i class="fas fa-map-marker-alt"></i> ${ville}</p>
                     </div>`;
-                
                 document.querySelectorAll('.wa_p').forEach(el => el.innerText = prod);
                 document.querySelectorAll('.wa_pr').forEach(el => el.innerText = prix + " F");
                 document.querySelectorAll('.wa_v').forEach(el => el.innerText = ville);
                 document.getElementById('wa_promo_block').classList.remove('hidden');
-
                 addCoachMessage(`Ma soeur ! Ta pub pour **${prod}** est chic. Copie les textes pour tes groupes WhatsApp.`);
             });
         };
@@ -172,8 +177,7 @@
         function copyMsg(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
-            data.shares++;
-            save();
+            data.shares++; save();
             alert("Texte copié ! Ma soeur, ton compteur de partages monte.");
         }
 
@@ -182,6 +186,7 @@
             data.shares++; save();
         }
 
+        // PAGE 2 : VENTES
         document.getElementById('mic2').onclick = () => {
             runMic('mic2', (text) => {
                 const nums = text.match(/\d+/g);
@@ -196,33 +201,43 @@
             const p = parseInt(document.getElementById('pr').value) || 0;
             if(p > 0) {
                 const now = new Date();
-                // Formatage Date et Heure : DD/MM/YYYY - HH:MM
-                const dateStr = now.toLocaleDateString('fr-FR') + " à " + now.getHours() + ":" + (now.getMinutes()<10?'0':'') + now.getMinutes();
+                // Génération de la date complète + Heure
+                const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                const datePart = now.toLocaleDateString('fr-FR', options);
+                const timePart = now.getHours() + "h" + (now.getMinutes()<10?'0':'') + now.getMinutes();
+                const fullDateTime = datePart + " - " + timePart;
+
                 data.ca += p;
-                data.list.unshift({time: dateStr, val: p});
+                data.list.unshift({time: fullDateTime, val: p}); // Stockage de la date complète
                 save();
-                addCoachMessage(`Vente de ${p} F notée le ${dateStr}. Tu gères, ma soeur !`);
+                
+                // Reset les champs
+                document.getElementById('q').value = "";
+                document.getElementById('pr').value = "";
+                
+                addCoachMessage(`Vente de ${p} F notée le ${fullDateTime}. Tu gères, ma soeur !`);
             }
         };
 
+        // Actions communes
         document.getElementById('pay_link').onclick = () => {
             const m = 5000; data.wallet += m;
-            data.payouts.unshift({d: new Date().toLocaleString('fr-FR', {day:'numeric', month:'short', hour: '2-digit', minute:'2-digit'}), v: m});
+            const now = new Date();
+            const timeStr = now.getHours() + ":" + (now.getMinutes()<10?'0':'') + now.getMinutes();
+            data.payouts.unshift({d: timeStr, v: m});
             save(); addCoachMessage(`L'argent du client est là ! +${m} FCFA. Ton crédit monte direct !`);
-            toggleChat();
         };
 
         document.getElementById('send').onclick = () => {
             const m = document.getElementById('msg').value; if(!m) return;
-            const chat = document.getElementById('chat');
-            chat.insertAdjacentHTML('beforeend', `<div class="bg-gray-200 p-2 rounded-xl self-end text-right ml-8">${m}</div>`);
+            document.getElementById('chat').insertAdjacentHTML('beforeend', `<div class="bg-gray-200 p-2 rounded-xl self-end text-right ml-8">${m}</div>`);
             document.getElementById('msg').value = "";
             setTimeout(() => { addCoachMessage("On est ensemble ! Continue de faire briller ton business."); }, 800);
         };
 
         function addCoachMessage(msg) {
             const chat = document.getElementById('chat');
-            chat.insertAdjacentHTML('beforeend', `<div class="bg-blue-50 p-3 rounded-2xl border-l-4 border-blue-500 shadow-sm animate-bounce-short"><b>Mwa$ia :</b> ${msg}</div>`);
+            chat.insertAdjacentHTML('beforeend', `<div class="bg-blue-50 p-3 rounded-2xl border-l-4 border-blue-500 shadow-sm"><b>Mwa$ia :</b> ${msg}</div>`);
             chat.scrollTop = chat.scrollHeight;
         }
 
@@ -234,6 +249,8 @@
         }
 
         function toggleChat() { document.getElementById('chat-container').classList.toggle('chat-open'); }
+        
+        // Initialisation au chargement
         updateUI();
         addCoachMessage("Prête pour ton pitch, Laetitia ? Montre-leur la force de nos mamans !");
     </script>
