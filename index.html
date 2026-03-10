@@ -5,46 +5,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SheStartIA - Parcours 7J</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; }
-  #visuel { margin-top: 20px; max-width: 300px; }
-  input, select, button { margin-top: 10px; display: block; padding: 5px; }
+  /* === Style téléphone === */
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f0f0;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh;
+  }
+  #phoneContainer {
+    width: 360px; height: 640px;
+    background: #fff; border-radius: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  header {
+    background: #ff6600; color: white; padding: 15px; text-align: center;
+    font-size: 1.3em; font-weight: bold;
+  }
+  main {
+    flex: 1; padding: 15px; overflow-y: auto;
+  }
+  .daySection {
+    display: none; margin-bottom: 20px;
+  }
+  .daySection.active { display: block; }
+  input, select, button, textarea {
+    width: 100%; margin: 5px 0; padding: 10px; font-size: 1em; border-radius: 8px; border: 1px solid #ccc;
+  }
+  button {
+    background: #ff6600; color: white; border: none; cursor: pointer;
+  }
+  button:hover { background: #e65c00; }
+  #visuel { margin-top: 15px; width: 100%; border-radius: 10px; }
+  .whatsappPhrases li { margin: 5px 0; }
 </style>
 </head>
 <body>
 
-<h1>Bienvenue chez SheStartIA</h1>
+<div id="phoneContainer">
+  <header>
+    <img src="logo.png" alt="SheStartIA" style="height:30px; vertical-align:middle;"> SheStartIA
+  </header>
+  <main>
 
-<div id="jour1">
-  <p>Choisis ton activité :</p>
-  <select id="activitySelect">
-    <option value="">-- Sélectionner --</option>
-    <option value="Jus naturels">Jus naturels</option>
-    <option value="Vente de pagnes">Vente de pagnes</option>
-    <option value="Yaourt maison">Yaourt maison</option>
-    <option value="Coiffeuse à domicile">Coiffeuse à domicile</option>
-    <option value="Chips plantain">Chips plantain</option>
-  </select>
-  <button onclick="startDay1()">Valider</button>
-</div>
+    <!-- JOUR 1 -->
+    <div class="daySection" id="jour1">
+      <h2>Jour 1 – Je décide</h2>
+      <p>Choisis ton activité :</p>
+      <select id="activitySelect">
+        <option value="">-- Sélectionner --</option>
+        <option value="Jus naturels">Jus naturels</option>
+        <option value="Vente de pagnes">Vente de pagnes</option>
+        <option value="Yaourt maison">Yaourt maison</option>
+        <option value="Coiffeuse à domicile">Coiffeuse à domicile</option>
+        <option value="Chips plantain">Chips plantain</option>
+      </select>
+      <button onclick="startDay1()">Valider</button>
+    </div>
 
-<div id="jour1Questions" style="display:none;">
-  <p id="qText">Réponds en 3 lignes :</p>
-  <input type="text" id="q1" placeholder="1) Où (ville/quartier) ?">
-  <input type="text" id="q2" placeholder="2) À qui (type de cliente) ?">
-  <input type="text" id="q3" placeholder="3) Ton budget de départ (FCFA) ?">
-  <button onclick="submitDay1()">Suivant</button>
-</div>
+    <div class="daySection" id="jour1Questions">
+      <h3>Réponds en 3 lignes :</h3>
+      <input type="text" id="q1" placeholder="1) Où (ville/quartier) ?">
+      <input type="text" id="q2" placeholder="2) À qui (type de cliente) ?">
+      <input type="text" id="q3" placeholder="3) Ton budget de départ (FCFA) ?">
+      <button onclick="submitDay1()">Suivant (Jour 2)</button>
+    </div>
 
-<div id="jour3Visuel" style="display:none;">
-  <h2>Ton visuel est prêt !</h2>
-  <img id="visuel" src="" alt="Visuel activité">
-  <p>Tu peux <a id="downloadLink" href="" download>Télécharger le visuel</a></p>
-  <p><a id="whatsappLink" href="" target="_blank">Partager sur WhatsApp</a></p>
+    <!-- JOUR 2 -->
+    <div class="daySection" id="jour2Questions">
+      <h2>Jour 2 – Je prépare</h2>
+      <p>Réponds en 3 lignes :</p>
+      <input type="text" id="q2_1" placeholder="1) De quoi as-tu besoin ?">
+      <input type="text" id="q2_2" placeholder="2) Combien ça coûte au total (FCFA) ?">
+      <input type="text" id="q2_3" placeholder="3) Tu as déjà 1 cliente possible (oui/non) ?">
+      <button onclick="submitDay2()">Suivant (Jour 3)</button>
+    </div>
+
+    <!-- JOUR 3 -->
+    <div class="daySection" id="jour3Visuel">
+      <h2>Jour 3 – Je fixe un prix</h2>
+      <p>Ton visuel est prêt :</p>
+      <img id="visuel" src="" alt="Visuel activité">
+      <p>Tu peux <a id="downloadLink" href="" download>Télécharger le visuel</a></p>
+      <h3>3 phrases WhatsApp :</h3>
+      <ol class="whatsappPhrases">
+        <li id="phrase1"></li>
+        <li id="phrase2"></li>
+        <li id="phrase3"></li>
+      </ol>
+      <p><a id="whatsappLink" href="" target="_blank">Partager sur WhatsApp</a></p>
+      <button onclick="nextDay(4)">Jour 4 → Je parle</button>
+    </div>
+
+    <!-- JOUR 4 à 7 (exemple simplifié) -->
+    <div class="daySection" id="jour4">
+      <h2>Jour 4 – Je parle</h2>
+      <textarea placeholder="À qui tu en parles aujourd'hui ? Combien de personnes minimum ? À quelle heure ?"></textarea>
+      <button onclick="nextDay(5)">Jour 5 → Je lance</button>
+    </div>
+
+    <div class="daySection" id="jour5">
+      <h2>Jour 5 – Je lance</h2>
+      <textarea placeholder="Tu envoies le visuel à combien de personnes ? Où postes-tu ? Si personne ne répond en 2h, que fais-tu ?"></textarea>
+      <button onclick="nextDay(6)">Jour 6 → Je vends</button>
+    </div>
+
+    <div class="daySection" id="jour6">
+      <h2>Jour 6 – Je vends</h2>
+      <textarea placeholder="Combien de commandes aujourd'hui ? Blocage exact ? Ajustement demain ?"></textarea>
+      <button onclick="nextDay(7)">Jour 7 → Bilan</button>
+    </div>
+
+    <div class="daySection" id="jour7">
+      <h2>Jour 7 – Bilan</h2>
+      <textarea placeholder="Combien de ventes sur 7 jours ? Ce qui a le mieux marché ? Prochaine action demain ?"></textarea>
+      <button onclick="finish()">Terminer</button>
+    </div>
+
+    <!-- Invariants -->
+    <div id="invariants" style="display:none;">
+      <p><strong>Invariants utilisés :</strong></p>
+      <ul>
+        <li>Espace</li>
+        <li>Temps</li>
+        <li>Matière</li>
+        <li>Force</li>
+        <li>Énergie</li>
+        <li>Symétrie</li>
+        <li>Relation</li>
+      </ul>
+    </div>
+
+  </main>
 </div>
 
 <script>
 let userData = {};
-
 const activityImages = {
   "Jus naturels": "png/jus.png",
   "Vente de pagnes": "png/pagne.png",
@@ -53,36 +149,60 @@ const activityImages = {
   "Chips plantain": "png/chips plantain.png"
 };
 
+// === Fonctions navigation ===
+function showDay(id) {
+  document.querySelectorAll('.daySection').forEach(d => d.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// JOUR 1
 function startDay1() {
   const act = document.getElementById('activitySelect').value;
-  if (!act) { alert("Sélectionne une activité !"); return; }
+  if(!act) { alert("Sélectionne une activité !"); return; }
   userData.activity = act;
-  document.getElementById('jour1').style.display = 'none';
-  document.getElementById('jour1Questions').style.display = 'block';
+  showDay('jour1Questions');
 }
 
 function submitDay1() {
   userData.city = document.getElementById('q1').value;
   userData.clientType = document.getElementById('q2').value;
   userData.budget = document.getElementById('q3').value;
+  if(!userData.city || !userData.clientType || !userData.budget) { alert("Remplis toutes les questions !"); return; }
+  showDay('jour2Questions');
+}
 
-  if(!userData.city || !userData.clientType || !userData.budget) {
-    alert("Remplis toutes les questions !");
-    return;
-  }
+// JOUR 2 → 3
+function submitDay2() {
+  userData.need = document.getElementById('q2_1').value;
+  userData.totalCost = document.getElementById('q2_2').value;
+  userData.hasClient = document.getElementById('q2_3').value;
+  if(!userData.need || !userData.totalCost || !userData.hasClient) { alert("Remplis toutes les questions !"); return; }
 
-  // Afficher le visuel au jour 3
+  // Affichage visuel Jour 3
   const imgSrc = activityImages[userData.activity];
   document.getElementById('visuel').src = imgSrc;
   document.getElementById('downloadLink').href = imgSrc;
 
-  const whatsappText = `Commande rapide : ${userData.activity} (${userData.city}) – Budget : ${userData.budget}.`;
-  const whatsappURL = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
-  document.getElementById('whatsappLink').href = whatsappURL;
+  const city = userData.city || "ville";
+  const price = userData.budget || "prix";
+  const activity = userData.activity;
+  const phrase1 = `${activity} à ${city} – Prix : ${price}. WhatsApp : +229xxxxxxx.`;
+  const phrase2 = `${activity} dispo à ${city}. Prix ${price}. Commande WhatsApp : +229xxxxxxx.`;
+  const phrase3 = `Commande rapide : ${activity} (${city}) – ${price}. WhatsApp : +229xxxxxxx.`;
 
-  document.getElementById('jour1Questions').style.display = 'none';
-  document.getElementById('jour3Visuel').style.display = 'block';
+  document.getElementById('phrase1').innerText = phrase1;
+  document.getElementById('phrase2').innerText = phrase2;
+  document.getElementById('phrase3').innerText = phrase3;
+  const whatsappText = [phrase1, phrase2, phrase3].join(" | ");
+  document.getElementById('whatsappLink').href = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+
+  showDay('jour3Visuel');
 }
+
+function nextDay(day) { showDay('jour'+day); }
+function finish() { alert("Parcours terminé !"); }
+
+showDay('jour1');
 </script>
 
 </body>
