@@ -1,166 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>SheStartIA - Parcours 7J</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    button { margin: 5px; padding: 5px 10px; }
-    input, select { display: block; margin: 5px 0; padding: 5px; width: 250px; }
-    #result, #whatsappPhrases { white-space: pre-wrap; margin-top: 20px; background: #f0f0f0; padding: 10px; }
-    canvas { max-width: 500px; margin-top: 20px; }
-    #visuel { margin-top: 10px; border: 1px solid #ccc; width: 300px; height: 200px; display: flex; justify-content: center; align-items: center; font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SheStartIA - Parcours 7J</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  #visuel { margin-top: 20px; max-width: 300px; }
+  input, select, button { margin-top: 10px; display: block; padding: 5px; }
+</style>
 </head>
 <body>
-  <h1>SheStartIA - Parcours 7J</h1>
 
-  <div id="jour0">
-    <p>Bienvenue chez SheStartIA ! Choisis ton activité :</p>
-    <button onclick="choisirActivite('1')">1) Jus naturels</button>
-    <button onclick="choisirActivite('2')">2) Vente de pagnes</button>
-    <button onclick="choisirActivite('3')">3) Yaourt maison</button>
-    <button onclick="choisirActivite('4')">4) Coiffeuse à domicile</button>
-  </div>
+<h1>Bienvenue chez SheStartIA</h1>
 
-  <div id="jourForm" style="display:none;">
-    <h2 id="jourTitle"></h2>
-    <div id="questionsContainer"></div>
-    <button onclick="validerJour()">Valider et passer au jour suivant</button>
-  </div>
+<div id="jour1">
+  <p>Choisis ton activité :</p>
+  <select id="activitySelect">
+    <option value="">-- Sélectionner --</option>
+    <option value="Jus naturels">Jus naturels</option>
+    <option value="Vente de pagnes">Vente de pagnes</option>
+    <option value="Yaourt maison">Yaourt maison</option>
+    <option value="Coiffeuse à domicile">Coiffeuse à domicile</option>
+    <option value="Chips plantain">Chips plantain</option>
+  </select>
+  <button onclick="startDay1()">Valider</button>
+</div>
 
-  <div id="visuel"></div>
-  <div id="whatsappPhrases"></div>
-  <div id="result"></div>
-  <canvas id="radarChart"></canvas>
+<div id="jour1Questions" style="display:none;">
+  <p id="qText">Réponds en 3 lignes :</p>
+  <input type="text" id="q1" placeholder="1) Où (ville/quartier) ?">
+  <input type="text" id="q2" placeholder="2) À qui (type de cliente) ?">
+  <input type="text" id="q3" placeholder="3) Ton budget de départ (FCFA) ?">
+  <button onclick="submitDay1()">Suivant</button>
+</div>
 
-  <script>
-    const ACTIVITIES = {
-      "1": "Jus naturels",
-      "2": "Vente de pagnes",
-      "3": "Yaourt maison",
-      "4": "Coiffeuse à domicile"
-    };
-    const invariants = ["Espace","Temps","Matiere","Force","Energie","Symetrie","Relation"];
-    const questionsByDay = {
-      1: ["Où (ville/quartier) ?","À qui (type de cliente) ?","Ton budget de départ (FCFA) ?"],
-      2: ["De quoi tu as besoin (liste courte) ?","Combien ça coûte au total (FCFA) ?","Tu as déjà 1 cliente possible (oui/non) ?"],
-      3: ["Ton prix (FCFA) pour 1 vente ?","Combien tu veux vendre par jour ?","Objectif de gain cette semaine (FCFA) ?"],
-      4: ["À qui tu en parles aujourd’hui ?","Combien de personnes minimum ?","À quelle heure tu envoies ton message ?"],
-      5: ["Tu envoies le visuel à combien de personnes aujourd’hui ?","Tu postes où ?","Si personne ne répond en 2h, tu fais quoi ?"],
-      6: ["Combien de commandes aujourd’hui ?","Blocage exact ?","Ajustement demain ?"],
-      7: ["Combien de ventes sur 7 jours ?","Ce qui a le mieux marché ?","Prochaine action demain ?"]
-    };
+<div id="jour3Visuel" style="display:none;">
+  <h2>Ton visuel est prêt !</h2>
+  <img id="visuel" src="" alt="Visuel activité">
+  <p>Tu peux <a id="downloadLink" href="" download>Télécharger le visuel</a></p>
+  <p><a id="whatsappLink" href="" target="_blank">Partager sur WhatsApp</a></p>
+</div>
 
-    let session = {
-      day: 0,
-      activity: null,
-      answers: {}
-    };
+<script>
+let userData = {};
 
-    function choisirActivite(num){
-      session.activity = ACTIVITIES[num];
-      session.day = 1;
-      document.getElementById('jour0').style.display = 'none';
-      afficherJour();
-    }
+const activityImages = {
+  "Jus naturels": "png/jus.png",
+  "Vente de pagnes": "png/pagne.png",
+  "Yaourt maison": "png/yaourt.png",
+  "Coiffeuse à domicile": "png/coiffure.png",
+  "Chips plantain": "png/chips plantain.png"
+};
 
-    function afficherJour(){
-      document.getElementById('jourTitle').innerText = `Jour ${session.day} – ${session.activity || ''}`;
-      const container = document.getElementById('questionsContainer');
-      container.innerHTML = '';
-      if(session.day <= 7){
-        questionsByDay[session.day].forEach((q,i)=>{
-          const label = document.createElement('label');
-          label.innerText = `${i+1}) ${q}`;
-          const input = document.createElement('input');
-          input.type = "text";
-          input.id = `q${i+1}`;
-          container.appendChild(label);
-          container.appendChild(input);
-        });
-        document.getElementById('jourForm').style.display = 'block';
-      } else {
-        genererResultats();
-      }
-    }
+function startDay1() {
+  const act = document.getElementById('activitySelect').value;
+  if (!act) { alert("Sélectionne une activité !"); return; }
+  userData.activity = act;
+  document.getElementById('jour1').style.display = 'none';
+  document.getElementById('jour1Questions').style.display = 'block';
+}
 
-    function validerJour(){
-      const answers = {};
-      for(let i=1;i<=3;i++){
-        answers[i] = document.getElementById(`q${i}`).value;
-      }
-      session.answers[session.day] = answers;
+function submitDay1() {
+  userData.city = document.getElementById('q1').value;
+  userData.clientType = document.getElementById('q2').value;
+  userData.budget = document.getElementById('q3').value;
 
-      // Jour 3 → générer visuel et phrases WhatsApp
-      if(session.day === 3){
-        genererVisuelEtPhrases();
-      }
+  if(!userData.city || !userData.clientType || !userData.budget) {
+    alert("Remplis toutes les questions !");
+    return;
+  }
 
-      session.day++;
-      afficherJour();
-    }
+  // Afficher le visuel au jour 3
+  const imgSrc = activityImages[userData.activity];
+  document.getElementById('visuel').src = imgSrc;
+  document.getElementById('downloadLink').href = imgSrc;
 
-    function genererVisuelEtPhrases(){
-      const visuelDiv = document.getElementById('visuel');
-      const city = session.answers[1][1] || "Bénin";
-      const price = session.answers[3][1] || "___";
+  const whatsappText = `Commande rapide : ${userData.activity} (${userData.city}) – Budget : ${userData.budget}.`;
+  const whatsappURL = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+  document.getElementById('whatsappLink').href = whatsappURL;
 
-      visuelDiv.textContent = `${session.activity}\n${city}\nPrix: ${price} FCFA`;
-      visuelDiv.style.backgroundColor = "#ffeedd";
+  document.getElementById('jour1Questions').style.display = 'none';
+  document.getElementById('jour3Visuel').style.display = 'block';
+}
+</script>
 
-      const phrases = [
-        `${session.activity} à ${city} – Prix : ${price}. WhatsApp : +229XXXXXXX.`,
-        `${session.activity} dispo à ${city}. Prix ${price}. Commande WhatsApp : +229XXXXXXX.`,
-        `Commande rapide : ${session.activity} (${city}) – ${price}. WhatsApp : +229XXXXXXX.`
-      ];
-
-      document.getElementById('whatsappPhrases').textContent = "🧾 Tes 3 phrases WhatsApp :\n\n" + phrases.join("\n\n");
-    }
-
-    function genererScores(){
-      let scoresJournalier = [];
-      for(let i=1;i<=7;i++){
-        let jour = {};
-        invariants.forEach(inv => jour[inv] = Math.random().toFixed(2));
-        scoresJournalier.push(jour);
-      }
-      let scoreGlobal = {};
-      invariants.forEach(inv => {
-        let total = scoresJournalier.reduce((sum,j)=>sum+parseFloat(j[inv]),0);
-        scoreGlobal[inv] = (total/7).toFixed(2);
-      });
-      return {scoresJournalier, scoreGlobal};
-    }
-
-    function genererResultats(){
-      document.getElementById('jourForm').style.display='none';
-      const {scoresJournalier, scoreGlobal} = genererScores();
-      const identite = {
-        Activite: session.activity,
-        Parcours: session.answers,
-        ScoreGlobal: scoreGlobal
-      };
-      document.getElementById('result').textContent = JSON.stringify(identite,null,2);
-
-      const ctx = document.getElementById("radarChart").getContext("2d");
-      if(window.radarChart) window.radarChart.destroy();
-      window.radarChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-          labels: invariants,
-          datasets: [{
-            label: 'Score Global',
-            data: invariants.map(inv => scoreGlobal[inv]),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 2
-          }]
-        },
-        options: { scales: { r: { suggestedMin: 0, suggestedMax: 1 } } }
-      });
-    }
-  </script>
 </body>
 </html>
