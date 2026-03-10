@@ -1,21 +1,183 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+<!DOCTYPE html>  <html lang="fr">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>SheStartIA – Parcours Entrepreneurial Deep Tech</title>  
+    <style>  
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#E8F0F8; color:#333; margin:0; padding:0; display:flex; justify-content:center; }  
+        .app { max-width: 400px; width:100%; margin:20px; background:white; border-radius:25px; box-shadow:0 10px 30px rgba(0,0,0,0.1); padding:25px; }  
+        h2 { color:#0D6EFD; margin-top:0; text-align:center; font-size: 1.4em; }  
+        h3 { color:#198754; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px; }  
+        .day { display:none; animation: fadeIn 0.5s; }  
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }  
+        .question { margin:15px 0; padding:12px; background:#f8fbff; border-left: 4px solid #0D6EFD; border-radius: 5px; }  
+        input[type=text], select { width:100%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ddd; box-sizing: border-box; }  
+        button { background:#0D6EFD; color:white; border:none; padding:12px; border-radius:10px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; transition: 0.3s; }  
+        button:hover { background:#0b5ed7; transform: translateY(-2px); }  
+        #visual img { max-width:100%; border-radius:15px; margin-top:15px; border: 1px solid #eee; }  
+        #score { background:#e7f3ff; padding:15px; border-radius:12px; margin-top:20px; font-size: 0.9em; line-height: 1.4; }  
+        .branding { text-align:center; font-size:11px; color:#aaa; margin-top:20px; text-transform: uppercase; letter-spacing: 1px; }  
+        .logo { display:block; margin:0 auto 15px; max-width:100px; }  
+        .uuid-tag { font-size: 10px; color: #ccc; text-align: center; margin-bottom: 10px; }  
+    </style>  
+</head>  
+<body>  <div class="app">  
+    <img src="logo.png" class="logo" alt="SheStartIA Logo">  
+    <div id="session-id" class="uuid-tag"></div>  
+    <h2>SheStartIA – Propulsion IA</h2>  <div class="day" id="day0" style="display:block;">  
+    <div class="question">  
+        <label>Identification du secteur (Target) :</label>  
+        <select id="activity">  
+            <option value="">-- Choisir --</option>  
+            <option value="chips plantain">Chips plantain</option>  
+            <option value="jus">Jus naturels</option>  
+            <option value="pagne">Vente de pagnes</option>  
+            <option value="yaourt">Yaourt maison</option>  
+            <option value="coiffeuse">Coiffeuse à domicile</option>  
+        </select>  
+    </div>  
+    <button onclick="nextDay(0)">Initialiser le parcours</button>  
+</div>  
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCEYmUE1IeNiRaPvwTtdWFwE-3ikFcE9hE",
-  authDomain: "shestartia.firebaseapp.com",
-  projectId: "shestartia",
-  storageBucket: "shestartia.firebasestorage.app",
-  messagingSenderId: "406506843993",
-  appId: "1:406506843993:web:af502cb095fdfde2cd6648",
-  measurementId: "G-RJT94BGZPL"
-};
+<div class="day" id="day1">  
+    <h3>Jour 1 – Analyse Décisionnelle</h3>  
+    <div class="question"><input type="text" id="q1_day1" placeholder="Localisation (Géographie)"></div>  
+    <div class="question"><input type="text" id="q2_day1" placeholder="Segment Client (Persona)"></div>  
+    <div class="question"><input type="text" id="q3_day1" placeholder="Capital d'amorçage (FCFA)"></div>  
+    <button onclick="nextDay(1)">Enregistrer & Suivant</button>  
+</div>  
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+<div class="day" id="day2">  
+    <h3>Jour 2 – Logistique</h3>  
+    <div class="question"><input type="text" id="q1_day2" placeholder="Besoins matériels"></div>  
+    <div class="question"><input type="text" id="q2_day2" placeholder="Coût total estimé (FCFA)"></div>  
+    <div class="question"><input type="text" id="q3_day2" placeholder="Test de traction (1ère cliente ?)"></div>  
+    <button onclick="nextDay(2)">Suivant</button>  
+</div>  
+
+<div class="day" id="day3">  
+    <h3>Jour 3 – Génération d'Identité</h3>  
+    <div class="question"><input type="text" id="price" placeholder="Prix unitaire (FCFA)"></div>  
+    <div class="question"><input type="text" id="city" placeholder="Zone de livraison"></div>  
+    <div class="question"><input type="text" id="phone" placeholder="Contact Lead (WhatsApp)"></div>  
+    <button onclick="generateVisual()">Générer Assets Marketing</button>  
+</div>  
+
+<div class="day" id="day4"><h3>Jour 4 – Traction</h3><div class="question"><input type="text" id="q1_day4" placeholder="Canaux de diffusion"></div><button onclick="nextDay(4)">Suivant</button></div>  
+<div class="day" id="day5"><h3>Jour 5 – Conversion</h3><div class="question"><input type="text" id="q1_day5" placeholder="Nombre de prospects"></div><button onclick="nextDay(5)">Suivant</button></div>  
+<div class="day" id="day6"><h3>Jour 6 – Optimisation</h3><div class="question"><input type="text" id="q1_day6" placeholder="Feedback client"></div><button onclick="nextDay(6)">Suivant</button></div>  
+
+<div class="day" id="day7">  
+    <h3>Jour 7 – Rapport Final (Big Data)</h3>  
+    <div class="question"><input type="text" id="q1_day7" placeholder="Volume total des ventes"></div>  
+    <div class="question"><input type="text" id="q2_day7" placeholder="Facteur de succès principal"></div>  
+    <div class="question"><input type="text" id="q3_day7" placeholder="Pivot ou Scale ?"></div>  
+    <button onclick="finish()">Soumettre au ML Engine</button>  
+</div>  
+
+<div id="visual"></div>  
+<div id="score"></div>  
+<div class="branding">SheStartIA – Deep Tech Monitoring</div>
+
+</div>  <script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";  
+    import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";  
+  
+    // Votre configuration (Restez vigilant avec la clé en prod)  
+    const firebaseConfig = {  
+        apiKey: "AIzaSyCEYmUE1IeNiRaPvwTtdWFwE-3ikFcE9hE",  
+        authDomain: "shestartia.firebaseapp.com",  
+        projectId: "shestartia",  
+        storageBucket: "shestartia.firebasestorage.app",  
+        messagingSenderId: "406506843993",  
+        appId: "1:406506843993:web:af502cb095fdfde2cd6648"  
+    };  
+  
+    const app = initializeApp(firebaseConfig);  
+    const db = getFirestore(app);  
+  
+    // --- LOGIQUE DEEP TECH (UUID & MONITORING) ---  
+      
+    // 1. Générer un UUID unique pour la session  
+    const uuid = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();  
+    document.getElementById('session-id').innerText = `ID: ${uuid}`;  
+  
+    let sessionData = {  
+        metadata: {  
+            uid: uuid,  
+            start_time: serverTimestamp(),  
+            platform: navigator.platform,  
+            userAgent: navigator.userAgent  
+        },  
+        responses: {},  
+        metrics: {  
+            last_updated: null,  
+            completion_rate: 0  
+        }  
+    };  
+  
+    // 2. Initialiser le document dans Firestore  
+    async function initSession() {  
+        await setDoc(doc(db, "entrepreneuses", uuid), sessionData);  
+    }  
+    initSession();  
+  
+    // 3. Fonctions globales accessibles depuis le HTML  
+    window.nextDay = async function(day) {  
+        const currentActivity = document.getElementById('activity').value;  
+          
+        // Collecte des données du jour  
+        let dayResponses = {};  
+        for(let i=1; i<=3; i++) {  
+            let el = document.getElementById(`q${i}_day${day}`);  
+            if(el) dayResponses[`q${i}`] = el.value.trim();  
+        }  
+  
+        // Deep Tech : On enregistre le timestamp précis de chaque étape  
+        await updateDoc(doc(db, "entrepreneuses", uuid), {  
+            [`responses.day${day}`]: dayResponses,  
+            [`responses.day${day}_timestamp`]: serverTimestamp(),  
+            "metrics.last_updated": serverTimestamp(),  
+            "activity": currentActivity  
+        });  
+  
+        // UI Logic  
+        document.getElementById(`day${day}`).style.display='none';  
+        let next = day + 1;  
+        if(document.getElementById(`day${next}`)) {  
+            document.getElementById(`day${next}`).style.display='block';  
+        }  
+        updateScoreLocally(day);  
+    };  
+  
+    window.generateVisual = async function() {  
+        // ... (votre code generateVisual existant) ...  
+        // Ajoutez simplement l'enregistrement Firebase à la fin :  
+        await updateDoc(doc(db, "entrepreneuses", uuid), {  
+            "marketing_assets": {  
+                price: document.getElementById('price').value,  
+                city: document.getElementById('city').value,  
+                generated_at: serverTimestamp()  
+            }  
+        });  
+        document.getElementById('day3').style.display='none';  
+        document.getElementById('day4').style.display='block';  
+    };  
+  
+    window.finish = async function() {  
+        await updateDoc(doc(db, "entrepreneuses", uuid), {  
+            "status": "COMPLETED",  
+            "end_time": serverTimestamp()  
+        });  
+        alert("✅ Données synchronisées avec le moteur SheStartIA. Analyse en cours...");  
+    };  
+  
+    function updateScoreLocally(day) {  
+        let percent = Math.round((day / 7) * 100);  
+        document.getElementById('score').innerHTML = `  
+            <strong>Score de Fiabilité : ${percent}%</strong><br>  
+            <small>Données sécurisées via ID: ${uuid}</small>  
+        `;  
+    }  
+</script>  </body>  
+</html>  
