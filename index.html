@@ -4,21 +4,24 @@
 <meta charset="UTF-8">
 <title>SheStartIA – Parcours Entrepreneurial</title>
 <style>
-    body { font-family: sans-serif; background:#E8F0F8; color:#333; margin:0; padding:0; }
-    .app { max-width: 400px; margin: 20px auto; background:white; border-radius:20px; box-shadow:0 0 10px #aaa; padding:20px; }
-    h2 { color:#0D6EFD; margin-top:0; }
+    body { font-family: sans-serif; background:#E8F0F8; color:#333; margin:0; padding:0; display:flex; justify-content:center; }
+    .app { max-width: 400px; width:100%; margin:20px; background:white; border-radius:25px; box-shadow:0 0 20px rgba(0,0,0,0.2); padding:20px; }
+    h2 { color:#0D6EFD; margin-top:0; text-align:center; }
+    h3 { color:#198754; margin-bottom:10px; }
     .day { display:none; margin-bottom:20px; }
-    .question { margin:10px 0; }
-    input[type=text] { width:100%; padding:5px; margin:5px 0; border-radius:5px; border:1px solid #ccc; }
-    button { background:#198754; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; margin-top:10px; }
-    button:hover { background:#157347; }
-    #visual img { max-width:100%; border-radius:10px; margin-top:10px; }
+    .question { margin:10px 0; padding:10px; background:#f0f8ff; border-radius:10px; }
+    input[type=text], select { width:100%; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ccc; }
+    button { background:#0D6EFD; color:white; border:none; padding:10px; border-radius:10px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; }
+    button:hover { background:#0b5ed7; }
+    #visual img { max-width:100%; border-radius:15px; margin-top:10px; }
     #score { background:#f0f8ff; padding:10px; border-radius:10px; margin-top:20px; }
     .branding { text-align:center; font-size:12px; color:#888; margin-top:10px; }
+    .logo { display:block; margin:0 auto 10px; max-width:80px; }
 </style>
 </head>
 <body>
 <div class="app">
+    <img src="logo.png" class="logo" alt="SheStartIA Logo">
     <h2>SheStartIA – Lancement en 7 jours</h2>
 
     <!-- Jour 0 : Choix activité -->
@@ -27,39 +30,78 @@
             <label>Choisis ton commerce :</label>
             <select id="activity">
                 <option value="">-- Choisir --</option>
-                <option value="Jus">Jus naturels</option>
-                <option value="Pagne">Vente de pagnes</option>
-                <option value="Yaourt">Yaourt maison</option>
-                <option value="Coiffeuse">Coiffeuse à domicile</option>
+                <option value="chips plantain">Chips plantain</option>
+                <option value="jus">Jus naturels</option>
+                <option value="pagne">Vente de pagnes</option>
+                <option value="yaourt">Yaourt maison</option>
+                <option value="coiffeuse">Coiffeuse à domicile</option>
             </select>
         </div>
         <button onclick="nextDay(0)">Suivant</button>
     </div>
 
     <!-- Jour 1 à 7 -->
-    ${[1,2,3,4,5,6,7].map(d => `
-    <div class="day" id="day${d}">
-        <h3>${{
-            1:'Jour 1 – Je décide',
-            2:'Jour 2 – Je prépare',
-            3:'Jour 3 – Je crée mon visuel',
-            4:'Jour 4 – Je parle',
-            5:'Jour 5 – Je lance',
-            6:'Jour 6 – Je vends',
-            7:'Jour 7 – Bilan'
-        }[d]}</h3>
-        <div class="question"><input type="text" id="q1_day${d}" placeholder="Question 1"></div>
-        <div class="question"><input type="text" id="q2_day${d}" placeholder="Question 2"></div>
-        <div class="question"><input type="text" id="q3_day${d}" placeholder="Question 3"></div>
-        ${d===3 ? `
+    <div class="day" id="day1">
+        <h3>Jour 1 – Je décide</h3>
+        <div class="question"><input type="text" id="q1_day1" placeholder="Où (ville/quartier) ?"></div>
+        <div class="question"><input type="text" id="q2_day1" placeholder="À qui (type de cliente) ?"></div>
+        <div class="question"><input type="text" id="q3_day1" placeholder="Budget de départ (FCFA) ?"></div>
+        <button onclick="nextDay(1)">Suivant</button>
+    </div>
+
+    <div class="day" id="day2">
+        <h3>Jour 2 – Je prépare</h3>
+        <div class="question"><input type="text" id="q1_day2" placeholder="De quoi as-tu besoin ?"></div>
+        <div class="question"><input type="text" id="q2_day2" placeholder="Combien ça coûte au total (FCFA) ?"></div>
+        <div class="question"><input type="text" id="q3_day2" placeholder="As-tu déjà 1 cliente possible (oui/non) ?"></div>
+        <button onclick="nextDay(2)">Suivant</button>
+    </div>
+
+    <div class="day" id="day3">
+        <h3>Jour 3 – Je crée mon visuel</h3>
         <div class="question">
             <input type="text" id="price" placeholder="Prix (FCFA)">
+        </div>
+        <div class="question">
             <input type="text" id="city" placeholder="Ville / Quartier">
+        </div>
+        <div class="question">
             <input type="text" id="phone" placeholder="Numéro WhatsApp">
-            <button onclick="generateVisual()">Créer visuel</button>
-        </div>` : ''}
-        ${d!==3 ? `<button onclick="nextDay(${d})">Suivant</button>` : ''}
-    </div>`).join('')}
+        </div>
+        <button onclick="generateVisual()">Créer visuel</button>
+    </div>
+
+    <div class="day" id="day4">
+        <h3>Jour 4 – Je parle</h3>
+        <div class="question"><input type="text" id="q1_day4" placeholder="À qui tu en parles aujourd’hui ?"></div>
+        <div class="question"><input type="text" id="q2_day4" placeholder="Combien de personnes minimum ?"></div>
+        <div class="question"><input type="text" id="q3_day4" placeholder="À quelle heure tu envoies ton message ?"></div>
+        <button onclick="nextDay(4)">Suivant</button>
+    </div>
+
+    <div class="day" id="day5">
+        <h3>Jour 5 – Je lance</h3>
+        <div class="question"><input type="text" id="q1_day5" placeholder="Tu envoies le visuel à combien de personnes ?"></div>
+        <div class="question"><input type="text" id="q2_day5" placeholder="Tu postes où ?"></div>
+        <div class="question"><input type="text" id="q3_day5" placeholder="Si personne ne répond en 2h, tu fais quoi ?"></div>
+        <button onclick="nextDay(5)">Suivant</button>
+    </div>
+
+    <div class="day" id="day6">
+        <h3>Jour 6 – Je vends</h3>
+        <div class="question"><input type="text" id="q1_day6" placeholder="Combien de commandes aujourd’hui ?"></div>
+        <div class="question"><input type="text" id="q2_day6" placeholder="Blocage exact ?"></div>
+        <div class="question"><input type="text" id="q3_day6" placeholder="Ajustement demain ?"></div>
+        <button onclick="nextDay(6)">Suivant</button>
+    </div>
+
+    <div class="day" id="day7">
+        <h3>Jour 7 – Bilan</h3>
+        <div class="question"><input type="text" id="q1_day7" placeholder="Combien de ventes sur 7 jours ?"></div>
+        <div class="question"><input type="text" id="q2_day7" placeholder="Ce qui a le mieux marché ?"></div>
+        <div class="question"><input type="text" id="q3_day7" placeholder="Prochaine action demain ?"></div>
+        <button onclick="finish()">Terminé</button>
+    </div>
 
     <div id="visual"></div>
     <div id="whatsappMessages"></div>
@@ -72,6 +114,7 @@ let session = {};
 const invariants = ["Espace", "Temps", "Matière", "Force", "Symétrie"];
 
 function nextDay(day){
+    // sauvegarde réponses du jour
     for(let i=1;i<=3;i++){
         let el = document.getElementById(`q${i}_day${day}`);
         if(el) session[`day${day}_q${i}`] = el.value.trim();
@@ -88,12 +131,16 @@ function generateVisual(){
     let city = document.getElementById('city').value;
     let phone = document.getElementById('phone').value;
 
-    let imgSrc = `png/${activity.toLowerCase()}.png`;
+    if(!activity){ alert("Choisis une activité."); return; }
+
+    let imgSrc = `png/${activity.toLowerCase().replace(/ /g,"_")}.png`;
     document.getElementById('visual').innerHTML = `<p>Visuel généré :</p>
         <img src="${imgSrc}" alt="Visuel"><br>
         ${activity} – ${city} – ${price} FCFA – WhatsApp: ${phone}<br>
-        <a href="${imgSrc}" download>Télécharger le visuel</a>`;
+        <a href="${imgSrc}" download>Télécharger le visuel</a> |
+        <a href="https://wa.me/?text=${encodeURIComponent(activity+' à '+city+' – Prix : '+price+' FCFA. WhatsApp : '+phone)}" target="_blank">Partager WhatsApp</a>`;
 
+    // 3 messages WhatsApp
     let messages = [
         `${activity} à ${city} – Prix : ${price}. WhatsApp : ${phone}.`,
         `${activity} dispo à ${city}. Prix ${price}. Commande WhatsApp : ${phone}.`,
@@ -102,6 +149,7 @@ function generateVisual(){
     document.getElementById('whatsappMessages').innerHTML = `<h3>3 messages WhatsApp :</h3><ol>`+
         messages.map(m=>`<li>${m}</li>`).join('')+`</ol>`;
 
+    // passer au jour 4
     document.getElementById('day3').style.display='none';
     document.getElementById('day4').style.display='block';
 
@@ -114,26 +162,24 @@ function generateVisual(){
 function updateScore(){
     let score = 0;
     let maxScore = 0;
-
-    if(session.day1_q1) score++; maxScore++;
     for(let d=1;d<=7;d++){
         for(let i=1;i<=3;i++){
-            if(session[`day${d}_q${i}`]) score++;
             maxScore++;
+            if(session[`day${d}_q${i}`]) score++;
         }
     }
-    if(session.day1_q3) score++; maxScore++;
-    for(let d=4;d<=6;d++){
-        for(let i=1;i<=3;i++){
-            if(session[`day${d}_q${i}`]) score++;
-            maxScore++;
-        }
-    }
-    if(session.price && session.city && session.phone) score++; maxScore++;
+    if(session.price && session.city && session.phone){ score++; maxScore++; }
 
     let percent = Math.round(score/maxScore*100);
     document.getElementById('score').innerHTML = `<strong>Score actuel : ${percent}%</strong><br>
     Invariants évalués : ${invariants.join(', ')}<br>
     Plus ton score est élevé, plus ton identité économique est fiable et exploitable pour un financement futur.`;
 }
+
+function finish(){
+    updateScore();
+    alert("✅ Parcours terminé. Ton score final est affiché ci-dessous.");
+}
 </script>
+</body>
+</html>
