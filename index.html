@@ -14,29 +14,27 @@
     .question { margin:15px 0; padding:15px; background:#F8F9FA; border-left:5px solid #198754; border-radius:10px; }
     input[type=text], select { width:100%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ddd; box-sizing:border-box; }
     button { background:#0D6EFD; color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; transition:0.3s; }
-    button:hover { background:#0b5ed7; transform: translateY(-2px); }
-    .btn-whatsapp { background:#25D366 !important; margin-top: 5px; }
-    .btn-download { background:#6c757d !important; margin-top: 5px; }
-    #visual { margin-top:15px; position: relative; display:none; text-align:center; }
-    #visual img { max-width:100%; border-radius:15px; border:4px solid #198754; }
-    .ad-text { position: absolute; bottom: 20px; left: 20px; right: 20px; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 12px; font-size: 0.9em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-align: left; border-left: 5px solid #198754; }
-    #score { background:#e7f3ff; padding:15px; border-radius:12px; margin-top:20px; font-size:0.9em; line-height:1.4; }
-    .branding { text-align:center; font-size:11px; color:#aaa; margin-top:20px; text-transform:uppercase; letter-spacing:1px; }
-    .logo { display:block; margin:0 auto 15px; max-width:100px; }
-    .uuid-tag { font-size:10px; color:#ccc; text-align:center; margin-bottom:10px; }
+    button:disabled { background:#ccc; cursor:not-allowed; }
+    .btn-whatsapp { background:#25D366 !important; }
+    
+    /* STYLE AFFICHE NOIR & BLANC EN HAUT */
+    #visual { margin-top:15px; position: relative; text-align:center; display:none; border: 4px solid #198754; border-radius: 15px; overflow: hidden; }
+    #visual img { width:100%; display: block; }
+    .ad-top { position: absolute; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #000; padding: 10px; font-weight: bold; border-bottom: 2px solid #000; text-align: left; }
+    
     .ia-msg { background:#FFF3CD; padding:12px; border-radius:10px; margin:10px 0; font-style:italic; color:#856404; }
 </style>
 </head>
 <body>
 <div class="app">
-<img src="png/logo.png" class="logo" alt="SheStartIA Logo">
-<div id="session-id" class="uuid-tag"></div>
-<h2>SheStartIA – Parcours Lean Startup</h2>
+<img src="png/logo.png" style="display:block; margin:0 auto 15px; max-width:100px;">
+<div id="session-id" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:10px;"></div>
+<h2>SheStartIA – Parcours 7 Jours</h2>
 
 <div class="day" id="day0" style="display:block;">
     <div class="question">
         <label>Ma sœur, quel secteur veux-tu booster ?</label>
-        <select id="activity">
+        <select id="activity" onchange="checkInput(0)">
             <option value="">-- Choisir --</option>
             <option value="chips plantain">Chips plantain</option>
             <option value="jus">Jus naturels</option>
@@ -45,149 +43,146 @@
         </select>
     </div>
     <div class="ia-msg">Hey ma sœur ! On va faire décoller ton activité en 7 jours 💪✨</div>
-    <button onclick="nextDay(0)">Initialiser le parcours</button>
+    <button id="btn0" disabled onclick="nextDay(0)">Commencer le parcours</button>
 </div>
 
 <div class="day" id="day1">
-    <h3>Jour 1 – Analyse rapide</h3>
-    <div class="question"><input type="text" id="q1_day1" placeholder="Où es-tu géographiquement ?"></div>
-    <div class="question"><input type="text" id="q2_day1" placeholder="Qui sont tes clientes ?"></div>
-    <div class="question"><input type="text" id="q3_day1" placeholder="Capital disponible (FCFA)"></div>
-    <button onclick="nextDay(1)">Enregistrer & Suivant</button>
+    <h3>Jour 1 – Ton marché</h3>
+    <div class="question"><input type="text" id="q1_day1" oninput="checkInput(1)" placeholder="Où vends-tu tes produits ?"></div>
+    <button id="btn1" disabled onclick="nextDay(1)">Enregistrer & Suivant</button>
 </div>
 
 <div class="day" id="day2">
-    <h3>Jour 2 – Prépare ton produit</h3>
-    <div class="question"><input type="text" id="q1_day2" placeholder="Matériel nécessaire"></div>
-    <div class="question"><input type="text" id="q2_day2" placeholder="Coût total estimé (FCFA)"></div>
-    <div class="question"><input type="text" id="q3_day2" placeholder="As-tu testé ton produit ?"></div>
-    <button onclick="nextDay(2)">Suivant</button>
+    <h3>Jour 2 – Ta production</h3>
+    <div class="question"><input type="text" id="q1_day2" oninput="checkInput(2)" placeholder="Coût pour fabriquer tes produits"></div>
+    <button id="btn2" disabled onclick="nextDay(2)">Suivant</button>
 </div>
 
 <div class="day" id="day3">
-    <h3>Jour 3 – Identité & visuel</h3>
-    <div class="question"><input type="text" id="price" placeholder="Prix de vente (FCFA)"></div>
-    <div class="question"><input type="text" id="city" placeholder="Zone de livraison"></div>
-    <div class="question"><input type="text" id="phone" placeholder="Contact WhatsApp"></div>
-    <button onclick="generateVisual()">Générer mon affiche pro</button>
+    <h3>Jour 3 – Ton Affiche Pro</h3>
+    <div class="question"><input type="text" id="price" placeholder="Prix (ex: 500 FCFA)"></div>
+    <div class="question"><input type="text" id="city" placeholder="Lieu de livraison"></div>
+    <div class="question"><input type="text" id="phone" oninput="checkInput(3)" placeholder="Ton numéro WhatsApp"></div>
+    <button id="btn3" disabled onclick="generateVisual()">Voir mon affiche</button>
 </div>
 
 <div class="day" id="day4">
     <h3>Jour 4 – Partage ton affiche</h3>
     <div id="visual"></div>
-    <button class="btn-download" onclick="downloadImage()">⬇️ Télécharger l'image</button>
     <button class="btn-whatsapp" id="whatsapp-btn">📢 Partager sur WhatsApp</button>
-    <div class="ia-msg">Ma sœur, partage ton affiche partout pour attirer les clientes !</div>
-    <button onclick="nextDay(4)">J'ai partagé, suivant</button>
+    <button onclick="nextDay(4)" style="margin-top:15px;">C'est fait, suivant</button>
 </div>
 
-<div class="day" id="day5"><h3>Jour 5 – Vente</h3><div class="question"><input type="text" id="q1_day5" placeholder="Combien de ventes ?"></div><button onclick="nextDay(5)">Suivant</button></div>
-<div class="day" id="day6"><h3>Jour 6 – Optimisation</h3><div class="question"><input type="text" id="q1_day6" placeholder="Feedback client ?"></div><button onclick="nextDay(6)">Suivant</button></div>
+<div class="day" id="day5">
+    <h3>Jour 5 – Tes ventes</h3>
+    <div class="question"><input type="text" id="q1_day5" oninput="checkInput(5)" placeholder="Combien as-tu vendu aujourd'hui ?"></div>
+    <button id="btn5" disabled onclick="nextDay(5)">Suivant</button>
+</div>
+
+<div class="day" id="day6">
+    <h3>Jour 6 – Avis des clientes</h3>
+    <div class="question"><input type="text" id="q1_day6" oninput="checkInput(6)" placeholder="Qu'est-ce que les clientes ont dit ?"></div>
+    <button id="btn6" disabled onclick="nextDay(6)">Suivant</button>
+</div>
+
 <div class="day" id="day7">
     <h3>Jour 7 – Rapport final</h3>
-    <div class="question"><input type="text" id="q1_day7" placeholder="Volume total des ventes"></div>
-    <button onclick="finish()">Soumettre & Terminer (Symétrie ✅)</button>
+    <div class="question"><input type="text" id="q1_day7" oninput="checkInput(7)" placeholder="Ventes totales sur la semaine"></div>
+    <div style="background:#D1ECF1; padding:15px; border-radius:12px; text-align:center;">
+        <strong>📢 Booster mon financement</strong><br>
+        Invite une sœur sur Mwa$ia pour augmenter tes chances !
+    </div>
+    <button class="btn-whatsapp" onclick="shareRelation()">Partager à une sœur 💰</button>
+    <button id="btn7" disabled onclick="nextDay(7)">Passer à la dernière étape</button>
 </div>
 
-<div id="score"></div>
-<div class="branding">SheStartIA – Deep Tech Monitoring</div>
+<div class="day" id="day8">
+    <h3>Dernière étape ma sœur !</h3>
+    <div class="question">
+        <label>Aimes-tu utiliser Mwa$ia ?</label>
+        <select id="love"><option value="oui">Oui, beaucoup</option><option value="non">Pas vraiment</option></select>
+    </div>
+    <div class="question">
+        <label>Serais-tu prête à payer 5000 FCFA/mois pour ce boost ?</label>
+        <select id="pay"><option value="oui">Oui, je suis prête</option><option value="non">C'est trop cher</option></select>
+    </div>
+    <div class="question">
+        <label>Veux-tu continuer à être boostée pour gagner plus de financements ?</label>
+        <select id="continue" onchange="checkInput(8)"><option value="">-- Choisir --</option><option value="oui">Oui, je veux continuer !</option><option value="non">Non, j'arrête ici</option></select>
+    </div>
+    <button id="btn8" disabled onclick="finish()">Valider et Terminer</button>
+</div>
+
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey:"AIzaSyCEYmUE1IeNiRaPvwTtdWFwE-3ikFcE9hE",
-    authDomain:"shestartia.firebaseapp.com",
-    projectId:"shestartia",
-    storageBucket:"shestartia.firebasestorage.app",
-    messagingSenderId:"406506843993",
-    appId:"1:406506843993:web:af502cb095fdfde2cd6648"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const uuid = 'user_' + Math.random().toString(36).substr(2,9);
+const firebaseConfig = { apiKey:"AIzaSyCEYmUE1IeNiRaPvwTtdWFwE-3ikFcE9hE", authDomain:"shestartia.firebaseapp.com", projectId:"shestartia", storageBucket:"shestartia.firebasestorage.app", messagingSenderId:"406506843993", appId:"1:406506843993:web:af502cb095fdfde2cd6648" };
+const db = getFirestore(initializeApp(firebaseConfig));
+const uuid = 'sis_' + Math.random().toString(36).substr(2,5);
 document.getElementById('session-id').innerText = `ID: ${uuid}`;
 
-let invariants = { espace:0, matiere:0, force:0, temps:0, energie:0, symetrie:0, relation:1 };
+let inv = { espace:0, matiere:0, force:0, temps:0, energie:0, symetrie:0, relation:0 };
 
-// Initialisation
-setDoc(doc(db,"entrepreneuses",uuid), {invariants, start: serverTimestamp()});
+window.checkInput = function(day) {
+    let inputs = document.querySelectorAll(`#day${day} input, #day${day} select`);
+    let allFilled = Array.from(inputs).every(i => i.value.trim() !== "");
+    document.getElementById(`btn${day}`).disabled = !allFilled;
+};
 
 window.nextDay = async function(day){
-    const act = document.getElementById('activity').value;
-    if(day===0) invariants.espace=1;
-    if(day===5) invariants.force=1;
-    
-    await updateDoc(doc(db,"entrepreneuses",uuid), { [`responses.day${day}`]: "done", activity:act, invariants });
+    if(day===5) inv.force = 1;
+    await updateDoc(doc(db,"entrepreneuses",uuid), { [`jour${day}`]: "complété", inv });
     document.getElementById(`day${day}`).style.display='none';
     document.getElementById(`day${day+1}`).style.display='block';
-    updateScore(day+1);
 };
 
 window.generateVisual = async function(){
-    const price=document.getElementById('price').value;
-    const city=document.getElementById('city').value;
-    const phone=document.getElementById('phone').value;
-    const activity=document.getElementById('activity').value;
-    
-    let fileName = "";
-    if(activity==="chips plantain") fileName="chips%20plantain.png";
-    else if(activity==="jus") fileName="jus.png";
-    else if(activity==="yaourt") fileName="yaourt.png";
-    else if(activity==="purée piments") fileName="purée%20piments.png";
+    const p=document.getElementById('price').value;
+    const c=document.getElementById('city').value;
+    const ph=document.getElementById('phone').value;
+    const act=document.getElementById('activity').value;
+    let img = act==="chips plantain" ? "chips%20plantain.png" : act==="jus" ? "jus.png" : act==="yaourt" ? "yaourt.png" : "purée%20piments.png";
 
-    const imgFullUrl = `png/${fileName}`;
-    const visDiv = document.getElementById('visual');
-    visDiv.style.display = "block";
-    visDiv.innerHTML = `
-        <div id="poster" style="position:relative; display:inline-block;">
-            <img src="${imgFullUrl}" id="prod-img">
-            <div class="ad-text">
-                <b style="color:#0D6EFD; text-transform:uppercase;">${activity}</b><br>
-                <span style="font-size:1.3em; font-weight:bold; color:#198754;">${price} FCFA</span><br>
-                <span>📍 Livraison: ${city}</span><br>
-                <span style="color:#25D366;">🟢 WhatsApp: ${phone}</span>
-            </div>
-        </div>`;
+    document.getElementById('visual').style.display = "block";
+    document.getElementById('visual').innerHTML = `
+        <div class="ad-top">
+            <span style="text-transform:uppercase;">${act}</span><br>
+            <span style="font-size:1.2em;">${p} FCFA</span><br>
+            <small>📍 Livraison: ${c} | 🟢 WhatsApp: ${ph}</small>
+        </div>
+        <img src="png/${img}">`;
 
-    // Configurer le bouton WhatsApp
-    const msg = encodeURIComponent(`Hey ! Regardez ma production de ${activity} à seulement ${price} FCFA sur ${city}. Contactez-moi ici !`);
     document.getElementById('whatsapp-btn').onclick = () => {
-        window.open(`https://wa.me/?text=${msg}`, '_blank');
+        const m = encodeURIComponent(`Regarde mon affiche pour ${act} (${p}). Livraison: ${c}. Contacte-moi sur WhatsApp !`);
+        window.open(`https://wa.me/?text=${m}`, '_blank');
     };
 
-    invariants.matiere=1;
-    invariants.energie=1;
-    await updateDoc(doc(db,"entrepreneuses",uuid), { marketing:{price,city,phone}, invariants });
-    
+    inv.matiere=1; inv.energie=1;
     document.getElementById('day3').style.display='none';
     document.getElementById('day4').style.display='block';
-    updateScore(4);
 };
 
-// Fonction pour télécharger l'image
-window.downloadImage = function() {
-    const img = document.getElementById('prod-img');
-    const link = document.createElement('a');
-    link.href = img.src;
-    link.download = `Affiche_SheStartIA_${uuid}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    alert("Ma sœur, l'image de base est téléchargée ! Tu peux maintenant la partager.");
+window.shareRelation = function() {
+    inv.relation = 1;
+    const m = encodeURIComponent(`Ma sœur, rejoins-moi sur Mwa$ia ! En t'inscrivant, tu boostes mes chances d'avoir un financement et tu peux gagner le tien aussi ! 💰`);
+    window.open(`https://wa.me/?text=${m}`, '_blank');
 };
 
-window.finish = async function(){
-    invariants.temps=1;
-    invariants.symetrie=1; // Elle a fini le même parcours que les autres
-    await updateDoc(doc(db,"entrepreneuses",uuid), { status:"COMPLETED", invariants, end:serverTimestamp() });
-    alert("✅ Félicitations ma sœur ! Invariants validés. Tu es une championne !");
+window.finish = async function(){ 
+    if(document.getElementById('continue').value === "oui") inv.espace = 1;
+    inv.temps=1; inv.symetrie=1;
+    await updateDoc(doc(db,"entrepreneuses",uuid), { 
+        status:"TERMINE", 
+        sondage: { love: document.getElementById('love').value, pay: document.getElementById('pay').value },
+        inv 
+    });
+    alert("Merci ma sœur ! Tes informations sont bien reçues. 🚀");
 };
 
-function updateScore(d){ document.getElementById('score').innerHTML=`<strong>Progression : ${Math.round((d/7)*100)}%</strong>`; }
+setDoc(doc(db,"entrepreneuses",uuid), {start: serverTimestamp(), inv});
 </script>
 </body>
 </html>
