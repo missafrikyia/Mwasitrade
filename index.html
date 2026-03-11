@@ -1,117 +1,129 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SheStartIA – Parcours Lean Startup</title>
-<style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#E8F9F4; color:#333; margin:0; padding:0; display:flex; justify-content:center; }
-    .app { max-width:400px; width:100%; margin:20px; background:white; border-radius:25px; box-shadow:0 10px 30px rgba(0,0,0,0.1); padding:25px; }
-    h2 { color:#0D6EFD; margin-top:0; text-align:center; font-size:1.5em; }
-    h3 { color:#198754; border-bottom:2px solid #f0f0f0; padding-bottom:5px; }
-    .day { display:none; animation: fadeIn 0.5s; }
-    @keyframes fadeIn { from { opacity:0;} to { opacity:1; } }
-    .question { margin:15px 0; padding:15px; background:#F8F9FA; border-left:5px solid #198754; border-radius:10px; }
-    input[type=text], select { width:100%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ddd; box-sizing:border-box; }
-    button { background:#0D6EFD; color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; transition:0.3s; }
-    button:disabled { background:#ccc; cursor:not-allowed; }
-    .btn-whatsapp { background:#25D366 !important; }
-    
-    /* STYLE AFFICHE NOIR & BLANC EN HAUT */
-    #visual { margin-top:15px; position: relative; text-align:center; display:none; border: 4px solid #198754; border-radius: 15px; overflow: hidden; }
-    #visual img { width:100%; display: block; }
-    .ad-top { position: absolute; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #000; padding: 10px; font-weight: bold; border-bottom: 2px solid #000; text-align: left; }
-    
-    .ia-msg { background:#FFF3CD; padding:12px; border-radius:10px; margin:10px 0; font-style:italic; color:#856404; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheStartIA – Parcours Lean Startup</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#E8F9F4; color:#333; margin:0; padding:0; display:flex; justify-content:center; }
+        .app { max-width:400px; width:100%; margin:20px; background:white; border-radius:25px; box-shadow:0 10px 30px rgba(0,0,0,0.1); padding:25px; }
+        h2 { color:#0D6EFD; margin-top:0; text-align:center; font-size:1.5em; }
+        h3 { color:#198754; border-bottom:2px solid #f0f0f0; padding-bottom: 5px; }
+        .day { display:none; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity:0;} to { opacity:1; } }
+        .question { margin:15px 0; padding:15px; background:#F8F9FA; border-left:5px solid #198754; border-radius:10px; }
+        input[type=text], select { width:100%; padding:12px; margin:8px 0; border-radius:8px; border:1px solid #ddd; box-sizing:border-box; font-size: 16px; }
+        button { background:#0D6EFD; color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; transition:0.3s; }
+        button:disabled { background:#ccc !important; cursor:not-allowed; }
+        .btn-whatsapp { background:#25D366 !important; }
+        #visual { margin-top:15px; position: relative; text-align:center; display:none; border: 4px solid #198754; border-radius: 15px; overflow: hidden; }
+        #visual img { width:100%; display: block; }
+        .ad-top { position: absolute; top: 0; left: 0; right: 0; background: white; color: black; padding: 10px; font-weight: bold; text-align: left; border-bottom: 2px solid black; z-index: 10; }
+        .ia-msg { background:#FFF3CD; padding:12px; border-radius:10px; margin:10px 0; font-style:italic; color:#856404; }
+    </style>
 </head>
 <body>
 <div class="app">
-<img src="png/logo.png" style="display:block; margin:0 auto 15px; max-width:100px;">
-<div id="session-id" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:10px;"></div>
-<h2>SheStartIA – Parcours 7 Jours</h2>
+    <img src="png/logo.png" style="display:block; margin:0 auto 15px; max-width:100px;">
+    <div id="session-id" style="font-size:10px; color:#ccc; text-align:center; margin-bottom:10px;"></div>
+    <h2>SheStartIA – Parcours 7 Jours</h2>
 
-<div class="day" id="day0" style="display:block;">
-    <div class="question">
-        <label>Ma sœur, quel secteur veux-tu booster ?</label>
-        <select id="activity" onchange="checkInput(0)">
-            <option value="">-- Choisir --</option>
-            <option value="chips plantain">Chips plantain</option>
-            <option value="jus">Jus naturels</option>
-            <option value="yaourt">Yaourt maison</option>
-            <option value="purée piments">Purée de piments</option>
-        </select>
+    <div class="day" id="day0" style="display:block;">
+        <div class="question">
+            <label>Ma sœur, quel secteur veux-tu booster ?</label>
+            <select id="activity" onchange="checkInput(0)">
+                <option value="">-- Choisir --</option>
+                <option value="chips plantain">Chips plantain</option>
+                <option value="jus">Jus naturels</option>
+                <option value="yaourt">Yaourt maison</option>
+                <option value="purée piments">Purée de piments</option>
+            </select>
+        </div>
+        <div class="ia-msg">Hey ma sœur ! On va faire décoller ton activité en 7 jours 💪✨</div>
+        <button id="btn0" disabled onclick="nextDay(0)">Commencer le parcours</button>
     </div>
-    <div class="ia-msg">Hey ma sœur ! On va faire décoller ton activité en 7 jours 💪✨</div>
-    <button id="btn0" disabled onclick="nextDay(0)">Commencer le parcours</button>
-</div>
 
-<div class="day" id="day1">
-    <h3>Jour 1 – Ton marché</h3>
-    <div class="question"><input type="text" id="q1_day1" oninput="checkInput(1)" placeholder="Où vends-tu tes produits ?"></div>
-    <button id="btn1" disabled onclick="nextDay(1)">Enregistrer & Suivant</button>
-</div>
-
-<div class="day" id="day2">
-    <h3>Jour 2 – Ta production</h3>
-    <div class="question"><input type="text" id="q1_day2" oninput="checkInput(2)" placeholder="Coût pour fabriquer tes produits"></div>
-    <button id="btn2" disabled onclick="nextDay(2)">Suivant</button>
-</div>
-
-<div class="day" id="day3">
-    <h3>Jour 3 – Ton Affiche Pro</h3>
-    <div class="question"><input type="text" id="price" placeholder="Prix (ex: 500 FCFA)"></div>
-    <div class="question"><input type="text" id="city" placeholder="Lieu de livraison"></div>
-    <div class="question"><input type="text" id="phone" oninput="checkInput(3)" placeholder="Ton numéro WhatsApp"></div>
-    <button id="btn3" disabled onclick="generateVisual()">Voir mon affiche</button>
-</div>
-
-<div class="day" id="day4">
-    <h3>Jour 4 – Partage ton affiche</h3>
-    <div id="visual"></div>
-    <button class="btn-whatsapp" id="whatsapp-btn">📢 Partager sur WhatsApp</button>
-    <button onclick="nextDay(4)" style="margin-top:15px;">C'est fait, suivant</button>
-</div>
-
-<div class="day" id="day5">
-    <h3>Jour 5 – Tes ventes</h3>
-    <div class="question"><input type="text" id="q1_day5" oninput="checkInput(5)" placeholder="Combien as-tu vendu aujourd'hui ?"></div>
-    <button id="btn5" disabled onclick="nextDay(5)">Suivant</button>
-</div>
-
-<div class="day" id="day6">
-    <h3>Jour 6 – Avis des clientes</h3>
-    <div class="question"><input type="text" id="q1_day6" oninput="checkInput(6)" placeholder="Qu'est-ce que les clientes ont dit ?"></div>
-    <button id="btn6" disabled onclick="nextDay(6)">Suivant</button>
-</div>
-
-<div class="day" id="day7">
-    <h3>Jour 7 – Rapport final</h3>
-    <div class="question"><input type="text" id="q1_day7" oninput="checkInput(7)" placeholder="Ventes totales sur la semaine"></div>
-    <div style="background:#D1ECF1; padding:15px; border-radius:12px; text-align:center;">
-        <strong>📢 Booster mon financement</strong><br>
-        Invite une sœur sur Mwa$ia pour augmenter tes chances !
+    <div class="day" id="day1">
+        <h3>Jour 1 – Analyse rapide</h3>
+        <div class="question"><input type="text" id="q1_day1" oninput="checkInput(1)" placeholder="Où es-tu ? (Ville/Quartier)"></div>
+        <div class="question"><input type="text" id="q2_day1" oninput="checkInput(1)" placeholder="Qui sont tes clientes ? (Cible)"></div>
+        <div class="question"><input type="text" id="q3_day1" oninput="checkInput(1)" placeholder="Capital disponible (FCFA)"></div>
+        <button id="btn1" disabled onclick="nextDay(1)">Enregistrer & Suivant</button>
     </div>
-    <button class="btn-whatsapp" onclick="shareRelation()">Partager à une sœur 💰</button>
-    <button id="btn7" disabled onclick="nextDay(7)">Passer à la dernière étape</button>
-</div>
 
-<div class="day" id="day8">
-    <h3>Dernière étape ma sœur !</h3>
-    <div class="question">
-        <label>Aimes-tu utiliser Mwa$ia ?</label>
-        <select id="love"><option value="oui">Oui, beaucoup</option><option value="non">Pas vraiment</option></select>
+    <div class="day" id="day2">
+        <h3>Jour 2 – Prépare ton produit</h3>
+        <div class="question"><input type="text" id="q1_day2" oninput="checkInput(2)" placeholder="Matériel nécessaire (Marmite, sachets...)"></div>
+        <div class="question"><input type="text" id="q2_day2" oninput="checkInput(2)" placeholder="Coût total estimé (FCFA)"></div>
+        <div class="question"><input type="text" id="q3_day2" oninput="checkInput(2)" placeholder="As-tu déjà testé le goût ?"></div>
+        <button id="btn2" disabled onclick="nextDay(2)">Suivant</button>
     </div>
-    <div class="question">
-        <label>Serais-tu prête à payer 5000 FCFA/mois pour ce boost ?</label>
-        <select id="pay"><option value="oui">Oui, je suis prête</option><option value="non">C'est trop cher</option></select>
+
+    <div class="day" id="day3">
+        <h3>Jour 3 – Ton Affiche Pro</h3>
+        <div class="question"><input type="text" id="price" oninput="checkInput(3)" placeholder="Prix de vente (ex: 500 FCFA)"></div>
+        <div class="question"><input type="text" id="city" oninput="checkInput(3)" placeholder="Lieu de livraison"></div>
+        <div class="question"><input type="text" id="phone" oninput="checkInput(3)" placeholder="Ton numéro WhatsApp"></div>
+        <button id="btn3" disabled onclick="generateVisual()">Voir mon affiche</button>
     </div>
-    <div class="question">
-        <label>Veux-tu continuer à être boostée pour gagner plus de financements ?</label>
-        <select id="continue" onchange="checkInput(8)"><option value="">-- Choisir --</option><option value="oui">Oui, je veux continuer !</option><option value="non">Non, j'arrête ici</option></select>
+
+    <div class="day" id="day4">
+        <h3>Jour 4 – Partage ton affiche</h3>
+        <div id="visual"></div>
+        <button class="btn-whatsapp" id="whatsapp-btn">📢 Partager sur WhatsApp</button>
+        <button onclick="nextDay(4)" style="margin-top:15px;">C'est fait, suivant</button>
     </div>
-    <button id="btn8" disabled onclick="finish()">Valider et Terminer</button>
-</div>
+
+    <div class="day" id="day5">
+        <h3>Jour 5 – Tes ventes</h3>
+        <div class="question"><input type="text" id="q1_day5" oninput="checkInput(5)" placeholder="Combien as-tu vendu aujourd'hui ?"></div>
+        <button id="btn5" disabled onclick="nextDay(5)">Suivant</button>
+    </div>
+
+    <div class="day" id="day6">
+        <h3>Jour 6 – Avis des clientes</h3>
+        <div class="question"><input type="text" id="q1_day6" oninput="checkInput(6)" placeholder="Qu'est-ce que les clientes ont dit ?"></div>
+        <button id="btn6" disabled onclick="nextDay(6)">Suivant</button>
+    </div>
+
+    <div class="day" id="day7">
+        <h3>Jour 7 – Rapport final</h3>
+        <div class="question"><input type="text" id="q1_day7" oninput="checkInput(7)" placeholder="Ventes totales de la semaine"></div>
+        <div class="question">
+            <label>Quelle est la suite ?</label>
+            <select id="q3_day7" onchange="checkInput(7)">
+                <option value="">-- Choisir --</option>
+                <option value="scale">Je continue comme ça, ça marche !</option>
+                <option value="pivot">Je dois changer quelque chose</option>
+            </select>
+        </div>
+        <button class="btn-whatsapp" onclick="shareRelation()">Partager pour booster mes chances 💰</button>
+        <button id="btn7" disabled onclick="nextDay(7)">Dernière étape</button>
+    </div>
+
+    <div class="day" id="day8">
+        <h3>Ton avis compte ma sœur</h3>
+        <div class="question">
+            <label>Aimes-tu utiliser Mwa$ia ?</label>
+            <select id="love" onchange="checkInput(8)">
+                <option value="">-- Choisir --</option>
+                <option value="oui">Oui, beaucoup</option>
+                <option value="non">Pas vraiment</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>Combien serais-tu prête à mettre par mois pour augmenter tes chances de financement ?</label>
+            <select id="pay" onchange="checkInput(8)">
+                <option value="">-- Choisir un montant --</option>
+                <option value="2500">2 500 FCFA / mois</option>
+                <option value="5000">5 000 FCFA / mois</option>
+                <option value="7500">7 500 FCFA / mois</option>
+                <option value="10000">10 000 FCFA / mois</option>
+                <option value="0">Rien pour le moment</option>
+            </select>
+        </div>
+        <button id="btn8" disabled onclick="finish()">Valider et Terminer</button>
+    </div>
 
 </div>
 
@@ -127,14 +139,25 @@ document.getElementById('session-id').innerText = `ID: ${uuid}`;
 let inv = { espace:0, matiere:0, force:0, temps:0, energie:0, symetrie:0, relation:0 };
 
 window.checkInput = function(day) {
-    let inputs = document.querySelectorAll(`#day${day} input, #day${day} select`);
-    let allFilled = Array.from(inputs).every(i => i.value.trim() !== "");
+    const section = document.getElementById(`day${day}`);
+    const inputs = section.querySelectorAll('input, select');
+    let allFilled = true;
+    inputs.forEach(input => { if(input.value.trim() === "") allFilled = false; });
     document.getElementById(`btn${day}`).disabled = !allFilled;
 };
 
 window.nextDay = async function(day){
-    if(day===5) inv.force = 1;
-    await updateDoc(doc(db,"entrepreneuses",uuid), { [`jour${day}`]: "complété", inv });
+    if(document.getElementById(`btn${day}`).disabled) return;
+    let responses = {};
+    document.querySelectorAll(`#day${day} input, #day${day} select`).forEach(i => responses[i.id] = i.value);
+
+    // Mise à jour spécifique pour le marketing assets si Jour 3
+    let updateData = { [`responses_jour${day}`]: responses, inv };
+    if(day === 3) {
+        updateData["marketing_assets"] = { price: responses.price, city: responses.city };
+    }
+    
+    await updateDoc(doc(db,"entrepreneuses",uuid), updateData);
     document.getElementById(`day${day}`).style.display='none';
     document.getElementById(`day${day+1}`).style.display='block';
 };
@@ -149,34 +172,30 @@ window.generateVisual = async function(){
     document.getElementById('visual').style.display = "block";
     document.getElementById('visual').innerHTML = `
         <div class="ad-top">
-            <span style="text-transform:uppercase;">${act}</span><br>
+            <span style="text-transform:uppercase;">VENTE DE ${act}</span><br>
             <span style="font-size:1.2em;">${p} FCFA</span><br>
-            <small>📍 Livraison: ${c} | 🟢 WhatsApp: ${ph}</small>
+            <small>📍 ${c} | 🟢 WhatsApp: ${ph}</small>
         </div>
         <img src="png/${img}">`;
 
-    document.getElementById('whatsapp-btn').onclick = () => {
-        const m = encodeURIComponent(`Regarde mon affiche pour ${act} (${p}). Livraison: ${c}. Contacte-moi sur WhatsApp !`);
-        window.open(`https://wa.me/?text=${m}`, '_blank');
-    };
-
-    inv.matiere=1; inv.energie=1;
-    document.getElementById('day3').style.display='none';
-    document.getElementById('day4').style.display='block';
+    const m = encodeURIComponent(`Regarde mon affiche pour ${act} (${p}). Livraison: ${c}. Contacte-moi !`);
+    document.getElementById('whatsapp-btn').onclick = () => window.open(`https://wa.me/?text=${m}`, '_blank');
+    
+    // On passe au jour 4 automatiquement après génération
+    nextDay(3);
 };
 
 window.shareRelation = function() {
     inv.relation = 1;
-    const m = encodeURIComponent(`Ma sœur, rejoins-moi sur Mwa$ia ! En t'inscrivant, tu boostes mes chances d'avoir un financement et tu peux gagner le tien aussi ! 💰`);
+    const m = encodeURIComponent(`Ma sœur, rejoins-moi sur Mwa$ia ! En t'inscrivant, tu boostes mes chances d'avoir un financement ! 💰`);
     window.open(`https://wa.me/?text=${m}`, '_blank');
 };
 
 window.finish = async function(){ 
-    if(document.getElementById('continue').value === "oui") inv.espace = 1;
-    inv.temps=1; inv.symetrie=1;
+    inv.temps=1;
     await updateDoc(doc(db,"entrepreneuses",uuid), { 
-        status:"TERMINE", 
-        sondage: { love: document.getElementById('love').value, pay: document.getElementById('pay').value },
+        status:"FINALISE", 
+        sondage_final: { love: document.getElementById('love').value, pay: document.getElementById('pay').value },
         inv 
     });
     alert("Merci ma sœur ! Tes informations sont bien reçues. 🚀");
