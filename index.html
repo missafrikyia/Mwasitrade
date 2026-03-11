@@ -15,23 +15,24 @@
     input[type=text], select { width:100%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ddd; box-sizing:border-box; }
     button { background:#0D6EFD; color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; transition:0.3s; }
     button:hover { background:#0b5ed7; transform: translateY(-2px); }
-    #visual img { max-width:100%; border-radius:15px; margin-top:15px; border:1px solid #eee; }
+    .btn-whatsapp { background:#25D366 !important; margin-top: 5px; }
+    .btn-download { background:#6c757d !important; margin-top: 5px; }
+    #visual { margin-top:15px; position: relative; display:none; text-align:center; }
+    #visual img { max-width:100%; border-radius:15px; border:4px solid #198754; }
+    .ad-text { position: absolute; bottom: 20px; left: 20px; right: 20px; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 12px; font-size: 0.9em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-align: left; border-left: 5px solid #198754; }
     #score { background:#e7f3ff; padding:15px; border-radius:12px; margin-top:20px; font-size:0.9em; line-height:1.4; }
     .branding { text-align:center; font-size:11px; color:#aaa; margin-top:20px; text-transform:uppercase; letter-spacing:1px; }
     .logo { display:block; margin:0 auto 15px; max-width:100px; }
     .uuid-tag { font-size:10px; color:#ccc; text-align:center; margin-bottom:10px; }
     .ia-msg { background:#FFF3CD; padding:12px; border-radius:10px; margin:10px 0; font-style:italic; color:#856404; }
-    .share-block { background:#D1ECF1; padding:15px; border-radius:12px; margin-top:15px; text-align:center; }
-    .share-block a { color:#0D6EFD; font-weight:bold; text-decoration:none; }
 </style>
 </head>
 <body>
 <div class="app">
-<img src="logo.png" class="logo" alt="SheStartIA Logo">
+<img src="png/logo.png" class="logo" alt="SheStartIA Logo">
 <div id="session-id" class="uuid-tag"></div>
 <h2>SheStartIA – Parcours Lean Startup</h2>
 
-<!-- JOUR 0 – Choix activité -->
 <div class="day" id="day0" style="display:block;">
     <div class="question">
         <label>Ma sœur, quel secteur veux-tu booster ?</label>
@@ -40,84 +41,54 @@
             <option value="chips plantain">Chips plantain</option>
             <option value="jus">Jus naturels</option>
             <option value="yaourt">Yaourt maison</option>
+            <option value="purée piments">Purée de piments</option>
         </select>
     </div>
     <div class="ia-msg">Hey ma sœur ! On va faire décoller ton activité en 7 jours 💪✨</div>
     <button onclick="nextDay(0)">Initialiser le parcours</button>
 </div>
 
-<!-- JOUR 1 – Analyse -->
 <div class="day" id="day1">
     <h3>Jour 1 – Analyse rapide</h3>
     <div class="question"><input type="text" id="q1_day1" placeholder="Où es-tu géographiquement ?"></div>
     <div class="question"><input type="text" id="q2_day1" placeholder="Qui sont tes clientes ?"></div>
     <div class="question"><input type="text" id="q3_day1" placeholder="Capital disponible (FCFA)"></div>
-    <div class="ia-msg" id="ia_day1"></div>
     <button onclick="nextDay(1)">Enregistrer & Suivant</button>
 </div>
 
-<!-- JOUR 2 – Logistique -->
 <div class="day" id="day2">
     <h3>Jour 2 – Prépare ton produit</h3>
     <div class="question"><input type="text" id="q1_day2" placeholder="Matériel nécessaire"></div>
     <div class="question"><input type="text" id="q2_day2" placeholder="Coût total estimé (FCFA)"></div>
-    <div class="question"><input type="text" id="q3_day2" placeholder="As-tu testé ton produit ? (1ère cliente ?)"></div>
-    <div class="ia-msg" id="ia_day2"></div>
+    <div class="question"><input type="text" id="q3_day2" placeholder="As-tu testé ton produit ?"></div>
     <button onclick="nextDay(2)">Suivant</button>
 </div>
 
-<!-- JOUR 3 – Identité & visuel -->
 <div class="day" id="day3">
     <h3>Jour 3 – Identité & visuel</h3>
-    <div class="question"><input type="text" id="price" placeholder="Prix unitaire (FCFA)"></div>
+    <div class="question"><input type="text" id="price" placeholder="Prix de vente (FCFA)"></div>
     <div class="question"><input type="text" id="city" placeholder="Zone de livraison"></div>
     <div class="question"><input type="text" id="phone" placeholder="Contact WhatsApp"></div>
-    <div class="ia-msg" id="ia_day3"></div>
-    <button onclick="generateVisual()">Générer ton visuel marketing</button>
+    <button onclick="generateVisual()">Générer mon affiche pro</button>
 </div>
 
-<!-- JOUR 4 – Traction -->
 <div class="day" id="day4">
-    <h3>Jour 4 – Diffusion</h3>
-    <div class="question"><input type="text" id="q1_day4" placeholder="Où partager ton produit ?"></div>
-    <div class="ia-msg" id="ia_day4"></div>
-    <button onclick="nextDay(4)">Suivant</button>
+    <h3>Jour 4 – Partage ton affiche</h3>
+    <div id="visual"></div>
+    <button class="btn-download" onclick="downloadImage()">⬇️ Télécharger l'image</button>
+    <button class="btn-whatsapp" id="whatsapp-btn">📢 Partager sur WhatsApp</button>
+    <div class="ia-msg">Ma sœur, partage ton affiche partout pour attirer les clientes !</div>
+    <button onclick="nextDay(4)">J'ai partagé, suivant</button>
 </div>
 
-<!-- JOUR 5 – Ventes -->
-<div class="day" id="day5">
-    <h3>Jour 5 – Vente</h3>
-    <div class="question"><input type="text" id="q1_day5" placeholder="Combien de ventes ?"></div>
-    <div class="ia-msg" id="ia_day5"></div>
-    <button onclick="nextDay(5)">Suivant</button>
-</div>
-
-<!-- JOUR 6 – Optimisation -->
-<div class="day" id="day6">
-    <h3>Jour 6 – Optimisation</h3>
-    <div class="question"><input type="text" id="q1_day6" placeholder="Feedback client reçu ?"></div>
-    <div class="ia-msg" id="ia_day6"></div>
-    <button onclick="nextDay(6)">Suivant</button>
-</div>
-
-<!-- JOUR 7 – Rapport & Parrainage -->
+<div class="day" id="day5"><h3>Jour 5 – Vente</h3><div class="question"><input type="text" id="q1_day5" placeholder="Combien de ventes ?"></div><button onclick="nextDay(5)">Suivant</button></div>
+<div class="day" id="day6"><h3>Jour 6 – Optimisation</h3><div class="question"><input type="text" id="q1_day6" placeholder="Feedback client ?"></div><button onclick="nextDay(6)">Suivant</button></div>
 <div class="day" id="day7">
     <h3>Jour 7 – Rapport final</h3>
     <div class="question"><input type="text" id="q1_day7" placeholder="Volume total des ventes"></div>
-    <div class="question"><input type="text" id="q2_day7" placeholder="Facteur clé de succès"></div>
-    <div class="question"><input type="text" id="q3_day7" placeholder="Pivot ou Scale ?"></div>
-    <div class="ia-msg" id="ia_day7"></div>
-
-    <div class="share-block">
-        🎉 Ma sœur, tu as terminé le parcours !<br>
-        Clique <a href="https://wa.me/?text=Je+rejoins+Mwa$ia+grâce+à+ma+sœur" target="_blank">ici pour rejoindre Mwa$ia</a>.<br>
-        Si tu rejoins, tu <strong>boostes les chances de ta sœur</strong> d’obtenir un financement 💰
-    </div>
-
-    <button onclick="finish()">Soumettre & Recevoir recommandations IA</button>
+    <button onclick="finish()">Soumettre & Terminer (Symétrie ✅)</button>
 </div>
 
-<div id="visual"></div>
 <div id="score"></div>
 <div class="branding">SheStartIA – Deep Tech Monitoring</div>
 </div>
@@ -126,7 +97,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-// Config Firebase
 const firebaseConfig = {
     apiKey:"AIzaSyCEYmUE1IeNiRaPvwTtdWFwE-3ikFcE9hE",
     authDomain:"shestartia.firebaseapp.com",
@@ -138,99 +108,86 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-// UUID session
-const uuid = 'user_' + Math.random().toString(36).substr(2,9) + '_' + Date.now();
+const uuid = 'user_' + Math.random().toString(36).substr(2,9);
 document.getElementById('session-id').innerText = `ID: ${uuid}`;
 
-// Binaire invariants
-let invariants = {
-    espace:0, matiere:0, force:0, temps:0, energie:0, symetrie:0, relation:0
-};
+let invariants = { espace:0, matiere:0, force:0, temps:0, energie:0, symetrie:0, relation:1 };
 
-let sessionData = { metadata:{uid:uuid,start_time:serverTimestamp()},responses:{},metrics:{last_updated:null,completion_rate:0},invariants };
+// Initialisation
+setDoc(doc(db,"entrepreneuses",uuid), {invariants, start: serverTimestamp()});
 
-// Init Firebase
-async function initSession(){ await setDoc(doc(db,"entrepreneuses",uuid),sessionData); }
-initSession();
-
-// Affichage IA encouragement
-function showIaMessage(day,msg){ const el = document.getElementById(`ia_day${day}`); if(el) el.innerText = msg; }
-
-// Next day
 window.nextDay = async function(day){
-    const activity = document.getElementById('activity')?.value || '';
-    let dayResponses = {};
-    for(let i=1;i<=3;i++){ let el=document.getElementById(`q${i}_day${day}`); if(el) dayResponses[`q${i}`]=el.value.trim(); }
-
-    // Mettre à jour invariants selon logique simple
-    if(day===0 && activity) invariants.espace=1; // Espace: choix activité = plateforme
-    if(day===1) invariants.energie=1; // progression
-    if(day===2 && dayResponses.q1 && dayResponses.q2) invariants.matiere=1; // visuel prêt
-    if(day===4 && dayResponses.q1) invariants.force=1; // vente canaux
-    if(day===5 && dayResponses.q1) invariants.force=1; // ventes
-    if(day===6 && dayResponses.q1) invariants.energie=1; // progression optimisation
-    if(day===7) invariants.temps=1; // parcours 7 jours
-
-    await updateDoc(doc(db,"entrepreneuses",uuid),{
-        [`responses.day${day}`]:dayResponses,
-        [`responses.day${day}_timestamp`]:serverTimestamp(),
-        "metrics.last_updated":serverTimestamp(),
-        activity,
-        invariants
-    });
-
-    const iaMsgs = {
-        1:"Bravo ma sœur ! Analyse ton marché 💪",
-        2:"Prépare ton produit 🚀",
-        4:"Diffuse ton produit partout 📣",
-        5:"Chaque vente compte 💎",
-        6:"Optimise selon les retours 🔧",
-        7:"Tu as terminé, prépare recommandations 🎯"
-    };
-    showIaMessage(day,iaMsgs[day]||'');
-
+    const act = document.getElementById('activity').value;
+    if(day===0) invariants.espace=1;
+    if(day===5) invariants.force=1;
+    
+    await updateDoc(doc(db,"entrepreneuses",uuid), { [`responses.day${day}`]: "done", activity:act, invariants });
     document.getElementById(`day${day}`).style.display='none';
-    let next=day+1;
-    if(document.getElementById(`day${next}`)) document.getElementById(`day${next}`).style.display='block';
-    updateScoreLocally(next-1);
+    document.getElementById(`day${day+1}`).style.display='block';
+    updateScore(day+1);
 };
 
-// Génération visuel
 window.generateVisual = async function(){
     const price=document.getElementById('price').value;
     const city=document.getElementById('city').value;
+    const phone=document.getElementById('phone').value;
     const activity=document.getElementById('activity').value;
-    let imgSrc="";
-    if(activity==="chips plantain") imgSrc="chips plantain.png";
-    if(activity==="jus") imgSrc="jus.png";
-    if(activity==="yaourt") imgSrc="yaourt.png";
-    document.getElementById('visual').innerHTML=`<img src="${imgSrc}" alt="Visuel produit">`;
-    invariants.matiere=1; // visuel prêt
+    
+    let fileName = "";
+    if(activity==="chips plantain") fileName="chips%20plantain.png";
+    else if(activity==="jus") fileName="jus.png";
+    else if(activity==="yaourt") fileName="yaourt.png";
+    else if(activity==="purée piments") fileName="purée%20piments.png";
 
-    await updateDoc(doc(db,"entrepreneuses",uuid),{
-        marketing_assets:{activity,price,city,generated_at:serverTimestamp()},
-        invariants
-    });
+    const imgFullUrl = `png/${fileName}`;
+    const visDiv = document.getElementById('visual');
+    visDiv.style.display = "block";
+    visDiv.innerHTML = `
+        <div id="poster" style="position:relative; display:inline-block;">
+            <img src="${imgFullUrl}" id="prod-img">
+            <div class="ad-text">
+                <b style="color:#0D6EFD; text-transform:uppercase;">${activity}</b><br>
+                <span style="font-size:1.3em; font-weight:bold; color:#198754;">${price} FCFA</span><br>
+                <span>📍 Livraison: ${city}</span><br>
+                <span style="color:#25D366;">🟢 WhatsApp: ${phone}</span>
+            </div>
+        </div>`;
+
+    // Configurer le bouton WhatsApp
+    const msg = encodeURIComponent(`Hey ! Regardez ma production de ${activity} à seulement ${price} FCFA sur ${city}. Contactez-moi ici !`);
+    document.getElementById('whatsapp-btn').onclick = () => {
+        window.open(`https://wa.me/?text=${msg}`, '_blank');
+    };
+
+    invariants.matiere=1;
+    invariants.energie=1;
+    await updateDoc(doc(db,"entrepreneuses",uuid), { marketing:{price,city,phone}, invariants });
+    
     document.getElementById('day3').style.display='none';
     document.getElementById('day4').style.display='block';
+    updateScore(4);
 };
 
-// Fin parcours
+// Fonction pour télécharger l'image
+window.downloadImage = function() {
+    const img = document.getElementById('prod-img');
+    const link = document.createElement('a');
+    link.href = img.src;
+    link.download = `Affiche_SheStartIA_${uuid}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    alert("Ma sœur, l'image de base est téléchargée ! Tu peux maintenant la partager.");
+};
+
 window.finish = async function(){
-    invariants.relation=1; // parrainage final
-    await updateDoc(doc(db,"entrepreneuses",uuid),{
-        status:"COMPLETED",end_time:serverTimestamp(),
-        invariants
-    });
-    alert("✅ Données synchronisées. Scoring et recommandations IA en cours...");
+    invariants.temps=1;
+    invariants.symetrie=1; // Elle a fini le même parcours que les autres
+    await updateDoc(doc(db,"entrepreneuses",uuid), { status:"COMPLETED", invariants, end:serverTimestamp() });
+    alert("✅ Félicitations ma sœur ! Invariants validés. Tu es une championne !");
 };
 
-// Score progression
-function updateScoreLocally(day){
-    let percent=Math.round((day/7)*100);
-    document.getElementById('score').innerHTML=`<strong>Score de progression : ${percent}%</strong><br><small>ID: ${uuid}</small>`;
-}
+function updateScore(d){ document.getElementById('score').innerHTML=`<strong>Progression : ${Math.round((d/7)*100)}%</strong>`; }
 </script>
 </body>
 </html>
