@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SheStartIA – Parcours Lean Startup</title>
+    <title>SheStartIA – Parcours 7 Jours</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#E8F9F4; color:#333; margin:0; padding:0; display:flex; justify-content:center; }
         .app { max-width:400px; width:100%; margin:20px; background:white; border-radius:25px; box-shadow:0 10px 30px rgba(0,0,0,0.1); padding:25px; }
@@ -16,9 +16,9 @@
         button { background:#0D6EFD; color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; margin-top:10px; width:100%; font-weight:bold; transition:0.3s; }
         button:disabled { background:#ccc !important; cursor:not-allowed; }
         .btn-whatsapp { background:#25D366 !important; }
-        #visual { margin-top:15px; position: relative; text-align:center; display:none; border: 4px solid #198754; border-radius: 15px; overflow: hidden; }
-        #visual img { width:100%; display: block; }
-        .ad-top { position: absolute; top: 0; left: 0; right: 0; background: white; color: black; padding: 10px; font-weight: bold; text-align: left; border-bottom: 2px solid black; z-index: 10; }
+        .btn-download { background:#6c757d !important; margin-bottom: 10px; }
+        #visual { margin-top:15px; text-align:center; display:none; border: 4px solid #198754; border-radius: 15px; overflow: hidden; background: white; }
+        canvas { width: 100%; height: auto; display: block; }
         .ia-msg { background:#FFF3CD; padding:12px; border-radius:10px; margin:10px 0; font-style:italic; color:#856404; }
     </style>
 </head>
@@ -53,7 +53,7 @@
 
     <div class="day" id="day2">
         <h3>Jour 2 – Prépare ton produit</h3>
-        <div class="question"><input type="text" id="q1_day2" oninput="checkInput(2)" placeholder="Matériel nécessaire (Marmite, sachets...)"></div>
+        <div class="question"><input type="text" id="q1_day2" oninput="checkInput(2)" placeholder="Matériel nécessaire (Marmite...)"></div>
         <div class="question"><input type="text" id="q2_day2" oninput="checkInput(2)" placeholder="Coût total estimé (FCFA)"></div>
         <div class="question"><input type="text" id="q3_day2" oninput="checkInput(2)" placeholder="As-tu déjà testé le goût ?"></div>
         <button id="btn2" disabled onclick="nextDay(2)">Suivant</button>
@@ -70,8 +70,9 @@
     <div class="day" id="day4">
         <h3>Jour 4 – Partage ton affiche</h3>
         <div id="visual"></div>
+        <button class="btn-download" onclick="downloadPoster()">💾 Enregistrer l'image</button>
         <button class="btn-whatsapp" id="whatsapp-btn">📢 Partager sur WhatsApp</button>
-        <button onclick="nextDay(4)" style="margin-top:15px;">C'est fait, suivant</button>
+        <button onclick="nextDay(4)" style="margin-top:15px; background:#eee; color:#333;">C'est fait, suivant</button>
     </div>
 
     <div class="day" id="day5">
@@ -112,7 +113,7 @@
             </select>
         </div>
         <div class="question">
-            <label>Combien serais-tu prête à mettre par mois pour augmenter tes chances de financement ?</label>
+            <label>Prix pour améliorer tes chances de financement :</label>
             <select id="pay" onchange="checkInput(8)">
                 <option value="">-- Choisir un montant --</option>
                 <option value="2500">2 500 FCFA / mois</option>
@@ -124,7 +125,6 @@
         </div>
         <button id="btn8" disabled onclick="finish()">Valider et Terminer</button>
     </div>
-
 </div>
 
 <script type="module">
@@ -143,45 +143,73 @@ window.checkInput = function(day) {
     const inputs = section.querySelectorAll('input, select');
     let allFilled = true;
     inputs.forEach(input => { if(input.value.trim() === "") allFilled = false; });
-    document.getElementById(`btn${day}`).disabled = !allFilled;
+    const btn = document.getElementById(`btn${day}`);
+    if(btn) btn.disabled = !allFilled;
 };
 
 window.nextDay = async function(day){
-    if(document.getElementById(`btn${day}`).disabled) return;
     let responses = {};
     document.querySelectorAll(`#day${day} input, #day${day} select`).forEach(i => responses[i.id] = i.value);
-
-    // Mise à jour spécifique pour le marketing assets si Jour 3
     let updateData = { [`responses_jour${day}`]: responses, inv };
+    
     if(day === 3) {
-        updateData["marketing_assets"] = { price: responses.price, city: responses.city };
+        updateData["marketing_assets"] = { price: document.getElementById('price').value, city: document.getElementById('city').value };
     }
     
     await updateDoc(doc(db,"entrepreneuses",uuid), updateData);
     document.getElementById(`day${day}`).style.display='none';
     document.getElementById(`day${day+1}`).style.display='block';
+    window.scrollTo(0,0);
 };
 
-window.generateVisual = async function(){
-    const p=document.getElementById('price').value;
-    const c=document.getElementById('city').value;
-    const ph=document.getElementById('phone').value;
-    const act=document.getElementById('activity').value;
-    let img = act==="chips plantain" ? "chips%20plantain.png" : act==="jus" ? "jus.png" : act==="yaourt" ? "yaourt.png" : "purée%20piments.png";
+window.generateVisual = function(){
+    const p = document.getElementById('price').value;
+    const c = document.getElementById('city').value;
+    const ph = document.getElementById('phone').value;
+    const act = document.getElementById('activity').value;
+    
+    let imgName = act === "chips plantain" ? "chips%20plantain.png" : act === "jus" ? "jus.png" : act === "yaourt" ? "yaourt.png" : "purée%20piments.png";
 
+    document.getElementById('visual').innerHTML = `<canvas id="posterCanvas"></canvas>`;
     document.getElementById('visual').style.display = "block";
-    document.getElementById('visual').innerHTML = `
-        <div class="ad-top">
-            <span style="text-transform:uppercase;">VENTE DE ${act}</span><br>
-            <span style="font-size:1.2em;">${p} FCFA</span><br>
-            <small>📍 ${c} | 🟢 WhatsApp: ${ph}</small>
-        </div>
-        <img src="png/${img}">`;
 
-    const m = encodeURIComponent(`Regarde mon affiche pour ${act} (${p}). Livraison: ${c}. Contacte-moi !`);
+    const canvas = document.getElementById('posterCanvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = "png/" + imgName;
+
+    img.onload = function() {
+        canvas.width = 600;
+        canvas.height = 800;
+        ctx.drawImage(img, 0, 0, 600, 800);
+        
+        // Bandeau texte
+        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.fillRect(0, 0, 600, 160);
+        
+        ctx.fillStyle = "#000";
+        ctx.font = "bold 32px sans-serif";
+        ctx.fillText("VENTE DE " + act.toUpperCase(), 30, 60);
+        
+        ctx.fillStyle = "#198754";
+        ctx.font = "bold 52px sans-serif";
+        ctx.fillText(p + " FCFA", 30, 115);
+        
+        ctx.fillStyle = "#444";
+        ctx.font = "24px sans-serif";
+        ctx.fillText("📍 " + c + " | 🟢 WhatsApp: " + ph, 30, 150);
+    };
+
+    window.downloadPoster = () => {
+        const link = document.createElement('a');
+        link.download = 'affiche-shestartia.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    };
+
+    const m = encodeURIComponent(`Regarde mon affiche pour mes ${act} (${p} FCFA). Livraison à ${c}. Contacte-moi !`);
     document.getElementById('whatsapp-btn').onclick = () => window.open(`https://wa.me/?text=${m}`, '_blank');
     
-    // On passe au jour 4 automatiquement après génération
     nextDay(3);
 };
 
